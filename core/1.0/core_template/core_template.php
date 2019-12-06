@@ -336,7 +336,7 @@ class core_template {
                     $obj[$key] = json_encode($value);
                 }
             }
-            var_dump($obj);
+            //var_dump($obj);
             $obj[$wherekey] = $whereval;
             $GLOBALS['awe']->DB->doQuery(array("sql" => "UPDATE " . $array['table'] . " SET " . $update . " WHERE " . $where, "attr" => $obj));
             return true;
