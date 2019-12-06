@@ -1,0 +1,12 @@
+E0001 - Nem található az oldal adatbázis konfigja!
+E0002 - Nem adtál meg kifejezést!
+E0003 - Hibás core hívás!
+E0004 - Hibás adatbázis csatlakozás!
+E0005 - Hibás SQL parancs! -> {PDO::errorInfo()}
+
+W0001 - Nem adtál meg sql parancsot!
+W0002 - Nem található {key} kulcs a fordítóban! Létrehozás...
+W0003 - Nem található {key} kulcs {language} nyelven a fordítóban! Létrehozás..."
+
+I0001 - {key} kulcs létrehozva a fordítóba!
+I0002 - {key} kulcs frissítve {language} nyelven a fordítóba

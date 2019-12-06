@@ -1,0 +1,16 @@
+<?php
+
+//tabname
+$name = "B";
+//tabdata -legyen form
+
+$tabdata = '<div id="rd1">
+TWO
+<a href="#" onclick="$(\'#draggable\').remove();">
+                <i class="fas fa-save"></i></a>
+</div>
+
+';
+
+return array("name" => $name, "tabdata" => $tabdata);
+?>

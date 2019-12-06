@@ -1,0 +1,61 @@
+<?php
+
+class core_translator {
+    public function __construct($array) {
+        ;
+    }
+
+    public function getExpression($array) {
+        if (!isset($array['key']) && $array['key'] == "") {
+            $GLOBALS['awe']->Logger->setError(array("text" => "E0002 - Nem adtál meg kifejezést!"));
+            return "<b>#E0002 - Nem adtál meg kifejezést!#</b>";
+        }
+
+        $query = $GLOBALS['awe']->DB->fetchWithCount(array("sql" => "SELECT *, tra_obj -> 'language' ->> :lang AS expression FROM core_translator WHERE tra_key=:tra_key", "attr" => array("tra_key" => $array['key'], "lang" => $GLOBALS['awe']->Language)));
+
+        if ($query['count'] == 0) {
+            $GLOBALS['awe']->Logger->setWarn(array("key" => "W0002 - Nem található {" . $array['key'] . "} kulcs a fordítóban! Létrehozás..."));
+
+            /* Rekord létrehozása */
+            /* Json létrehozás */
+            $json = array("language" => array($GLOBALS['awe']->Language => $array['key']));
+            $json = json_encode($json);
+            $GLOBALS['awe']->DB->doQuery(array("sql" => "INSERT INTO core_translator (tra_key, tra_obj) VALUES(:tra_key, :tra_obj)", "attr" => array("tra_obj" => $json, "tra_key" => $array['key'])));
+
+            $GLOBALS['awe']->Logger->setInfo(array("key" => "I0001 - " . $array["key"] . " kulcs létrehozva a fordítóba!"));
+
+            return $array["key"];
+        } else if ($query['result']['expression'] == NULL || !isset($query['result']['expression'])) {
+            $GLOBALS['awe']->Logger->setWarn(array("key" => "W0003 - Nem található {" . $array['key'] . "} kulcs {" . $GLOBALS['awe']->Language . "} nyelven a fordítóban! Létrehozás..."));
+
+            /* Rekord frissítése */
+            /* Json létrehozás */
+            $json = (array) json_decode($query['result']['tra_obj']);
+            $json['language'] = (array) $json['language'];
+            $json['language'][$GLOBALS['awe']->Language] = $array["key"];
+            $json = json_encode($json);
+            $GLOBALS['awe']->DB->doQuery(array("sql" => "UPDATE core_translator SET tra_obj=:tra_obj WHERE tra_key=:tra_key", "attr" => array("tra_obj" => $json, "tra_key" => $array['key'])));
+
+            $GLOBALS['awe']->Logger->setInfo(array("key" => "I0002 - " . $array["key"] . " kulcs frissítve {" . $GLOBALS['awe']->Language . "} nyelven a fordítóba!"));
+
+            return $array["key"];
+        }
+        return $query['result']['expression'];
+    }
+}
+
+/* $awe->admMenu .=' <li class="dropdown-btn"><i class="fas fa-language"></i><a href="#">' . T("translator") . '</a></li>
+  <ul class="dropdown-menu">
+  <li><a href="#"><i class="fas fa-home"></i> ' . T("kifejezes_kereso") . '</a></li>
+  <li><a href="#">' . T("site_nyelvek") . '</a></li>
+  <li><a href="#">D 1</a></li>
+  <li class="dropdown-btn"><a href="#">Dropdown 1</a></li>
+  <ul class="dropdown-menu">
+  <li><a href="#"><i class="fas fa-home"></i> Menüpont 0222222222222222222222222222221</a></li>
+  <li><a href="#">Mentés</a></li>
+  <li><a href="#">D 1</a></li>
+  <li><a class="dropdown-btn" href="#">Dropdown 1</a></li>
+  </ul>
+  </ul>'; */
+//print_r(core_translator::getExpression(array("key"=>"test1")));
+?>

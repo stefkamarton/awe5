@@ -1,0 +1,97 @@
+<?php
+
+class core_default {
+    /* Generál egy random számot */
+
+    
+
+    public function siteSettings() {
+        
+    }
+
+    /* Lekéri az adott nyelvet */
+
+
+
+
+
+    
+
+
+    /* Lekéri a domain név utánai paramétereket és explodeol */
+
+    public function getURI() {
+        return explode("?", $_SERVER['REQUEST_URI']);
+    }
+
+    public function getURI2() {
+        $uri = explode("?", $_SERVER['REQUEST_URI']);
+        return $uri[0];
+    }
+
+    public function getUrlId() {
+        return str_replace("/", "", core_default::getURI2());
+    }
+
+    /* Lekéri a params-ot és visszatér egy array-el */
+
+    public function getParams() {
+        if (isset($_GET['params']) && $_GET['params'] != "") {
+            return (array) json_decode(core_default::base64url_decode($_GET['params']));
+        }
+        return NULL;
+    }
+    
+    public function AddParams($array) {
+        if (isset($array) && $array != NULL) {
+            $cparams=self::getParams();
+            if($cparams != NULL)$array=array_merge($array, $cparams);
+            if(isset($array['def_merge']) && $array['def_merge']!=NULL)$array=array_merge ($array,$array['def_merge']);
+            unset($array["def_merge"]); 
+            return core_default::base64url_encode(json_encode($array));
+        }
+        return NULL;
+    }
+
+    /* URL ENCODEING -  Böngésző nem támogatja a +/= jeleket ezért kell ez a módosítás */
+
+    public function base64url_encode($data) {
+        $b64 = base64_encode($data);
+        if ($b64 === FALSE)
+            return FALSE;
+        $url = strtr($b64, '+/', '-_');
+        return rtrim($url, '=');
+    }
+
+    /* URL DECODEING -  Böngésző nem támogatja a +/= jeleket ezért kell ez a módosítás */
+
+    public function base64url_decode($data, $strict = false) {
+        $b64 = strtr($data, '-_', '+/');
+        return base64_decode($b64, $strict);
+    }
+
+
+
+
+
+}
+
+//var_dump (core_default::siteAlias());
+//com_default::idGenerate();
+/*function T($key, $comment = true) {
+    //$result = $GLOBALS['awe']->Translator->getExpression(array("key" => $key));
+    if ($comment == true)
+        return $result[0] . "<!--" . $key . "-->";
+     return 2;    return $result[0];
+}*/
+
+function systemmenus() {
+    $ret = "";
+    for ($i = 0; $i < count($_GET['systemmenu']); $i++) {
+        $ret .= $_GET['systemmenu'];
+    }
+    return $ret;
+}
+
+
+?>
