@@ -69,7 +69,7 @@ class adm_componentmanager {
 
                     break;
                 case "new":
-                    echo "NEW";
+                    echo "NEW ";
                     break;
                 case "save":
                     if ($GLOBALS['awe']->Template->AjaxSettingsSave($arr)) {
