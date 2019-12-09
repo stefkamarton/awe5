@@ -1,6 +1,11 @@
 <?php
 
-class core_template {
+/**
+ * @package AWE
+ * @subpackage AWE
+ * @filesource
+ *  */
+class core_template{
 
     public $Template;
     public $BodyClass;
@@ -15,7 +20,6 @@ class core_template {
         $this->BodyClass = $GLOBALS['awe']->getUrlId(array());
         $this->JS = array();
         $this->CSS = array();
-
         $this->addCSS(array("css" => "/core/" . $GLOBALS['awe']->CoreVersion . "/core_template/gfx/table.css"));
     }
 
@@ -57,7 +61,7 @@ class core_template {
     /* doctype lekérdezés */
 
     public function getDocType($array) {
-        $result = $this->DB->fetch(array("sql" => "SELECT defaults_obj FROM defaults WHERE defaults_id=:defaults_id", "attr" => array("defaults_id" => "document_type")));
+        $result = $GLOBALS["awe"]->DB->fetch(array("sql" => "SELECT defaults_obj FROM defaults WHERE defaults_id=:defaults_id", "attr" => array("defaults_id" => "document_type")));
         $result = (array) json_decode($result['defaults_obj']);
         return $result['document_type'];
     }
@@ -710,12 +714,12 @@ class core_template {
             $str .= "</form>" . PHP_EOL;
             // NEW SQL...
 
-            
-              $str .= "<form class='filter' id='ajax' method='post' data-method='new' data-result='#" . $array['data-result'] . "' data-url='" . $array['data-url'] . "'>" . PHP_EOL;
-              $str .= "<div class='filter-input'><a class='btn' href='" . $GLOBALS['awe']->Domain . $GLOBALS['awe']->Url . "'><i class='far fa-times-circle'></i> " . T("UJ-ELEM") . "</a></div>";
-              $str .= "</form>" . PHP_EOL;
-             
-            
+
+            $str .= "<form class='filter' id='ajax' method='post' data-method='new' data-result='#" . $array['data-result'] . "' data-url='" . $array['data-url'] . "'>" . PHP_EOL;
+            $str .= "<div class='filter-input'><a class='btn' href='" . $GLOBALS['awe']->Domain . $GLOBALS['awe']->Url . "'><i class='far fa-times-circle'></i> " . T("UJ-ELEM") . "</a></div>";
+            $str .= "</form>" . PHP_EOL;
+
+
             $str .= "<div id='" . $array['data-result'] . "'>" . PHP_EOL;
             $str .= $this->JustTable($array);
             $str .= "</div>" . PHP_EOL;

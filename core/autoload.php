@@ -1,28 +1,143 @@
 <?php
 
+
 class AWE {
 
     public $loadedpositions = array();
     public $admMenu = "";
     /* NEW */
-    public $DebugMode; /* Debug Mód változója [BOOL] */
-    public $Logger; /* core_log osztály mutatója */
-    public $SiteAlias; /*  Visszatér a site aliassal */
-    public $Domain; /* Visszatér a [https/http]://domain-nal */
-    public $CoreVersion; /* Visszatér az adott site adott core verziójával */
-    public $Url; /* Visszatér az URL-lel */
-    public $User; /* core_user osztály mutatója */
-    public $DB; /* core_db osztály mutatója */
-    public $Template; /* core_template osztály mutatója */
-    public $Translator; /* core_translator osztály mutatója */
-    public $AvLanguages; /* Visszatér az elérhető nyelvekkel [ARRAY] */
+
+    /**
+     * @category AWE osztály
+     * @var bool PHP & AWE hibaüzenetek ki-be kapcsolása
+     * @access public
+     * @global $GLOBALS['awe']->DebugMode
+     */
+    public $DebugMode;
+
+    /**
+     * @category AWE osztály
+     * @var core_log Logolásért felelős osztály
+     * @access public
+     * @global $GLOBALS['awe']->Logger
+     * 
+     * -->|Metódusok|<--:
+     * @params ->setWarn(array("text"=>"sometext"))
+     * @params ->setError(array("text"=>"sometext"))
+     * @params ->setInfo(array("text"=>"sometext"))
+     */
+    public $Logger;
+
+    /**
+     * @category AWE osztály
+     * @var string Visszatér a site aliassal
+     * @access public
+     * @global $GLOBALS['awe']->SiteAlias
+     */
+    public $SiteAlias;
+
+    /**
+     * @category AWE osztály
+     * @var string Visszatér a [https/http]://domain-nal
+     * @access public
+     * @global $GLOBALS['awe']->Domain
+     */
+    public $Domain;
+
+    /**
+     * @category AWE osztály
+     * @var string Visszatér az adott site adott core verziójával
+     * @access public
+     * @global $GLOBALS['awe']->CoreVersion
+     */
+    public $CoreVersion;
+
+    /**
+     * @category AWE osztály
+     * @var string Visszatér az URL-lel
+     * @access public
+     * @global $GLOBALS['awe']->Url
+     */
+    public $Url;
+
+    /**
+     * @category AWE osztály
+     * @var class  core_user osztály mutatója
+     * @access public
+     * @global $GLOBALS['awe']->User
+     */
+    public $User;
+
+    /**
+     * @category AWE osztály
+     * @var class core_db osztály mutatója
+     * @access public
+     * @global $GLOBALS['awe']->DB
+     */
+    public $DB;
+
+    /**
+     * @category AWE osztály
+     * @var class core_template osztály mutatója
+     * @access public
+     * @global $GLOBALS['awe']->Template
+     * 
+     *  -->|Metódusok|<--:
+     * @params ->setWarn(array("text"=>"sometext"))
+     * @params ->setError(array("text"=>"sometext"))
+     * @params ->setInfo(array("text"=>"sometext"))
+     */
+    public $Template;
+
+    /**
+     * @category AWE osztály
+     * @var class core_translator osztály mutatója
+     * @access public
+     * @global $GLOBALS['awe']->Translator
+     */
+    public $Translator;
+
+    /**
+     * @category AWE osztály
+     * @var array Visszatér az elérhető nyelvekkel
+     * @access public
+     * @global $GLOBALS['awe']->AvLanguages
+     */
+    public $AvLanguages;
+
+    /**
+     * @category AWE osztály
+     * @var string Visszatér a site aliassal
+     * @access public
+     * @global $GLOBALS['awe']->SiteAlias
+     */
     public $Language; /* Visszatér a jelenlegi nyelv-vel [STRING] */
+
+    /**
+     * @category AWE osztály
+     * @var string Visszatér a site aliassal
+     * @access public
+     * @global $GLOBALS['awe']->SiteAlias
+     */
     public $Permissions; /* core_permission osztály mutatója */
+
+    /**
+     * @category AWE osztály
+     * @var string Visszatér a site aliassal
+     * @access public
+     * @global $GLOBALS['awe']->SiteAlias
+     */
     public $MultiSiteId;
+
+    /**
+     * @category AWE osztály
+     * @var string Visszatér a site aliassal
+     * @access public
+     * @global $GLOBALS['awe']->SiteAlias
+     */
     public $Components;
 
     public function __construct($array = array()) {
-
         $this->SiteAlias = $this->getSiteAlias(array());
         $this->Domain = $this->getDomain(array());
         $this->CoreVersion = $this->getCoreVersion(array());
@@ -31,7 +146,6 @@ class AWE {
         $this->DebugMode = true;
         /* Core fileok betöltése */
         $this->coreLoader(array());
-
         /* Debug Mode Settings */
         if ($this->DebugMode == true) {
             ini_set('display_errors', 1);
@@ -61,7 +175,6 @@ class AWE {
         $this->User = new core_user(array());
         $this->Permissions = new core_permission(array());
         $this->Template = new core_template(array());
-
         //ha admin oldalit akar elérni...
         if (FALSE && $this->stringStartsWith(array("string" => $this->Url, "substring" => "/admin"))) {
             if (!$this->User->isLoggedIn()) {
@@ -70,7 +183,6 @@ class AWE {
                 //$this->Auth = new core_auth(array());
             }
         }
-
         $this->afterInit(array());
     }
 

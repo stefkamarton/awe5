@@ -21,15 +21,16 @@ HTTP_AUTH();
 session_start();
 
 require_once 'core/autoload.php';
-
-/* AWE osztály hívása */
-global $awe;
-$awe = new AWE(array());
-
+/**
+ * @name $awe
+ * @global class $GLOBALS
+ * @var string $GLOBALS AWE
+ * @see Example::getDemoData()
+ */
+$GLOBALS = new AWE(array());
 /* Core osztályok hívása */
-$awe->coreInit(array());
+$GLOBALS['awe']->coreInit(array());
 //$awe->Translator->Viewer(array());
-
 //var_dump($GLOBALS['awe']->LoadComponents(array("name"=>"adm_url", "params"=>array("type"=>"edit"))));
 
 /* Template betöltő hívása */

@@ -1,6 +1,6 @@
 <?php
 
-class core_db {
+class core_db{
     private $Connection;
     private $Config;
 
