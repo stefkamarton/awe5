@@ -166,7 +166,7 @@
                 $('#next-page').on("click", function (e) {
                     nextPage(this);
                 });
-                $(".settingsajax").on("click", function () {
+                $(".settingsajax, #new").on("click", function () {
                     Ajax(this);
                     $('#settings').show(300);
                 });
@@ -206,7 +206,7 @@
                     item.after(clone);
                     console.log(item);
                 });
-                $(".settingsajax").on("click", function () {
+                $(".settingsajax, #new").on("click", function () {
                     Ajax(this);
                     $('#settings').show(300);
                 });

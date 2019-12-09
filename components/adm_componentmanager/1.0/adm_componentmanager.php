@@ -43,6 +43,7 @@ class adm_componentmanager {
                         "required" => "true",
                         "autofocus" => "false",
                         "id" => "",
+                        "value"=>$GLOBALS['awe']->idGenerate(array()),
                         "class" => ""),
                     "obj->'list'->>'columns'" => array(
                         "type" => "text",
@@ -65,11 +66,13 @@ class adm_componentmanager {
 
                     break;
                 case "settings":
+                    $_POST["method2"]="update";
                     $GLOBALS['awe']->Template->AjaxSettingsView($arr);
 
                     break;
                 case "new":
-                    echo "NEW ";
+                    $_POST["method2"]="new";
+                    $GLOBALS['awe']->Template->AjaxSettingsView($arr);
                     break;
                 case "save":
                     if ($GLOBALS['awe']->Template->AjaxSettingsSave($arr)) {

@@ -5,7 +5,7 @@
  * @subpackage AWE
  * @filesource
  *  */
-class core_template{
+class core_template {
 
     public $Template;
     public $BodyClass;
@@ -292,11 +292,14 @@ class core_template{
                 }
                 $i++;
             }
-            $obj = $GLOBALS['awe']->DB->fetch(array("sql" => "SELECT * FROM " . $array['table'] . " WHERE " . $where, "attr" => array($wherekey => $whereval)), PDO::FETCH_ASSOC);
-            foreach ($obj as $key => $value) {
-                if ($GLOBALS['awe']->isJSON(array("string" => $value))) {
-                    $obj[$key] = (array) json_decode($value, true);
+            if ($_POST["method2"] == "update") {
+                foreach ($obj as $key => $value) {
+                    if ($GLOBALS['awe']->isJSON(array("string" => $value))) {
+                        $obj[$key] = (array) json_decode($value, true);
+                    }
                 }
+            } else {
+                $obj = array();
             }
             foreach ($array['settings']['edit'] as $key => $value) {
                 if (isset($_POST[$value['name']])) {
@@ -325,25 +328,52 @@ class core_template{
                     }
                 }
             }
-            $update = "";
-            $j = 0;
-            foreach ($obj as $key => $value) {
-                if ($j == 0) {
-                    $update .= $key . "=:" . $key;
-                } else {
-                    $update .= ", " . $key . "=:" . $key;
+    
+            if ($_POST["method2"] == "update") {
+                $update = "";
+                $j = 0;
+                foreach ($obj as $key => $value) {
+                    if ($j == 0) {
+                        $update .= $key . "=:" . $key;
+                    } else {
+                        $update .= ", " . $key . "=:" . $key;
+                    }
+                    $j++;
                 }
-                $j++;
-            }
-            foreach ($obj as $key => $value) {
-                if (is_array($value)) {
-                    $obj[$key] = json_encode($value);
+                foreach ($obj as $key => $value) {
+                    if (is_array($value)) {
+                        $obj[$key] = json_encode($value);
+                    }
                 }
+                //var_dump($obj);
+                $obj[$wherekey] = $whereval;
+                $GLOBALS['awe']->DB->doQuery(array("sql" => "UPDATE " . $array['table'] . " SET " . $update . " WHERE " . $where, "attr" => $obj));
+                return true;
             }
-            //var_dump($obj);
-            $obj[$wherekey] = $whereval;
-            $GLOBALS['awe']->DB->doQuery(array("sql" => "UPDATE " . $array['table'] . " SET " . $update . " WHERE " . $where, "attr" => $obj));
-            return true;
+            if ($_POST["method2"] == "new") {
+                $cols = "";
+                $colsVal = "";
+                $j = 0;
+                foreach ($obj as $key => $value) {
+                    if ($j == 0) {
+                        $cols .= $key . "=" . $key;
+                        $colsVal .= $key . "=:" . $key;
+                    } else {
+                        $cols .= ", " . $key . "=" . $key;
+                        $colsVal .= ", " . $key . "=:" . $key;
+                    }
+                    $j++;
+                }
+                foreach ($obj as $key => $value) {
+                    if (is_array($value)) {
+                        $obj[$key] = json_encode($value);
+                    }
+                }
+                $obj[$wherekey] = $whereval;
+                echo"asq";
+                var_dump($GLOBALS['awe']->DB->doQuery(array("sql" => "INSERT INTO " . $array['table'] . " (" . $cols . ") VALUES (" . $colsVal . ")", "attr" => $obj)));
+                return true;
+            }
         } else {
             echo "Hiba - Nincsenek paraméterek";
         }
@@ -352,7 +382,9 @@ class core_template{
     /* ------------------ SETTINGS ---------------------- */
 
     public function AjaxSettingsView($array) {
+
         if (isset($array['table']) && isset($array['columns']) && isset($array['settings']) && isset($array['settings']['edit']) && isset($array['data-result']) && isset($array['data-url']) && isset($array['filters'])) {
+
             foreach ($array["settings"]["edit"] as $value) {
                 if (!isset($value['type'])) {
                     $value['type'] = "text";
@@ -406,7 +438,9 @@ class core_template{
             $str .= "<div class='close' id='close-settings'><i class='fas fa-times'></i></div>";
             $str .= "<form class='table' method='post' data-method='save' data-waiting='0' data-result='#messages' data-url='" . $array["data-url"] . "' >";
             foreach ($array["settings"]["edit"] as $key => $value) {
-                $sql = $GLOBALS['awe']->DB->fetch(array("sql" => "SELECT $columns FROM " . $array['table'] . " WHERE " . $wherekey . "=:" . $wherekey, "attr" => array($wherekey => $wherevalue)), PDO::FETCH_ASSOC);
+                if ($_POST["method"] == "settings") {
+                    $sql = $GLOBALS['awe']->DB->fetch(array("sql" => "SELECT $columns FROM " . $array['table'] . " WHERE " . $wherekey . "=:" . $wherekey, "attr" => array($wherekey => $wherevalue)), PDO::FETCH_ASSOC);
+                }
                 $readonly = (isset($value["readonly"]) && $value["readonly"] != NULL && strtolower($value["readonly"]) != "false") ? "readonly" : "";
                 $disabled = (isset($value["disabled"]) && $value["disabled"] != NULL && strtolower($value["disabled"]) != "false") ? "disabled" : "";
                 $required = (isset($value["required"]) && $value["required"] != NULL && strtolower($value["required"]) != "false") ? "required" : "";
@@ -421,11 +455,15 @@ class core_template{
                 if (isset($sql[strtolower($value['name'])])) {
                     $val = $sql[strtolower($value['name'])];
                 } else {
-                    $val = "";
+                    if ($_POST["method"] == "new" && isset($value["value"])) {
+                        $val = $value["value"];
+                    } else {
+                        $val = "";
+                    }
                 }
                 $str .= "<div class='save-form tr'><div class='name td'>" . $value['name'] . "</div>";
-                if ((isset($value["isarray"]) && $value["isarray"] != NULL && strtolower($value["isarray"]) != "false")) {
-                    $json = json_decode($val);
+                $json = json_decode($val);
+                if ((isset($value["isarray"]) && $value["isarray"] != NULL && strtolower($value["isarray"]) != "false") && count((array) $json) > 0) {
                     foreach ($json as $jsonval) {
                         if ($value["type"] == "textarea") {
                             $str .= "<div class='field-in td'><textarea id='" . $value['id'] . "' class='" . $value['class'] . "' type='" . $value['type'] . "' name='" . $value['name'] . $isarray . "' $readonly $disabled $required $autofocus>$jsonval</textarea></div>";
@@ -445,7 +483,7 @@ class core_template{
             }
             $str .= "<div class='btn save'><i class='far fa-save'></i>Mentés</div>";
             $str .= "</form>";
-
+            //var_dump($str);
             $ret['html'] = $str;
             echo json_encode($ret);
             return TRUE;
@@ -715,8 +753,8 @@ class core_template{
             // NEW SQL...
 
 
-            $str .= "<form class='filter' id='ajax' method='post' data-method='new' data-result='#" . $array['data-result'] . "' data-url='" . $array['data-url'] . "'>" . PHP_EOL;
-            $str .= "<div class='filter-input'><a class='btn' href='" . $GLOBALS['awe']->Domain . $GLOBALS['awe']->Url . "'><i class='far fa-times-circle'></i> " . T("UJ-ELEM") . "</a></div>";
+            $str .= "<form class='filter' id='ajax' method='post' data-method='new' data-result='#settings' data-url='" . $array['data-url'] . "'>" . PHP_EOL;
+            $str .= "<div class='filter-input'><a class='btn' id='new' href='#'><i class='far fa-times-circle'></i> " . T("UJ-ELEM") . "</a></div>";
             $str .= "</form>" . PHP_EOL;
 
 
