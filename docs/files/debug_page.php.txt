@@ -1,0 +1,20 @@
+<?php
+$ret = com_db::fetchAll(array("sql" => "SELECT content_obj FROM content LIMIT 25"));
+com_db::fetchAll();
+foreach ($ret as $key => $value) {
+    $j = json_decode($value[0],true);
+    var_dump($j);
+    if (!empty($j["site"])){
+        echo 'site is '. $j['site'];
+    }
+}
+
+
+
+
+//print_r(com_db::fetchAll(array("sql" => "SELECT content.content_obj -> 'site' AS SITES, content.content_creation, test.json -> 'text' AS TEXT FROM content, "
+//    . "test WHERE content.content_obj ->> 'lang' = :lang AND content.content_obj ->> 'lang' = test.json ->> 'lang' ORDER BY content.content_creation DESC", 
+//    "attr" => array(":lang" => "de_DE"))));
+
+
+

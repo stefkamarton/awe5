@@ -1,10 +1,4 @@
 <?php
-
-/**
- * @package AWE
- * @subpackage AWE
- * @filesource
- *  */
 class core_template {
 
     public $Template;
@@ -216,6 +210,7 @@ class core_template {
                 echo "<br>Nincs jog<br>";
             }
         }
+        return true;
     }
 
     public function LoadComponents($array) {

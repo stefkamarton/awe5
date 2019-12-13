@@ -1,0 +1,13 @@
+
+
+    <div id="mainpage">
+<!--        /admin/urlmanger/ajax/list -->
+
+
+
+    </div>
+    <div id="sidepanel_right">
+        
+        
+    </div>
+ 

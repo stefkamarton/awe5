@@ -1,142 +1,122 @@
 <?php
 
+/**
+ * @source
+ *  */
 
 class AWE {
 
-    public $loadedpositions = array();
-    public $admMenu = "";
-    /* NEW */
-
     /**
-     * @category AWE osztály
-     * @var bool PHP & AWE hibaüzenetek ki-be kapcsolása
-     * @access public
+     * PHP & AWE hibaüzenetek ki-be kapcsolása
+     * @var bool
      * @global $GLOBALS['awe']->DebugMode
      */
     public $DebugMode;
 
     /**
-     * @category AWE osztály
-     * @var core_log Logolásért felelős osztály
-     * @access public
+     * Logolásért felelős osztály
+     * @var core_log
      * @global $GLOBALS['awe']->Logger
-     * 
-     * -->|Metódusok|<--:
-     * @params ->setWarn(array("text"=>"sometext"))
-     * @params ->setError(array("text"=>"sometext"))
-     * @params ->setInfo(array("text"=>"sometext"))
      */
     public $Logger;
 
     /**
-     * @category AWE osztály
-     * @var string Visszatér a site aliassal
-     * @access public
+     * Az adott site aliasszalt tartalmazza
+     * @var string 
      * @global $GLOBALS['awe']->SiteAlias
      */
     public $SiteAlias;
 
     /**
-     * @category AWE osztály
-     * @var string Visszatér a [https/http]://domain-nal
-     * @access public
+     * [https/http]://domain-t tartalmazza
+     * @var string 
      * @global $GLOBALS['awe']->Domain
      */
     public $Domain;
 
     /**
-     * @category AWE osztály
-     * @var string Visszatér az adott site adott core verziójával
-     * @access public
+     * Az adott site Core verzióját tartalmazza
+     * @var string 
      * @global $GLOBALS['awe']->CoreVersion
      */
     public $CoreVersion;
 
     /**
-     * @category AWE osztály
-     * @var string Visszatér az URL-lel
-     * @access public
+     * URL-t tartalmazza
+     * @var string
      * @global $GLOBALS['awe']->Url
      */
     public $Url;
 
     /**
-     * @category AWE osztály
-     * @var class  core_user osztály mutatója
-     * @access public
+     * User osztály mutatója
+     * @var core_user 
      * @global $GLOBALS['awe']->User
      */
     public $User;
 
     /**
-     * @category AWE osztály
-     * @var class core_db osztály mutatója
-     * @access public
+     * DB osztály mutatója
+     * @var core_db 
      * @global $GLOBALS['awe']->DB
      */
     public $DB;
 
     /**
-     * @category AWE osztály
-     * @var class core_template osztály mutatója
-     * @access public
+     * Template osztály mutatója
+     * @var core_template 
      * @global $GLOBALS['awe']->Template
-     * 
-     *  -->|Metódusok|<--:
-     * @params ->setWarn(array("text"=>"sometext"))
-     * @params ->setError(array("text"=>"sometext"))
-     * @params ->setInfo(array("text"=>"sometext"))
      */
     public $Template;
 
     /**
-     * @category AWE osztály
-     * @var class core_translator osztály mutatója
-     * @access public
+     * Fordító osztály mutatója
+     * @var core_translator
      * @global $GLOBALS['awe']->Translator
      */
     public $Translator;
 
     /**
-     * @category AWE osztály
-     * @var array Visszatér az elérhető nyelvekkel
-     * @access public
+     * Az elérhető nyelvek kódját tartalmazza
+     * @var array
      * @global $GLOBALS['awe']->AvLanguages
      */
     public $AvLanguages;
 
     /**
-     * @category AWE osztály
-     * @var string Visszatér a site aliassal
-     * @access public
-     * @global $GLOBALS['awe']->SiteAlias
+     * Az adott nyelv kódját tartalmazza
+     * @var string
+     * @global $GLOBALS['awe']->Language
      */
-    public $Language; /* Visszatér a jelenlegi nyelv-vel [STRING] */
+    public $Language;
 
     /**
-     * @category AWE osztály
-     * @var string Visszatér a site aliassal
-     * @access public
-     * @global $GLOBALS['awe']->SiteAlias
+     * Permission osztály mutatója
+     * @var core_permission
+     * @global $GLOBALS['awe']-Permissions
      */
     public $Permissions; /* core_permission osztály mutatója */
 
     /**
-     * @category AWE osztály
-     * @var string Visszatér a site aliassal
-     * @access public
-     * @global $GLOBALS['awe']->SiteAlias
+     * Multisiteid-t tartalmaz
+     * @var string 
+     * @global $GLOBALS['awe']->MultiSiteId
      */
     public $MultiSiteId;
 
     /**
-     * @category AWE osztály
-     * @var string Visszatér a site aliassal
-     * @access public
-     * @global $GLOBALS['awe']->SiteAlias
+     * Komponensek mutatóját tartalmazza egy array-be
+     * @var array
+     * @global $GLOBALS['awe']->Components
      */
     public $Components;
 
+    /**
+     * AWE Osztály konstruktora - Itt veszik fel a változók az értéküket az adott funkciókból
+     * @param array $array  Jelenleg semmilyen paramétert nem kap
+     * @global $GLOBALS["awe"]->__construct(array())
+     * @return void      
+     */
     public function __construct($array = array()) {
         $this->SiteAlias = $this->getSiteAlias(array());
         $this->Domain = $this->getDomain(array());
@@ -144,8 +124,10 @@ class AWE {
         $this->Url = $this->getUrl(array());
         $this->Language = $this->getCurrentLanguage(array());
         $this->DebugMode = true;
+        
         /* Core fileok betöltése */
         $this->coreLoader(array());
+
         /* Debug Mode Settings */
         if ($this->DebugMode == true) {
             ini_set('display_errors', 1);
@@ -158,15 +140,22 @@ class AWE {
         }
     }
 
-    /* Inicializálás után */
-
+    /**
+     * Csak a file-lok és osztályok meghívása után futtatja le a konstruktor
+     * @param array $array  Jelenleg semmilyen paramétert nem kap
+     * @return void       
+     */
     private function afterInit($array = array()) {
         $this->AvLanguages = $this->getAvailableLanguage(array());
         //$this->Permission->Get(array("username"=>"admin"));
     }
 
-    /* Core class-ok inicialízálása */
-
+    /**
+     * Core file-lokat és osztályokat hívja meg
+     * @param array $array  Jelenleg semmilyen paramétert nem kap
+     * @global $GLOBALS["awe"]->coreInit(array())
+     * @return void       
+     */
     public function coreInit($array = array()) {
         $this->Logger = new core_log(array());
         $this->DB = new core_db(array());
@@ -175,6 +164,7 @@ class AWE {
         $this->User = new core_user(array());
         $this->Permissions = new core_permission(array());
         $this->Template = new core_template(array());
+        
         //ha admin oldalit akar elérni...
         if (FALSE && $this->stringStartsWith(array("string" => $this->Url, "substring" => "/admin"))) {
             if (!$this->User->isLoggedIn()) {
@@ -185,29 +175,42 @@ class AWE {
         }
         $this->afterInit(array());
     }
-
-    function isJSON($array) {
+    
+    /**
+     * Megvizsgálja, hogy az adott string JSON-e
+     * @param array $array  [string]=>""
+     * @global $GLOBALS["awe"]->isJSON(array("string"=>""))
+     * @return bool       
+     */
+    public function isJSON($array = array("string"=>"")) {
         return is_string($array['string']) && is_array(json_decode($array['string'], true)) ? true : false;
     }
-
+    
+    /**
+     * Visszaadja a gyökértől az elérési utat
+     * @param string $__dir__  string | \__DIR\__ | \__FILE__
+     * @global $GLOBALS["awe"]->getLocation($__dir__)
+     * @return string       
+     */
     public function getLocation($__dir__) {
         return str_replace(getcwd(), "", $__dir__);
     }
 
-    /* Admin menu */
-
-    /* public function addAdminMenu($array) {
-      return "";
-      } */
-
-    /* Visszatér az URL-lel speciális karakterek nélkül */
-
+    /**
+     * Visszaadja az URL-t kötöjelekkel / helyett
+     * @param array $array  Jelenleg semmilyen paramétert nem kap
+     * @global $GLOBALS["awe"]->getUrlId(array())
+     * @return string       
+     */
     public function getUrlId($array = array()) {
         return substr(str_replace("/", "-", $this->Url), 1);
     }
 
-    /* Core file-ok betöltése */
-
+    /**
+     * Megkeresi és be include-olja a core filelokat!
+     * @param array $array  Jelenleg semmilyen paramétert nem kap
+     * @return void       
+     */
     private function coreLoader($array = array()) {
         $directories = scandir("./core/" . $this->CoreVersion);
         foreach ($directories as $directory) {
@@ -221,15 +224,23 @@ class AWE {
         }
     }
 
-    /* Site Alias alapján generál egy uniq ID-t */
-
+    /**
+     * Egy random id-t generál a siteAlias alapján
+     * @param array $array  Jelenleg semmilyen paramétert nem kap
+     * @global $GLOBALS["awe"]->idGenerate(array())
+     * @return string       
+     */
     public function idGenerate($array = array()) {
         return uniqid($this->getSiteAlias(array()) . "_", true);
     }
 
-    /* Megnézi  hogy azzal tartalmazza-e a string - [BOOL] */
-
-    public function stringContains($array) {
+    /**
+     * Megnézi hogy az adott string-ben megtalálható az adott substring
+     * @param array $array  ['string'],['substring']
+     * @global $GLOBALS["awe"]->stringContains(array("string"=>"","substring"=>""))
+     * @return bool       
+     */
+    public function stringContains($array=array("string"=>"","substring"=>"")) {
         $array['string'] = mb_strtolower($array['string']);
         $array['substring'] = mb_strtolower($array['substring']);
 
@@ -239,9 +250,13 @@ class AWE {
         return FALSE;
     }
 
-    /* Megnézi  hogy azzal végződik-e a string - [BOOL] */
-
-    public function stringEndsWith($array) {
+    /**
+     * Megnézi hogy az adott string az adott substring-el végződik
+     * @param array $array  ['string'],['substring']
+     * @global $GLOBALS["awe"]->stringEndsWith(array("string"=>"","substring"=>""))
+     * @return bool       
+     */
+    public function stringEndsWith($array=array("string"=>"","substring"=>"")) {
         $array['string'] = mb_strtolower($array['string']);
         $array['substring'] = mb_strtolower($array['substring']);
 
@@ -254,9 +269,13 @@ class AWE {
         return substr_compare($array['string'], $array['substring'], ($strLength - $substrLength), $substrLength) === 0;
     }
 
-    /* Megnézi  hogy azzal kezdődik-e a string - [BOOL] */
-
-    public function stringStartsWith($array) {
+    /**
+     * Megnézi hogy az adott string az adott substring-el kezdődik
+     * @param array $array  ['string'],['substring']
+     * @global $GLOBALS["awe"]->stringStartsWith(array("string"=>"","substring"=>""))
+     * @return bool       
+     */
+    public function stringStartsWith($array=array("string"=>"","substring"=>"")) {
         $array['string'] = mb_strtolower($array['string']);
         $array['substring'] = mb_strtolower($array['substring']);
 
@@ -266,9 +285,13 @@ class AWE {
         return FALSE;
     }
 
-    /* BASE64 ENCODEING - URL SUPPORTED -  Böngésző nem támogatja a +/= jeleket ezért kell ez a módosítás - [STRING] */
-
-    public function base64url_encode($array) {
+    /**
+     * BASE64 ENCODEING - csak az url specifikus karaktareket kicseréli másra így lehet használni url-ként is
+     * @param array $array  ['data']
+     * @global $GLOBALS["awe"]->base64url_encode(array("string"=>""))
+     * @return string       
+     */
+    public function base64url_encode($array=array("data"=>"")) {
         $b64 = base64_encode($array['data']);
         if ($b64 === FALSE)
             return FALSE;
@@ -276,9 +299,13 @@ class AWE {
         return rtrim($url, '=');
     }
 
-    /* BASE64 DECODEING - URL SUPPORTED -  Böngésző nem támogatja a +/= jeleket ezért kell ez a módosítás [STRING] */
-
-    public function base64url_decode($array) {
+    /**
+     * BASE64 DECODEING - csak az url specifikus karaktareket visszacseréli másra így lehet használni
+     * @param array $array  ['data'],['strict']->|base64_decode strict paraméter
+     * @global $GLOBALS["awe"]->base64url_decode(array("data"=>"","strict"=>""))
+     * @return array       
+     */
+    public function base64url_decode($array=array("data")) {
         if (!isset($array['strict'])) {
             $array['strict'] = FALSE;
         }
@@ -289,9 +316,13 @@ class AWE {
         return base64_decode($b64, $array['strict']);
     }
 
-    /* Visszatér a ?params= értékével és a hozzáadott értékkel amit encode-ol */
-
-    public function addUrlParams($array) {
+    /**
+     * Lekérdezi ha van a ?params= paramétert majd hozzáadja az új változókat
+     * @param array $array  [0],[1]...,['forced_merge']->|Mindenképpen beleírandó adat
+     * @global $GLOBALS["awe"]->addUrlParams(array(0=>"",1=>"","forced_merge"=>""))
+     * @return string|NULL      
+     */
+    public function addUrlParams($array=array(0=>"",1=>"","forced_merge"=>"")) {
         if (isset($array) && $array != NULL) {
             $getParams = $this->getUrlParams(array());
             if ($getParams != NULL) {
@@ -306,25 +337,35 @@ class AWE {
         return NULL;
     }
 
-    /* Visszatér a ?params= értékével amit decode-ol */
-
-    public function getUrlParams($array) {
+    /**
+     * Lekérdezi ha van a ?params= paramétert
+     * @param array $array  Jelenleg semmilyen paramétert nem kap
+     * @global $GLOBALS["awe"]->getUrlParams(array()))
+     * @return string|NULL       
+     */
+    public function getUrlParams($array=array()) {
         if (isset($_GET['params']) && $_GET['params'] != "") {
             return (array) json_decode($this->base64url_decode(array("data" => $_GET['params'])));
         }
         return NULL;
     }
 
-    /* Visszatér az URL-lel */
-
-    private function getUrl($array) {
+    /**
+     * Lekérdezi az url-t
+     * @param array $array  Jelenleg semmilyen paramétert nem kap
+     * @return string       
+     */
+    private function getUrl($array=array()) {
         $url = explode("?", $_SERVER['REQUEST_URI']);
         return $url[0];
     }
 
-    /* Visszatér az adott site core verziójával */
-
-    private function getCoreVersion($array) {
+    /**
+     * Lekérdezi az core vezióját
+     * @param array $array  Jelenleg semmilyen paramétert nem kap
+     * @return string       
+     */
+    private function getCoreVersion($array=array()) {
         $json = file_get_contents("./sites/sites.json");
         $array = json_decode($json, true);
         if (isset($array[$this->SiteAlias]["core"])) {
@@ -333,9 +374,12 @@ class AWE {
         return $array["default"]["core"];
     }
 
-    /* Visszatér az adott site alias-szal */
-
-    private function getSiteAlias($array) {
+    /**
+     * Lekérdezi a site aliaszát
+     * @param array $array  Jelenleg semmilyen paramétert nem kap
+     * @return string       
+     */
+    private function getSiteAlias($array=array()) {
         $domain = $_SERVER['HTTP_HOST'];
         $json = file_get_contents("./sites/sites.json");
         $json = json_decode($json, true);
@@ -349,8 +393,11 @@ class AWE {
         return "default";
     }
 
-    /* Visszatér a multisite id-jével */
-
+    /**
+     * Lekérdezi a multisite id-jét
+     * @param array $array  Jelenleg semmilyen paramétert nem kap
+     * @return string       
+     */
     private function getMultiSiteId($array) {
         $result = $this->DB->fetch(array("sql" => "SELECT defaults_obj FROM defaults WHERE defaults_id=:defaults_id", "attr" => array("defaults_id" => "multisite_id")), PDO::FETCH_ASSOC);
         $result = (array) json_decode($result["defaults_obj"]);
@@ -363,26 +410,41 @@ class AWE {
         return FALSE;
     }
 
-    /* Visszatér az adott site nyelvével */
-
-    private function getCurrentLanguage($array) {
+    /**
+     * Lekérdezi a jelenlegi nyelvet
+     * @param array $array  Jelenleg semmilyen paramétert nem kap
+     * @return string       
+     */
+    private function getCurrentLanguage($array=array()) {
         return "hu_HU";
     }
 
-    /* Visszatér az adott site elérhető nyelveivel */
-
-    private function getAvailableLanguage($array) {
+    /**
+     * Lekérdezi az elérhető nyelveket
+     * @param array $array  Jelenleg semmilyen paramétert nem kap
+     * @return string       
+     */
+    private function getAvailableLanguage($array=array()) {
         $result = $this->DB->fetch(array("sql" => "SELECT defaults_obj FROM defaults WHERE defaults_id=:defaults_id", "attr" => array("defaults_id" => "available_languages")));
         $result = (array) json_decode($result['defaults_obj']);
         return $result['languages'];
     }
 
-    /* Visszatér az adott site domain-nevével */
-
+    /**
+     * Lekérdezi a domainnevet
+     * @param array $array  Jelenleg semmilyen paramétert nem kap
+     * @return string       
+     */
     private function getDomain($array) {
         return (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
     }
 
+    /**
+     * Lekérdezi a domainnevet
+     * @param array $array  [defaults_id]->| adott objektum default értékeivel tér vissza
+     * @global $GLOBALS["awe"]->getDomain(array("defaults_id"=>"")))
+     * @return string       
+     */
     public function getDefaults($array) {
         return $GLOBALS['awe']->DB->fetchAll(array("sql" => "SELECT defaults_obj FROM defaults WHERE defaults_id=:defaults_id", "attr" => array("defaults_id" => $array["defaults_id"])), PDO::FETCH_ASSOC);
     }
@@ -392,7 +454,13 @@ class AWE {
 /* ------------------------ */
 /* Funkciók */
 /* ------------------------ */
-
+    /**
+     * Visszatér a kulcs fordításával
+     * @param string $expression  Fordítandó kifejezés
+     * @param bool $comment  HTML komment kirakása
+     * @global T($expression,$comment=FALSE)
+     * @return string       
+     */
 function T($expression, $comment = FALSE) {
     $exp = $GLOBALS['awe']->Translator->getExpression(array("key" => $expression));
     if ($comment == true)
@@ -400,6 +468,12 @@ function T($expression, $comment = FALSE) {
     return $exp;
 }
 
+    /**
+     * Meghívja az adott pozíciók metódusait
+     * @param string $position  Pozíció neve
+     * @global getPos(array($position)
+     * @return bool       
+     */
 function getPos($position) {
     return $GLOBALS['awe']->Template->getPosition(array("position" => $position));
 }

@@ -1,0 +1,107 @@
+<?php
+
+class adm_faq {
+
+    public function __construct($array) {
+        $arr = array(
+            "table" => "adm_faq",
+            "columns" => array(
+                "faq_id" => "faq_id",
+                "faq_obj->>'type'" => "type",
+                "faq_obj->>'descriptions'" => "descriptions",
+                "faq_obj->>'code'" => "code",
+            ),
+            "where" => array(),
+            "rowperpage" => "",
+            "page" => "1",
+            "filters" => array(
+                "faq_id" => array(
+                    "type" => "text",
+                    "name" => "id",
+                    "id" => "",
+                    "class" => ""),
+                "faq_obj->>'type'" => array(
+                    "type" => "text",
+                    "name" => "type",
+                    "id" => "",
+                    "class" => ""),
+                "faq_obj->>'descriptions'" => array(
+                    "type" => "text",
+                    "name" => "descriptions",
+                    "id" => "",
+                    "class" => ""),
+                "faq_obj->>'code'" => array(
+                    "type" => "text",
+                    "name" => "code",
+                    "id" => "",
+                    "class" => "")),
+            "data-result" => "result",
+            "data-save-result" => "settings",
+            "data-url" => "/admin/adm_faq/ajax",
+            "settings" => array(
+                "remove" => "true",
+                "edit" => array(
+                    "faq_id" => array("type" => "text",
+                        "name" => "faq_id",
+                        "readonly" => "true",
+                        "disabled" => "false",
+                        "required" => "true",
+                        "autofocus" => "false",
+                        "id" => "",
+                        "class" => ""),
+                    "faq_obj->>'type'" => array("type" => "textarea",
+                        "name" => "type",
+                        "readonly" => "false",
+                        "disabled" => "false",
+                        "required" => "true",
+                        "autofocus" => "false",
+                        "id" => "",
+                        "class" => ""),
+                    "faq_obj->>'descriptions'" => array("type" => "textarea",
+                        "name" => "descriptions",
+                        "readonly" => "false",
+                        "disabled" => "false",
+                        "required" => "true",
+                        "autofocus" => "false",
+                        "id" => "",
+                        "class" => ""),
+                    "faq_obj->>'code'" => array("type" => "textarea",
+                        "name" => "code",
+                        "readonly" => "false",
+                        "disabled" => "false",
+                        "required" => "true",
+                        "autofocus" => "false",
+                        "id" => "",
+                        "class" => ""))
+        ));
+
+        if (isset($array["ajax"]) && $array["ajax"] == TRUE) {
+            //$this->Ajax($array);
+
+            switch ($_POST['method']) {
+                case "filter":
+                    $GLOBALS['awe']->Template->AjaxTable($arr);
+
+                    break;
+                case "settings":
+                    $GLOBALS['awe']->Template->AjaxSettingsView($arr);
+
+                    break;
+                case "save":
+                    if ($GLOBALS['awe']->Template->AjaxSettingsSave($arr)) {
+                        echo json_encode(array("html" => "<div class='success'><i class='fas fa-check'></i><div class='text'>Sikeres mentés!</div></div>"));
+                    }
+
+                    break;
+
+                default:
+                    break;
+            }
+        } else {
+            echo $GLOBALS['awe']->Template->TableFrameGenerator($arr);
+            //$this->Viewer($array);
+        }
+    }
+
+}
+

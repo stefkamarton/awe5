@@ -1,4 +1,5 @@
 <?php
+
 function HTTP_AUTH() {
     $AUTH_USER = 'uzletembermagazin';
     $AUTH_PASS = '123456';
@@ -16,25 +17,40 @@ function HTTP_AUTH() {
         exit;
     }
 }
+
 HTTP_AUTH();
 
 session_start();
 
 require_once 'core/autoload.php';
+global $awe;
 /**
  * @name $awe
  * @global class $GLOBALS
  * @var string $GLOBALS AWE
  * @see Example::getDemoData()
  */
-$GLOBALS = new AWE(array());
+$awe = new AWE(array());
 /* Core osztályok hívása */
-$GLOBALS['awe']->coreInit(array());
+$awe->coreInit(array());
 //$awe->Translator->Viewer(array());
 //var_dump($GLOBALS['awe']->LoadComponents(array("name"=>"adm_url", "params"=>array("type"=>"edit"))));
 
 /* Template betöltő hívása */
-$GLOBALS['awe']->Template->Load(array());
+$awe->Template->Load(array());
 
 
+/*
+$A = array(
+    "AND NOT" => array(
+        "hello" => "asd",
+        "OR" => array(
+            "."=>"LIKE",
+            "or1" => "%or 1%",
+            "or2" => "or2"
+        ),
+        "asd" => "asdda"
+    )
+);
+var_dump(tree($A));*/
 ?>

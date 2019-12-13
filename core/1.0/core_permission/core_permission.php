@@ -2,7 +2,18 @@
 
 class core_permission {
 
+    /**
+     * Jogok
+     * @var string
+     * @global $GLOBALS['awe']->Permissions->Rights
+     */
     public $Rights;
+
+    /**
+     * Korlátlan jog
+     * @var string
+     * @global $GLOBALS['awe']->Permissions->Nolimit
+     */
     public $Nolimit;
 
     public function __construct($array) {
@@ -12,7 +23,13 @@ class core_permission {
         //var_dump($this->Rights);
     }
 
-    public function Check($array) {
+    /**
+     * Megnézi hogy az adott usernek van-e joga
+     * @param array $array  ["permissions"]=>""
+     * @global $GLOBALS["awe"]->Permissions->Check(array("permissions" => array()))
+     * @return bool      
+     */
+    public function Check($array = array("permissions" => array())) {
         if (isset($array['permissions'])) {
             if (is_array($array['permissions'])) {
                 foreach ($array['permissions'] as $perm) {
@@ -30,7 +47,13 @@ class core_permission {
         return false;
     }
 
-    private function AddPermission($array) {
+    /**
+     * Hozzáad egy jogot a többihez
+     * @param array $array  ["permissions"]=>""
+     * @global $GLOBALS["awe"]->Permissions->AddPermission(array("permissions" => array()))
+     * @return void      
+     */
+    private function AddPermission($array = array("permissions" => array())) {
         if (isset($array['permissions'])) {
             if (in_array("*", $array['permissions']) && $this->Nolimit == FALSE) {
                 $this->Rights = $this->GetAllPermissions(array());
@@ -45,15 +68,25 @@ class core_permission {
         }
     }
 
-    private function GetAllPermissions($array) {
+    /**
+     * Lekérdezi az összes létező jogot
+     * @param array $array  Jelenleg semmilyen paramétert nem kap
+     * @global $GLOBALS["awe"]->Permissions->GetAllPermissions(array())
+     * @return void      
+     */
+    private function GetAllPermissions($array = array()) {
         $result = $GLOBALS['awe']->DB->fetch(array("sql" => "SELECT * FROM defaults WHERE defaults_id=:defaults_id", "attr" => array(":defaults_id" => "permissions")), PDO::FETCH_ASSOC);
         $result = (array) json_decode($result['defaults_obj']);
         return $result['permissions'];
     }
 
-    /* Visszatér a permission-ökkel */
-
-    private function GetPermissions($array) {
+    /**
+     * Lekérdezi a user jogait
+     * @param array $array  ["user"]=>""
+     * @global $GLOBALS["awe"]->Permissions->GetPermissions(array("user"=>""))
+     * @return void      
+     */
+    private function GetPermissions($array = array("user" => "")) {
         if (isset($array['user']) && $array['user'] != NULL) {
             $result = $GLOBALS['awe']->DB->fetch(array("sql" => "SELECT * FROM core_user WHERE username=:user", "attr" => array(":user" => $array['user'])), PDO::FETCH_ASSOC);
             if (count($result) > 0) {
@@ -64,7 +97,13 @@ class core_permission {
         }
     }
 
-    private function GetGroupsPermission($array) {
+    /**
+     * Lekérdezi a csoport jogait
+     * @param array $array  ["permission_groups"]=>array()
+     * @global $GLOBALS["awe"]->Permissions->GetGroupsPermission(array("permission_groups"=>""))
+     * @return void      
+     */
+    private function GetGroupsPermission($array = array("permission_groups" => "")) {
         if (isset($array['permission_groups'])) {
             $results = $GLOBALS['awe']->DB->fetchAll(array("sql" => "SELECT * FROM core_groups WHERE groupname IN (:group)", "attr" => array(":group" => implode(',', $array['permission_groups']))), PDO::FETCH_ASSOC);
             if (count($results) > 0) {

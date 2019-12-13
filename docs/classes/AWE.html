@@ -1,0 +1,1752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>AWE5</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">AWE5</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">151</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                            <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-2035904958"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-2035904958" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/adm_componentmanager.html">adm_componentmanager</a></li>
+                                                    <li class="class"><a href="../classes/adm_faq.html">adm_faq</a></li>
+                                                    <li class="class"><a href="../classes/adm_login.html">adm_login</a></li>
+                                                    <li class="class"><a href="../classes/adm_translator.html">adm_translator</a></li>
+                                                    <li class="class"><a href="../classes/adm_urlmanger.html">adm_urlmanger</a></li>
+                                                    <li class="class"><a href="../classes/AWE.html">AWE</a></li>
+                                                    <li class="class"><a href="../classes/core_db.html">core_db</a></li>
+                                                    <li class="class"><a href="../classes/core_log.html">core_log</a></li>
+                                                    <li class="class"><a href="../classes/core_permission.html">core_permission</a></li>
+                                                    <li class="class"><a href="../classes/core_template.html">core_template</a></li>
+                                                    <li class="class"><a href="../classes/core_translator.html">core_translator</a></li>
+                                                    <li class="class"><a href="../classes/core_user.html">core_user</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/default.html">\</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\</small>AWE</h1>
+                    <p><em></em></p>
+                    
+                    
+                                        
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/AWE.html#method___construct" class="">__construct()</a><br />
+                                                                    <a href="../classes/AWE.html#method_coreInit" class="">coreInit()</a><br />
+                                                                    <a href="../classes/AWE.html#method_isJSON" class="">isJSON()</a><br />
+                                                                    <a href="../classes/AWE.html#method_getLocation" class="">getLocation()</a><br />
+                                                                    <a href="../classes/AWE.html#method_getUrlId" class="">getUrlId()</a><br />
+                                                                    <a href="../classes/AWE.html#method_idGenerate" class="">idGenerate()</a><br />
+                                                                    <a href="../classes/AWE.html#method_stringContains" class="">stringContains()</a><br />
+                                                                    <a href="../classes/AWE.html#method_stringEndsWith" class="">stringEndsWith()</a><br />
+                                                                    <a href="../classes/AWE.html#method_stringStartsWith" class="">stringStartsWith()</a><br />
+                                                                    <a href="../classes/AWE.html#method_base64url_encode" class="">base64url_encode()</a><br />
+                                                                    <a href="../classes/AWE.html#method_base64url_decode" class="">base64url_decode()</a><br />
+                                                                    <a href="../classes/AWE.html#method_addUrlParams" class="">addUrlParams()</a><br />
+                                                                    <a href="../classes/AWE.html#method_getUrlParams" class="">getUrlParams()</a><br />
+                                                                    <a href="../classes/AWE.html#method_getDefaults" class="">getDefaults()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/AWE.html#property_DebugMode" class="">$DebugMode</a><br />
+                                                                    <a href="../classes/AWE.html#property_Logger" class="">$Logger</a><br />
+                                                                    <a href="../classes/AWE.html#property_SiteAlias" class="">$SiteAlias</a><br />
+                                                                    <a href="../classes/AWE.html#property_Domain" class="">$Domain</a><br />
+                                                                    <a href="../classes/AWE.html#property_CoreVersion" class="">$CoreVersion</a><br />
+                                                                    <a href="../classes/AWE.html#property_Url" class="">$Url</a><br />
+                                                                    <a href="../classes/AWE.html#property_User" class="">$User</a><br />
+                                                                    <a href="../classes/AWE.html#property_DB" class="">$DB</a><br />
+                                                                    <a href="../classes/AWE.html#property_Template" class="">$Template</a><br />
+                                                                    <a href="../classes/AWE.html#property_Translator" class="">$Translator</a><br />
+                                                                    <a href="../classes/AWE.html#property_AvLanguages" class="">$AvLanguages</a><br />
+                                                                    <a href="../classes/AWE.html#property_Language" class="">$Language</a><br />
+                                                                    <a href="../classes/AWE.html#property_Permissions" class="">$Permissions</a><br />
+                                                                    <a href="../classes/AWE.html#property_MultiSiteId" class="">$MultiSiteId</a><br />
+                                                                    <a href="../classes/AWE.html#property_Components" class="">$Components</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No constants found</em>
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <em>No protected methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No protected properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <a href="../classes/AWE.html#method_afterInit" class="">afterInit()</a><br />
+                                                                    <a href="../classes/AWE.html#method_coreLoader" class="">coreLoader()</a><br />
+                                                                    <a href="../classes/AWE.html#method_getUrl" class="">getUrl()</a><br />
+                                                                    <a href="../classes/AWE.html#method_getCoreVersion" class="">getCoreVersion()</a><br />
+                                                                    <a href="../classes/AWE.html#method_getSiteAlias" class="">getSiteAlias()</a><br />
+                                                                    <a href="../classes/AWE.html#method_getMultiSiteId" class="">getMultiSiteId()</a><br />
+                                                                    <a href="../classes/AWE.html#method_getCurrentLanguage" class="">getCurrentLanguage()</a><br />
+                                                                    <a href="../classes/AWE.html#method_getAvailableLanguage" class="">getAvailableLanguage()</a><br />
+                                                                    <a href="../classes/AWE.html#method_getDomain" class="">getDomain()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No private properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/core.autoload.html"><div class="path-wrapper">core/autoload.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">Default</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                    <div class="namespace-wrapper">\AWE</div>
+                            </dd>
+
+                        
+                        
+                        
+                        
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr>
+                            <th>
+                                source
+                            </th>
+                            <td>
+                                                                    
+                                                            </td>
+                        </tr>
+                                        </table>
+                </aside>
+            </div>
+
+                        
+                                    <a id="properties" name="properties"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Properties</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_DebugMode" name="property_DebugMode" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$DebugMode</h3>
+                <pre class="signature">$DebugMode : boolean</pre>
+                <p><em>PHP &amp; AWE hibaüzenetek ki-be kapcsolása</em></p>
+                
+
+                                <h4>Type</h4>
+                boolean
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            global
+                        </th>
+                        <td>
+                                                            <p>$GLOBALS['awe']-&gt;DebugMode</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_Logger" name="property_Logger" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$Logger</h3>
+                <pre class="signature">$Logger : \core_log</pre>
+                <p><em>Logolásért felelős osztály</em></p>
+                
+
+                                <h4>Type</h4>
+                <a href="../classes/core_log.html">\core_log</a>
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            global
+                        </th>
+                        <td>
+                                                            <p>$GLOBALS['awe']-&gt;Logger</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_SiteAlias" name="property_SiteAlias" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$SiteAlias</h3>
+                <pre class="signature">$SiteAlias : string</pre>
+                <p><em>Az adott site aliasszalt tartalmazza</em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            global
+                        </th>
+                        <td>
+                                                            <p>$GLOBALS['awe']-&gt;SiteAlias</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_Domain" name="property_Domain" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$Domain</h3>
+                <pre class="signature">$Domain : string</pre>
+                <p><em>[https/http]://domain-t tartalmazza</em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            global
+                        </th>
+                        <td>
+                                                            <p>$GLOBALS['awe']-&gt;Domain</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_CoreVersion" name="property_CoreVersion" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$CoreVersion</h3>
+                <pre class="signature">$CoreVersion : string</pre>
+                <p><em>Az adott site Core verzióját tartalmazza</em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            global
+                        </th>
+                        <td>
+                                                            <p>$GLOBALS['awe']-&gt;CoreVersion</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_Url" name="property_Url" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$Url</h3>
+                <pre class="signature">$Url : string</pre>
+                <p><em>URL-t tartalmazza</em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            global
+                        </th>
+                        <td>
+                                                            <p>$GLOBALS['awe']-&gt;Url</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_User" name="property_User" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$User</h3>
+                <pre class="signature">$User : \core_user</pre>
+                <p><em>User osztály mutatója</em></p>
+                
+
+                                <h4>Type</h4>
+                <a href="../classes/core_user.html">\core_user</a>
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            global
+                        </th>
+                        <td>
+                                                            <p>$GLOBALS['awe']-&gt;User</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_DB" name="property_DB" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$DB</h3>
+                <pre class="signature">$DB : \core_db</pre>
+                <p><em>DB osztály mutatója</em></p>
+                
+
+                                <h4>Type</h4>
+                <a href="../classes/core_db.html">\core_db</a>
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            global
+                        </th>
+                        <td>
+                                                            <p>$GLOBALS['awe']-&gt;DB</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_Template" name="property_Template" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$Template</h3>
+                <pre class="signature">$Template : \core_template</pre>
+                <p><em>Template osztály mutatója</em></p>
+                
+
+                                <h4>Type</h4>
+                <a href="../classes/core_template.html">\core_template</a>
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            global
+                        </th>
+                        <td>
+                                                            <p>$GLOBALS['awe']-&gt;Template</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_Translator" name="property_Translator" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$Translator</h3>
+                <pre class="signature">$Translator : \core_translator</pre>
+                <p><em>Fordító osztály mutatója</em></p>
+                
+
+                                <h4>Type</h4>
+                <a href="../classes/core_translator.html">\core_translator</a>
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            global
+                        </th>
+                        <td>
+                                                            <p>$GLOBALS['awe']-&gt;Translator</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_AvLanguages" name="property_AvLanguages" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$AvLanguages</h3>
+                <pre class="signature">$AvLanguages : array</pre>
+                <p><em>Az elérhető nyelvek kódját tartalmazza</em></p>
+                
+
+                                <h4>Type</h4>
+                array
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            global
+                        </th>
+                        <td>
+                                                            <p>$GLOBALS['awe']-&gt;AvLanguages</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_Language" name="property_Language" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$Language</h3>
+                <pre class="signature">$Language : string</pre>
+                <p><em>Az adott nyelv kódját tartalmazza</em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            global
+                        </th>
+                        <td>
+                                                            <p>$GLOBALS['awe']-&gt;Language</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_Permissions" name="property_Permissions" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$Permissions</h3>
+                <pre class="signature">$Permissions : \core_permission</pre>
+                <p><em>Permission osztály mutatója</em></p>
+                
+
+                                <h4>Type</h4>
+                <a href="../classes/core_permission.html">\core_permission</a>
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            global
+                        </th>
+                        <td>
+                                                            <p>$GLOBALS['awe']-Permissions</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_MultiSiteId" name="property_MultiSiteId" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$MultiSiteId</h3>
+                <pre class="signature">$MultiSiteId : string</pre>
+                <p><em>Multisiteid-t tartalmaz</em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            global
+                        </th>
+                        <td>
+                                                            <p>$GLOBALS['awe']-&gt;MultiSiteId</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_Components" name="property_Components" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$Components</h3>
+                <pre class="signature">$Components : array</pre>
+                <p><em>Komponensek mutatóját tartalmazza egy array-be</em></p>
+                
+
+                                <h4>Type</h4>
+                array
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            global
+                        </th>
+                        <td>
+                                                            <p>$GLOBALS['awe']-&gt;Components</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                            
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___construct" name="method___construct" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__construct()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__construct(array  <span class="argument">$array = array()</span>) : void</pre>
+                <p><em>AWE Osztály konstruktora - Itt veszik fel a változók az értéküket az adott funkciókból</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$array </td>
+                                <td><p>Jelenleg semmilyen paramétert nem kap</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            global
+                        </th>
+                        <td>
+                                                                                            <p>$GLOBALS[&quot;awe&quot;]-&gt;__construct(array())</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_coreInit" name="method_coreInit" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">coreInit()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">coreInit(array  <span class="argument">$array = array()</span>) : void</pre>
+                <p><em>Core file-lokat és osztályokat hívja meg</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$array </td>
+                                <td><p>Jelenleg semmilyen paramétert nem kap</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            global
+                        </th>
+                        <td>
+                                                                                            <p>$GLOBALS[&quot;awe&quot;]-&gt;coreInit(array())</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_isJSON" name="method_isJSON" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">isJSON()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">isJSON(array  <span class="argument">$array = array(&quot;string&quot; =&gt; &quot;&quot;)</span>) : boolean</pre>
+                <p><em>Megvizsgálja, hogy az adott string JSON-e</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$array </td>
+                                <td><p>[string]=&gt;&quot;&quot;</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            global
+                        </th>
+                        <td>
+                                                                                            <p>$GLOBALS[&quot;awe&quot;]-&gt;isJSON(array(&quot;string&quot;=&gt;&quot;&quot;))</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getLocation" name="method_getLocation" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getLocation()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getLocation(string  <span class="argument">$__dir__</span>) : string</pre>
+                <p><em>Visszaadja a gyökértől az elérési utat</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$__dir__ </td>
+                                <td><p>string | _<em>DIR_</em> | __FILE__</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            global
+                        </th>
+                        <td>
+                                                                                            <p>$GLOBALS[&quot;awe&quot;]-&gt;getLocation($<strong>dir</strong>)</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getUrlId" name="method_getUrlId" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getUrlId()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getUrlId(array  <span class="argument">$array = array()</span>) : string</pre>
+                <p><em>Visszaadja az URL-t kötöjelekkel / helyett</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$array </td>
+                                <td><p>Jelenleg semmilyen paramétert nem kap</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            global
+                        </th>
+                        <td>
+                                                                                            <p>$GLOBALS[&quot;awe&quot;]-&gt;getUrlId(array())</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_idGenerate" name="method_idGenerate" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">idGenerate()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">idGenerate(array  <span class="argument">$array = array()</span>) : string</pre>
+                <p><em>Egy random id-t generál a siteAlias alapján</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$array </td>
+                                <td><p>Jelenleg semmilyen paramétert nem kap</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            global
+                        </th>
+                        <td>
+                                                                                            <p>$GLOBALS[&quot;awe&quot;]-&gt;idGenerate(array())</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_stringContains" name="method_stringContains" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">stringContains()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">stringContains(array  <span class="argument">$array = array(&quot;string&quot; =&gt; &quot;&quot;, &quot;substring&quot; =&gt; &quot;&quot;)</span>) : boolean</pre>
+                <p><em>Megnézi hogy az adott string-ben megtalálható az adott substring</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$array </td>
+                                <td><p>['string'],['substring']</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            global
+                        </th>
+                        <td>
+                                                                                            <p>$GLOBALS[&quot;awe&quot;]-&gt;stringContains(array(&quot;string&quot;=&gt;&quot;&quot;,&quot;substring&quot;=&gt;&quot;&quot;))</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_stringEndsWith" name="method_stringEndsWith" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">stringEndsWith()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">stringEndsWith(array  <span class="argument">$array = array(&quot;string&quot; =&gt; &quot;&quot;, &quot;substring&quot; =&gt; &quot;&quot;)</span>) : boolean</pre>
+                <p><em>Megnézi hogy az adott string az adott substring-el végződik</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$array </td>
+                                <td><p>['string'],['substring']</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            global
+                        </th>
+                        <td>
+                                                                                            <p>$GLOBALS[&quot;awe&quot;]-&gt;stringEndsWith(array(&quot;string&quot;=&gt;&quot;&quot;,&quot;substring&quot;=&gt;&quot;&quot;))</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_stringStartsWith" name="method_stringStartsWith" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">stringStartsWith()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">stringStartsWith(array  <span class="argument">$array = array(&quot;string&quot; =&gt; &quot;&quot;, &quot;substring&quot; =&gt; &quot;&quot;)</span>) : boolean</pre>
+                <p><em>Megnézi hogy az adott string az adott substring-el kezdődik</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$array </td>
+                                <td><p>['string'],['substring']</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            global
+                        </th>
+                        <td>
+                                                                                            <p>$GLOBALS[&quot;awe&quot;]-&gt;stringStartsWith(array(&quot;string&quot;=&gt;&quot;&quot;,&quot;substring&quot;=&gt;&quot;&quot;))</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_base64url_encode" name="method_base64url_encode" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">base64url_encode()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">base64url_encode(array  <span class="argument">$array = array(&quot;data&quot; =&gt; &quot;&quot;)</span>) : string</pre>
+                <p><em>BASE64 ENCODEING - csak az url specifikus karaktareket kicseréli másra így lehet használni url-ként is</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$array </td>
+                                <td><p>['data']</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            global
+                        </th>
+                        <td>
+                                                                                            <p>$GLOBALS[&quot;awe&quot;]-&gt;base64url_encode(array(&quot;string&quot;=&gt;&quot;&quot;))</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_base64url_decode" name="method_base64url_decode" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">base64url_decode()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">base64url_decode(array  <span class="argument">$array = array(&quot;data&quot;)</span>) : array</pre>
+                <p><em>BASE64 DECODEING - csak az url specifikus karaktareket visszacseréli másra így lehet használni</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$array </td>
+                                <td><p>['data'],['strict']-&gt;|base64_decode strict paraméter</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            global
+                        </th>
+                        <td>
+                                                                                            <p>$GLOBALS[&quot;awe&quot;]-&gt;base64url_decode(array(&quot;data&quot;=&gt;&quot;&quot;,&quot;strict&quot;=&gt;&quot;&quot;))</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_addUrlParams" name="method_addUrlParams" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">addUrlParams()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">addUrlParams(array  <span class="argument">$array = array(0 =&gt; &quot;&quot;, 1 =&gt; &quot;&quot;, &quot;forced_merge&quot; =&gt; &quot;&quot;)</span>) : string|NULL</pre>
+                <p><em>Lekérdezi ha van a ?params= paramétert majd hozzáadja az új változókat</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$array </td>
+                                <td><p>[0],[1]...,['forced_merge']-&gt;|Mindenképpen beleírandó adat</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string|NULL
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            global
+                        </th>
+                        <td>
+                                                                                            <p>$GLOBALS[&quot;awe&quot;]-&gt;addUrlParams(array(0=&gt;&quot;&quot;,1=&gt;&quot;&quot;,&quot;forced_merge&quot;=&gt;&quot;&quot;))</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getUrlParams" name="method_getUrlParams" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getUrlParams()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getUrlParams(array  <span class="argument">$array = array()</span>) : string|NULL</pre>
+                <p><em>Lekérdezi ha van a ?params= paramétert</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$array </td>
+                                <td><p>Jelenleg semmilyen paramétert nem kap</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string|NULL
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            global
+                        </th>
+                        <td>
+                                                                                            <p>$GLOBALS[&quot;awe&quot;]-&gt;getUrlParams(array()))</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getDefaults" name="method_getDefaults" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getDefaults()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getDefaults(array  <span class="argument">$array</span>) : string</pre>
+                <p><em>Lekérdezi a domainnevet</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$array </td>
+                                <td><p>[defaults_id]-&gt;| adott objektum default értékeivel tér vissza</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            global
+                        </th>
+                        <td>
+                                                                                            <p>$GLOBALS[&quot;awe&quot;]-&gt;getDomain(array(&quot;defaults_id&quot;=&gt;&quot;&quot;)))</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_afterInit" name="method_afterInit" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">afterInit()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">afterInit(array  <span class="argument">$array = array()</span>) : void</pre>
+                <p><em>Csak a file-lok és osztályok meghívása után futtatja le a konstruktor</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$array </td>
+                                <td><p>Jelenleg semmilyen paramétert nem kap</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_coreLoader" name="method_coreLoader" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">coreLoader()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">coreLoader(array  <span class="argument">$array = array()</span>) : void</pre>
+                <p><em>Megkeresi és be include-olja a core filelokat!</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$array </td>
+                                <td><p>Jelenleg semmilyen paramétert nem kap</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getUrl" name="method_getUrl" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">getUrl()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getUrl(array  <span class="argument">$array = array()</span>) : string</pre>
+                <p><em>Lekérdezi az url-t</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$array </td>
+                                <td><p>Jelenleg semmilyen paramétert nem kap</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getCoreVersion" name="method_getCoreVersion" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">getCoreVersion()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getCoreVersion(array  <span class="argument">$array = array()</span>) : string</pre>
+                <p><em>Lekérdezi az core vezióját</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$array </td>
+                                <td><p>Jelenleg semmilyen paramétert nem kap</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getSiteAlias" name="method_getSiteAlias" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">getSiteAlias()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getSiteAlias(array  <span class="argument">$array = array()</span>) : string</pre>
+                <p><em>Lekérdezi a site aliaszát</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$array </td>
+                                <td><p>Jelenleg semmilyen paramétert nem kap</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getMultiSiteId" name="method_getMultiSiteId" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">getMultiSiteId()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getMultiSiteId(array  <span class="argument">$array</span>) : string</pre>
+                <p><em>Lekérdezi a multisite id-jét</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$array </td>
+                                <td><p>Jelenleg semmilyen paramétert nem kap</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getCurrentLanguage" name="method_getCurrentLanguage" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">getCurrentLanguage()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getCurrentLanguage(array  <span class="argument">$array = array()</span>) : string</pre>
+                <p><em>Lekérdezi a jelenlegi nyelvet</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$array </td>
+                                <td><p>Jelenleg semmilyen paramétert nem kap</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getAvailableLanguage" name="method_getAvailableLanguage" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">getAvailableLanguage()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getAvailableLanguage(array  <span class="argument">$array = array()</span>) : string</pre>
+                <p><em>Lekérdezi az elérhető nyelveket</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$array </td>
+                                <td><p>Jelenleg semmilyen paramétert nem kap</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getDomain" name="method_getDomain" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">getDomain()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getDomain(array  <span class="argument">$array</span>) : string</pre>
+                <p><em>Lekérdezi a domainnevet</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$array </td>
+                                <td><p>Jelenleg semmilyen paramétert nem kap</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">autoload.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/core/autoload.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on December 13th, 2019 at 13:48.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>

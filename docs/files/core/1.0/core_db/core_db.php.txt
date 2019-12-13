@@ -1,0 +1,157 @@
+<?php
+
+class core_db {
+
+    /**
+     * Kapcsolat változó
+     * @var PDO
+     */
+    private $Connection;
+
+    /**
+     * Kapcsolati konfig változó
+     * @var array
+     */
+    private $Config;
+
+    /**
+     * core_db konstruktora - Itt veszik fel a változók az értéküket az adott funkciókból
+     * @param array $array  Jelenleg semmilyen paramétert nem kap
+     * @return void      
+     */
+    public function __construct($array = array()) {
+        $this->Config = $this->getConfig(array());
+        $this->Connection = $this->getConnection(array());
+    }
+
+    /**
+     * Adatbázis kapcsolat konfigok betöltése
+     * @param array $array  Jelenleg semmilyen paramétert nem kap
+     * @return array       
+     */
+    private function getConfig($array = array()) {
+        $path = "./sites/" . $GLOBALS['awe']->SiteAlias . "/config.ini";
+        if (!$config = parse_ini_file($path, TRUE)) {
+            $GLOBALS['awe']->Logger->setError(array("text" => "E0001 - Nem található az oldal adatbázis konfigja! - " . $path));
+        }
+        return $config;
+    }
+
+    /**
+     * Kapcsolat létrehozása - PDO osztály hívás
+     * @param array $array  Jelenleg semmilyen paramétert nem kap
+     * @return PDO       
+     */
+    private function getConnection($array = array()) {
+        $connectionString = $this->Config['database']['driver'] .
+                ':host=' . $this->Config['database']['host'] .
+                ((!empty($this->Config['database']['port'])) ? (';port=' . $this->Config['database']['port']) : '') .
+                ';dbname=' . $this->Config['database']['schema'];
+        try {
+            $pdo = new PDO($connectionString, $this->Config['database']['username'], $this->Config['database']['password']);
+        } catch (Exception $exc) {
+            $GLOBALS['awe']->Logger->setError(array("text" => "E0004 - Hibás adatbázis csatlakozás!"));
+        }
+        return $pdo;
+    }
+
+    /**
+     * Custom query
+     * @param array $array  [sql]->|SQL parancs kerül | [attr]->|sql parancs változói tömben
+     * @global $GLOBALS["awe"]->DB->doQuery(array("sql"=>"","attr"=>""))
+     * @return array|FALSE       
+     */
+    public function doQuery($array = array("sql" => "", "attr" => "")) {
+        if (!isset($array['sql'])) {
+            $GLOBALS['awe']->Logger->setWarn(array("text" => "W0001 - Nem adtál meg sql parancsot!"));
+            return FALSE;
+        }
+        $query = $this->Connection->prepare($array['sql']);
+        if (isset($array['attr']) && !empty($array['attr'])) {
+            if ($query->execute($array['attr']) == FALSE) {
+                $GLOBALS['awe']->Logger->setError(array("text" => "E0005 - Hibás SQL parancs! -> " . $query->errorInfo()[2]));
+                return FALSE;
+            }
+        } else {
+            if ($query->execute() == FALSE) {
+                $GLOBALS['awe']->Logger->setError(array("text" => "E0005 - Hibás SQL parancs! -> " . $query->errorInfo()[2]));
+                return FALSE;
+            }
+        }
+        return $query;
+    }
+
+    function recursiveWhereTree($array=array(), $logical = FALSE, $like = "=") {
+        $ret = array("string" => "", "attr" => array());
+        if ($logical != FALSE) {
+            $logicalvar = " " . $logical . " ";
+        } else {
+            $logicalvar = "";
+        }
+
+        $i = 0;
+        foreach ($array as $key => $value) {
+            if (count($array) <= $i + 1) {
+                $logicalvar = "";
+            }if ($key == ".") {
+                if ($value == "LIKE") {
+                    $like = " LIKE ";
+                } else {
+                    $like = "=";
+                }
+            } else {
+                if ($key == "AND NOT" || $key == "AND" || $key == "OR NOT" || $key == "OR") {
+                    if(!is_array($value)){
+                        $GLOBALS["awe"]->Logger->setError(array("text"=>"E0006 - Hibás nem megfelelő array!"));
+                        return FALSE;
+                    }
+                    $reqursive = tree($value, $key, $like);
+                    $ret["string"] .= "(" . $reqursive["string"] . ")" . $logicalvar;
+                    $ret["attr"] = array_merge($ret["attr"], $reqursive["attr"]);
+                } else {
+                    if ($logical != FALSE) {
+                        $id = str_replace(str_split('%_. '), '', $GLOBALS["awe"]->idGenerate());
+                        $ret["string"] .= $key . $like . ":" . $id . $logicalvar;
+                        $ret["attr"][$id] = $value;
+                    }
+                }
+            }
+            $i++;
+        }
+        return $ret;
+    }
+
+    /* Fetching and Querying ---> Array-el tér vissza! */
+
+    public function fetchWithCount($array, $sets = NULL) {
+        if ($array != NULL) {
+            $q = $this->doQuery($array);
+            return array("result" => $q->fetch($sets), "count" => $q->rowCount());
+        }
+        $GLOBALS['awe']->Logger->setWarn(array("text" => "W0001 - Nem adtál meg sql parancsot!"));
+        return FALSE;
+    }
+
+    /* Fetching and Querying */
+
+    public function fetch($array, $sets = NULL) {
+        if ($array != NULL) {
+            return $this->doQuery($array)->fetch($sets);
+        }
+        $GLOBALS['awe']->Logger->setWarn(array("text" => "W0001 - Nem adtál meg sql parancsot!"));
+        return FALSE;
+    }
+
+    /* FetchAll and Quering */
+
+    public function fetchAll($array, $sets = NULL) {
+        if ($array != NULL) {
+            return $this->doQuery($array)->fetchAll($sets);
+        }
+        $GLOBALS['awe']->Logger->setWarn(array("text" => "W0001 - Nem adtál meg sql parancsot!"));
+        return FALSE;
+    }
+
+}
+
+?>

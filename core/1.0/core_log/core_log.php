@@ -2,10 +2,22 @@
 
 class core_log {
 
+    /**
+     * core_log konstruktora - Itt veszik fel a változók az értéküket az adott funkciókból
+     * @param array $array  Jelenleg semmilyen paramétert nem kap
+     * @return void      
+     */
     public function __construct($array) {
-        //$GLOBALS['awe']->addAdminMenu(array());
+        
     }
-    public function setInfo($array) {
+
+    /**
+     * Fájlba írja az információt, DebugMode esetén ki is írja
+     * @param array $array  ["text"]=>""
+     * @global $GLOBALS["awe"]->Logger->setInfo(array("text" => ""))
+     * @return int      
+     */
+    public function setInfo($array = array("text" => "")) {
         if (isset($array["text"])) {
             if ($GLOBALS['awe']->DebugMode == true) {
                 echo $array["text"];
@@ -14,6 +26,12 @@ class core_log {
         }
     }
 
+    /**
+     * Fájlba írja az figyelmeztetést, DebugMode esetén ki is írja
+     * @param array $array  ["text"]=>""
+     * @global $GLOBALS["awe"]->Logger->setWarn(array("text" => ""))
+     * @return int      
+     */
     public function setWarn($array) {
         if (isset($array["text"])) {
             if ($GLOBALS['awe']->DebugMode == true) {
@@ -23,6 +41,12 @@ class core_log {
         }
     }
 
+    /**
+     * Fájlba írja az hibát, DebugMode esetén ki is írja
+     * @param array $array  ["text"]=>""
+     * @global $GLOBALS["awe"]->Logger->setError(array("text" => ""))
+     * @return int      
+     */
     public function setError($array) {
         if (isset($array["text"])) {
             if ($GLOBALS['awe']->DebugMode == true) {

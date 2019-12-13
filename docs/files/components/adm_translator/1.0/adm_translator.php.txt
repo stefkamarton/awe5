@@ -1,0 +1,259 @@
+<?php
+
+class adm_translator {
+
+    public $Params;
+    public $PageCount;
+    public $ElementPerPage;
+    public $PageNumber;
+    public $MaxElement;
+
+    public function __construct($array) {
+        $columns = array("tra_key" => "tra_key");
+        $filters = array("tra_key" => array("type" => "text", "name" => "tra_key", "id" => "", "class" => ""));
+        $edit = array("tra_key" => array("type" => "text","name" => "tra_key","readonly" => "true","disabled" => "false","required" => "true","autofocus" => "false","id" => "","class" => ""));
+        foreach ($GLOBALS['awe']->AvLanguages as $value) {
+            $columns["tra_obj->'language'->>'$value'"] = $value;
+            $filters["tra_obj->'language'->>'$value'"] = array("type" => "text", "name" => $value, "id" => "", "class" => "");
+            $edit["tra_obj->'language'->>'$value'"] = array("type" => "textarea","name" => $value,"readonly" => "false","disabled" => "false","required" => "true","autofocus" => "false","id" => "","class" => "");
+        }
+        $arr = array(
+            "table" => "core_translator",
+            "columns" => $columns,
+            "where" => array(),
+            "rowperpage" => "",
+            "page" => "1",
+            "filters" => $filters,
+            "data-result" => "result",
+            "data-save-result" => "messages",
+            "data-url" => "/admin/translator/ajax",
+            "settings" => array(
+                "remove" => "true",
+                "edit" => $edit
+        ));
+
+        if (isset($array["ajax"]) && $array["ajax"] == TRUE) {
+//$this->Ajax($array);
+
+            switch ($_POST['method']) {
+                case "filter":
+                    $GLOBALS['awe']->Template->AjaxTable($arr);
+
+                    break;
+                case "settings":
+                    $GLOBALS['awe']->Template->AjaxSettingsView($arr);
+
+                    break;
+                case "save":
+                    $GLOBALS['awe']->Template->AjaxSettingsSave($arr);
+                    echo json_encode(array("html" => "<div class='success'><i class='fas fa-check'></i><div class='text'>Sikeres mentés!</div></div>"));
+                    
+                    break;
+
+                default:
+                    break;
+            }
+        } else {
+            echo $GLOBALS['awe']->Template->TableFrameGenerator($arr);
+//$this->Viewer($array);
+        }
+
+        /* if (isset($array["view"]) && $array['view'] == true) {
+          $this->Viewer($array);
+          }
+          if (isset($array["ajax"]) && $array['ajax'] == true) {
+          $this->Ajax($array);
+          }
+          if(isset($array["install"]) && $array['install']==true){
+          $this->Install($array);
+          } */
+    }
+
+    public function Install($array) {
+        echo "telepítés";
+    }
+
+    /* Array -> Table */
+
+    public function ArrayToDivTable($array) {
+        $str = "<div id='traResult'>";
+        $str .= "<div class='table' id='traResult'>";
+        $str .= "<div class='thead'>";
+        $str .= "<div class='tr'>";
+        $str .= "<div class='th'>" . T("tra_key") . "</div>";
+        foreach ($GLOBALS['awe']->AvLanguages as $toTableValue) {
+            $str .= "<div class='th'>" . T($toTableValue) . "</div>";
+        }
+        $str .= "<div class='th'>" . T("muveletek") . "</div>";
+        $str .= "</div>";
+        $str .= "</div>";
+        $str .= "<div class='tbody'>";
+        $str .= $this->JustTableBody($array);
+        $str .= "</div>";
+        $str .= "</div>";
+        $str .= $this->Pager(array());
+        $str .= "</div>";
+        return $str;
+    }
+
+    public function JustTableBody($array) {
+        $str = "";
+        for ($i = 0; $i < count($array['toTable']); $i++) {
+            $json = (array) json_decode($array['toTable'][$i]['languages']);
+            $str .= "<form id='ajax' data-loadingmsg='Unsaved' data-result='#traStatus" . $i . "' data-url='/admin/translator/ajax' onsubmit='return false;' data-method='save' class='tr'>";
+            $str .= "<div class='td'><input type='text' name='key' value='" . $array['toTable'][$i]['tra_key'] . "' readOnly></div>";
+            foreach ($GLOBALS['awe']->AvLanguages as $toTableValue) {
+                $str .= "<div class='td'><input type='text' name='" . $toTableValue . "' value='" . (isset($json[$toTableValue]) ? $json[$toTableValue] : "") . "'/></div>";
+            }
+            $str .= "<div class='td' id='traStatus" . $i . "'>Mentve</div></form>";
+        }
+
+        return $str;
+    }
+
+    public function PagerCounter($array) {
+        $wLang = "";
+        if ((isset($this->Params['tra_key']) && $this->Params['tra_key'] != NULL) || isset($array['ajaxValue'])) {
+            $wLang .= "WHERE tra_key LIKE :keyword ";
+            foreach ($GLOBALS['awe']->AvLanguages as $lang) {
+                $wLang .= "OR  tra_obj->'language'->>'$lang' LIKE :keyword ";
+            }
+            $tra_key = isset($array['ajaxValue']) ? $array['ajaxValue'] : $this->Params['tra_key'];
+            $this->MaxElement = $GLOBALS['awe']->DB->fetch(array("sql" => "SELECT COUNT(*) FROM core_translator $wLang", "attr" => array(":keyword" => "%" . $tra_key . "%")))[0];
+        } else {
+            $this->MaxElement = $GLOBALS['awe']->DB->fetch(array("sql" => "SELECT COUNT(*) FROM core_translator"))[0];
+        }
+        $this->ElementPerPage = ($this->ElementPerPage == "all") ? $this->MaxElement : $this->ElementPerPage;
+        if (isset($array['elementPerPage']) && $array['elementPerPage'] == NULL)
+            return "1";
+        $pageNum = ceil($this->MaxElement / $this->ElementPerPage);
+
+        return $pageNum;
+    }
+
+    public function Pager($array) {
+        return "<div class='row'>"
+                . "<div class='block'><b>" . T("talalatok") . "</b> $this->MaxElement</div>"
+                . "<div class='block'><b>" . T("oldal") . "</b> $this->PageCount / " . ($this->PageNumber + 1) . "</div>"
+                . "<div class='block'><b>" . T("sorperoldal") . "</b>$this->ElementPerPage</div></div>";
+    }
+
+    public function Filter($array) {
+        if (!isset($this->Params['tra_elementPerPage']))
+            $this->Params['tra_elementPerPage'] = "";
+        return "<form class='search' id='ajax' method='post' data-method='search' data-result='#traResult' data-url='/admin/translator/ajax'>"
+                . "<label>" . T("kereses") . "</label><input name='tra_search' value='" . (isset($this->Params['tra_key']) ? $this->Params['tra_key'] : "") . "' type='text' placeholder='" . T("kulcsszo", FALSE) . "'/>"
+                . "<label>" . T("sorperoldal") . "</label><select name='tra_elementPerPage' value='" . (isset($this->Params['tra_elementPerPage']) ? $this->Params['tra_elementPerPage'] : "") . "' type='text' placeholder='" . T("kulcsszo", FALSE) . "'>"
+                . "<option value='10' " . (($this->Params['tra_elementPerPage'] == 10) ? "selected" : "") . ">10</option>"
+                . "<option value='20' " . (($this->Params['tra_elementPerPage'] == 20) ? "selected" : "") . ">20</option>"
+                . "<option value='50' " . (($this->Params['tra_elementPerPage'] == 50) ? "selected" : "") . ">50</option>"
+                . "<option value='100' " . (($this->Params['tra_elementPerPage'] == 100) ? "selected" : "") . ">100</option>"
+                . "<option value='all' " . (($this->Params['tra_elementPerPage'] == "all") ? "selected" : "") . ">" . T("osszes") . "</option>"
+                . "</select>"
+                . "</form>";
+    }
+
+    public function init($array) {
+        $this->Params = $GLOBALS['awe']->getUrlParams(array());
+        $this->ElementPerPage = $this->Params != NULL && (isset($this->Params['tra_elementPerPage']) || ($this->Params['tra_elementPerPage'] == "all")) ? $this->Params['tra_elementPerPage'] : 10;
+
+        if (isset($array['elementPerPage'])) {
+            $this->ElementPerPage = ($array['elementPerPage'] != "all") ? $array['elementPerPage'] : "all";
+        }
+        $this->PageCount = $this->PagerCounter($array);
+        $this->PageNumber = isset($this->Params['tra_pageNumber']) && is_numeric($this->Params['tra_pageNumber']) ? $this->Params['tra_pageNumber'] : 0;
+    }
+
+    public function Viewer($array) {
+        $this->init(array());
+        $wLang = "";
+        $tra_key = "";
+        $wLang = "";
+        echo $this->Filter(array());
+        if (isset($this->Params['tra_key']) && $this->Params['tra_key'] != NULL) {
+            $tra_key = $this->Params['tra_key'];
+            /* Összes lekérdezése */
+            $wLang .= "WHERE tra_key LIKE :keyword ";
+            foreach ($GLOBALS['awe']->AvLanguages as $lang) {
+                $wLang .= "OR  tra_obj->'language'->>'$lang' LIKE :keyword ";
+            }
+            echo $this->ArrayToDivTable(array("toTable" => $GLOBALS['awe']->DB->fetchAll(array("sql" => "SELECT tra_key, tra_obj->>'language' AS languages FROM core_translator $wLang LIMIT $this->ElementPerPage OFFSET $this->PageNumber*$this->ElementPerPage", "attr" => array(":keyword" => "%" . $tra_key . "%")), PDO::FETCH_ASSOC)));
+        } else {
+            echo $this->ArrayToDivTable(array("toTable" => $GLOBALS['awe']->DB->fetchAll(array("sql" => "SELECT tra_key, tra_obj->>'language' AS languages FROM core_translator LIMIT $this->ElementPerPage OFFSET $this->PageNumber*$this->ElementPerPage"), PDO::FETCH_ASSOC)));
+        }
+    }
+
+    public function Save($array) {
+        $record = $GLOBALS['awe']->DB->fetch(array("sql" => "SELECT * FROM core_translator WHERE tra_key=:tra_key", "attr" => array("tra_key" => $_POST['key'])));
+        $json = (array) json_decode($record['tra_obj']);
+        $json['language'] = (array) $json['language'];
+        $post = array();
+        foreach ($GLOBALS['awe']->AvLanguages as $lang) {
+            $post[$lang] = $_POST[$lang];
+        }
+        unset($post['key']);
+        $json['language'] = array_merge($json['language'], $post);
+
+        $json = json_encode($json);
+
+        $update = $GLOBALS['awe']->DB->doQuery(array("sql" => "UPDATE core_translator SET tra_obj=:tra_obj WHERE tra_key=:tra_key", "attr" => array("tra_key" => $_POST['key'], "tra_obj" => $json)));
+        if ($update != FALSE) {
+            echo json_encode(array("html" => "Mentve"));
+            return TRUE;
+        }
+        return FALSE;
+    }
+
+    public function Search($array) {
+        $result = array();
+        $wLang = "WHERE tra_key LIKE :keyword ";
+        if (isset($_POST['tra_search'])) {
+            $this->init(array("ajaxValue" => $_POST['tra_search'], "elementPerPage" => $_POST['tra_elementPerPage']));
+
+            $str = "tra_key LIKE :keyword";
+            foreach ($GLOBALS['awe']->AvLanguages as $lang) {
+                $wLang .= " OR  tra_obj->'language'->>'$lang' LIKE :keyword";
+            }
+            $array['expressions'] = $GLOBALS['awe']->DB->fetchAll(array("sql" => "SELECT tra_key, tra_obj->>'language' AS languages FROM core_translator $wLang LIMIT $this->ElementPerPage OFFSET $this->PageNumber*$this->ElementPerPage", "attr" => array(":keyword" => "%" . $_POST['tra_search'] . "%")), PDO::FETCH_ASSOC);
+            if (isset($_POST['url_params'])) {
+                $this->Params['tra_key'] = $_POST['tra_search'];
+            } else
+                $this->Params = NULL;
+            $result['html'] = $this->ArrayToDivTable(array("toTable" => $array['expressions']));
+            $result['url_params'] = ($GLOBALS['awe']->addUrlParams(array("tra_key" => $_POST['tra_search'], "tra_elementPerPage" => $_POST['tra_elementPerPage'], "def_merge" => (array) json_decode($GLOBALS['awe']->base64url_decode($this->Params)))));
+        }
+        echo json_encode($result);
+    }
+
+    public function Ajax($array) {
+        $fn = $_POST['method'];
+        if (method_exists($this, $fn)) {
+            $this->$fn(array());
+        } else {
+            die("000");
+        }
+    }
+
+    public function expressionTemplate($array) {
+        $result = "";
+        for ($i = 0; $i < count($array['expressions']); $i++) {
+            $obj = (array) json_decode($array['expressions'][$i]["languages"]);
+            $result .= '
+                        <form action="post" class="tr">
+                            <div class="td">' . $array['expressions'][$i]["tra_key"] . '</div>';
+            for ($j = 0; $j < count(self::$AvLanguage); $j++) {
+                if (isset($obj[self::$AvLanguage[$j]]))
+                    $result .= '<div class="td"><input value="' . $obj[self::$AvLanguage[$j]] . '" placeholder="' . self::$AvLanguage[$j] . '"/></div>';
+                else {
+                    $result .= '<div class="td"><input value="" placeholder="' . self::$AvLanguage[$j] . '"/></div>';
+                }
+            }
+            $result .= '<div class="td"><i class="far fa-2x fa-save"></i></div></form>';
+        }
+        return $result;
+    }
+
+}
+
+?>
+
