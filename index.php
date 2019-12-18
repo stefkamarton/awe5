@@ -36,9 +36,36 @@ $awe->coreInit(array());
 //$awe->Translator->Viewer(array());
 //var_dump($GLOBALS['awe']->LoadComponents(array("name"=>"adm_url", "params"=>array("type"=>"edit"))));
 
+
+
+$A=array(
+    "table"=>"core_url",
+   /* "limit"=>"3",
+    "offset"=>"5",*/
+    /*"orderby"=>array(
+        "url_id" => "ASC", 
+        "url_pos" => "DESC"),
+    "groupby" => array(
+        "url_pos"), 
+    "having" => array(
+        "url_pos = 'content'"),*/
+    "distinct" => FALSE,
+    "projection" => array(),
+    "where" => array(
+        "url_url" => "admin",
+        "AND" => array(
+            "."=>">",
+            "url_seq" => "2")),
+    /*"joins" => array(
+        0 => array(
+            "type" => "INNER",
+            "table" => "core_url_template",
+            "ON" => "core_url.url_url = core_url_template.url_url")
+        )*/
+    );
 /* Template betöltő hívása */
 $awe->Template->Load(array());
-
+var_dump($awe->DB->Select($A));
 
 /*
 $A = array(

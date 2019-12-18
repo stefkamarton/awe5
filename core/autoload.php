@@ -11,70 +11,70 @@ class AWE {
      * @var bool
      * @global $GLOBALS['awe']->DebugMode
      */
-    public $DebugMode;
+    public bool $DebugMode;
 
     /**
      * Logolásért felelős osztály
      * @var core_log
      * @global $GLOBALS['awe']->Logger
      */
-    public $Logger;
+    public core_log $Logger;
 
     /**
      * Az adott site aliasszalt tartalmazza
      * @var string 
      * @global $GLOBALS['awe']->SiteAlias
      */
-    public $SiteAlias;
+    public string $SiteAlias;
 
     /**
      * [https/http]://domain-t tartalmazza
      * @var string 
      * @global $GLOBALS['awe']->Domain
      */
-    public $Domain;
+    public string $Domain;
 
     /**
      * Az adott site Core verzióját tartalmazza
      * @var string 
      * @global $GLOBALS['awe']->CoreVersion
      */
-    public $CoreVersion;
+    public string $CoreVersion;
 
     /**
      * URL-t tartalmazza
      * @var string
      * @global $GLOBALS['awe']->Url
      */
-    public $Url;
+    public string $Url;
 
     /**
      * User osztály mutatója
      * @var core_user 
      * @global $GLOBALS['awe']->User
      */
-    public $User;
+    public core_user $User;
 
     /**
      * DB osztály mutatója
      * @var core_db 
      * @global $GLOBALS['awe']->DB
      */
-    public $DB;
+    public core_db $DB;
 
     /**
      * Template osztály mutatója
      * @var core_template 
      * @global $GLOBALS['awe']->Template
      */
-    public $Template;
+    public core_template $Template;
 
     /**
      * Fordító osztály mutatója
      * @var core_translator
      * @global $GLOBALS['awe']->Translator
      */
-    public $Translator;
+    public core_translator $Translator;
 
     /**
      * Az elérhető nyelvek kódját tartalmazza
@@ -88,21 +88,21 @@ class AWE {
      * @var string
      * @global $GLOBALS['awe']->Language
      */
-    public $Language;
+    public string $Language;
 
     /**
      * Permission osztály mutatója
      * @var core_permission
      * @global $GLOBALS['awe']-Permissions
      */
-    public $Permissions; /* core_permission osztály mutatója */
+    public core_permission $Permissions; /* core_permission osztály mutatója */
 
     /**
      * Multisiteid-t tartalmaz
      * @var string 
      * @global $GLOBALS['awe']->MultiSiteId
      */
-    public $MultiSiteId;
+    public string $MultiSiteId;
 
     /**
      * Komponensek mutatóját tartalmazza egy array-be
@@ -158,7 +158,7 @@ class AWE {
      */
     public function coreInit($array = array()) {
         $this->Logger = new core_log(array());
-        $this->DB = new core_db(array());
+        $this->DB = new core_db($this, array());
         $this->MultiSiteId = $this->getMultiSiteId(array());
         $this->Translator = new core_translator(array());
         $this->User = new core_user(array());

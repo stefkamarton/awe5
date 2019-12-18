@@ -4,6 +4,7 @@ E0003 - Hibás core hívás!
 E0004 - Hibás adatbázis csatlakozás!
 E0005 - Hibás SQL parancs! -> {PDO::errorInfo()}
 E0006 - Hibás nem megfelelő array!
+E0007 - Nem adtál meg táblát az SQL lekérdezésnél
 
 W0001 - Nem adtál meg sql parancsot!
 W0002 - Nem található {key} kulcs a fordítóban! Létrehozás...
