@@ -9,105 +9,105 @@ class AWE {
     /**
      * PHP & AWE hibaüzenetek ki-be kapcsolása
      * @var bool
-     * @global $GLOBALS['awe']->DebugMode
+     * @global $this->AWE->DebugMode
      */
     public bool $DebugMode;
 
     /**
      * Logolásért felelős osztály
      * @var core_log
-     * @global $GLOBALS['awe']->Logger
+     * @global $this->AWE->Logger
      */
     public core_log $Logger;
 
     /**
      * Az adott site aliasszalt tartalmazza
      * @var string 
-     * @global $GLOBALS['awe']->SiteAlias
+     * @global $this->AWE->SiteAlias
      */
     public string $SiteAlias;
 
     /**
      * [https/http]://domain-t tartalmazza
      * @var string 
-     * @global $GLOBALS['awe']->Domain
+     * @global $this->AWE->Domain
      */
     public string $Domain;
 
     /**
      * Az adott site Core verzióját tartalmazza
      * @var string 
-     * @global $GLOBALS['awe']->CoreVersion
+     * @global $this->AWE->CoreVersion
      */
     public string $CoreVersion;
 
     /**
      * URL-t tartalmazza
      * @var string
-     * @global $GLOBALS['awe']->Url
+     * @global $this->AWE->Url
      */
     public string $Url;
 
     /**
      * User osztály mutatója
      * @var core_user 
-     * @global $GLOBALS['awe']->User
+     * @global $this->AWE->User
      */
     public core_user $User;
 
     /**
      * DB osztály mutatója
      * @var core_db 
-     * @global $GLOBALS['awe']->DB
+     * @global $this->AWE->DB
      */
     public core_db $DB;
 
     /**
      * Template osztály mutatója
      * @var core_template 
-     * @global $GLOBALS['awe']->Template
+     * @global $this->AWE->Template
      */
     public core_template $Template;
 
     /**
      * Fordító osztály mutatója
      * @var core_translator
-     * @global $GLOBALS['awe']->Translator
+     * @global $this->AWE->Translator
      */
     public core_translator $Translator;
 
     /**
      * Az elérhető nyelvek kódját tartalmazza
      * @var array
-     * @global $GLOBALS['awe']->AvLanguages
+     * @global $this->AWE->AvLanguages
      */
     public $AvLanguages;
 
     /**
      * Az adott nyelv kódját tartalmazza
      * @var string
-     * @global $GLOBALS['awe']->Language
+     * @global $this->AWE->Language
      */
     public string $Language;
 
     /**
      * Permission osztály mutatója
      * @var core_permission
-     * @global $GLOBALS['awe']-Permissions
+     * @global $this->AWE-Permissions
      */
     public core_permission $Permissions; /* core_permission osztály mutatója */
 
     /**
      * Multisiteid-t tartalmaz
      * @var string 
-     * @global $GLOBALS['awe']->MultiSiteId
+     * @global $this->AWE->MultiSiteId
      */
     public string $MultiSiteId;
 
     /**
      * Komponensek mutatóját tartalmazza egy array-be
      * @var array
-     * @global $GLOBALS['awe']->Components
+     * @global $this->AWE->Components
      */
     public $Components;
 
@@ -446,7 +446,7 @@ class AWE {
      * @return string       
      */
     public function getDefaults($array) {
-        return $GLOBALS['awe']->DB->fetchAll(array("sql" => "SELECT defaults_obj FROM defaults WHERE defaults_id=:defaults_id", "attr" => array("defaults_id" => $array["defaults_id"])), PDO::FETCH_ASSOC);
+        return $this->DB->fetchAll(array("sql" => "SELECT defaults_obj FROM defaults WHERE defaults_id=:defaults_id", "attr" => array("defaults_id" => $array["defaults_id"])), PDO::FETCH_ASSOC);
     }
 
 }

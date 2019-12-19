@@ -1,4 +1,5 @@
 <?php
+
 class core_template {
 
     public $Template;
@@ -99,7 +100,6 @@ class core_template {
                 if (!isset($json['name']))
                     $json['name'] = "";
                 $results = $GLOBALS['awe']->getDefaults(array("defaults_id" => $json["name"]));
-
                 if (count($results) > 0) {
                     foreach ($results as $result) {
                         $result = (array) json_decode($result['defaults_obj']);
@@ -287,7 +287,8 @@ class core_template {
                 }
                 $i++;
             }
-            if ($_POST["method2"] == "update") {
+            if ($_POST["method"] == "update") {
+                $obj = $GLOBALS['awe']->DB->fetch(array("sql" => "SELECT * FROM " . $array['table'] . " WHERE " . $where, "attr" => array($wherekey => $whereval)), PDO::FETCH_ASSOC);
                 foreach ($obj as $key => $value) {
                     if ($GLOBALS['awe']->isJSON(array("string" => $value))) {
                         $obj[$key] = (array) json_decode($value, true);
@@ -314,7 +315,11 @@ class core_template {
                             }
                         }
                         if (is_array($_POST[$value['name']])) {
-                            $obj = array_merge_recursive($sobj);
+                            if ($_POST["method"] == "update") {
+                                $obj = array_merge_recursive($sobj);
+                            } else {
+                                $obj = array_merge_recursive($obj, $sobj);
+                            }
                         } else {
                             $obj = array_replace_recursive($obj, $sobj);
                         }
@@ -323,8 +328,8 @@ class core_template {
                     }
                 }
             }
-    
-            if ($_POST["method2"] == "update") {
+
+            if ($_POST["method"] == "update") {
                 $update = "";
                 $j = 0;
                 foreach ($obj as $key => $value) {
@@ -345,17 +350,17 @@ class core_template {
                 $GLOBALS['awe']->DB->doQuery(array("sql" => "UPDATE " . $array['table'] . " SET " . $update . " WHERE " . $where, "attr" => $obj));
                 return true;
             }
-            if ($_POST["method2"] == "new") {
+            if ($_POST["method"] == "add") {
                 $cols = "";
                 $colsVal = "";
                 $j = 0;
                 foreach ($obj as $key => $value) {
                     if ($j == 0) {
-                        $cols .= $key . "=" . $key;
-                        $colsVal .= $key . "=:" . $key;
+                        $cols .= $key;
+                        $colsVal .= ":" . $key;
                     } else {
-                        $cols .= ", " . $key . "=" . $key;
-                        $colsVal .= ", " . $key . "=:" . $key;
+                        $cols .= ", " . $key;
+                        $colsVal .= ", :" . $key;
                     }
                     $j++;
                 }
@@ -364,8 +369,10 @@ class core_template {
                         $obj[$key] = json_encode($value);
                     }
                 }
-                $obj[$wherekey] = $whereval;
-                echo"asq";
+                //$obj[$wherekey] = $whereval;
+                var_dump($cols);
+                var_dump($colsVal);
+                var_dump($obj);
                 var_dump($GLOBALS['awe']->DB->doQuery(array("sql" => "INSERT INTO " . $array['table'] . " (" . $cols . ") VALUES (" . $colsVal . ")", "attr" => $obj)));
                 return true;
             }
@@ -428,12 +435,17 @@ class core_template {
                 }
                 $i++;
             }
+            if ($_POST["method"] == "modification") {
+                $method = "update";
+            } else {
+                $method = "add";
+            }
             $str = "<div class='heading'><h2>Modósítás</h2></div>";
             $str .= "<div id='messages'></div>";
             $str .= "<div class='close' id='close-settings'><i class='fas fa-times'></i></div>";
-            $str .= "<form class='table' method='post' data-method='save' data-waiting='0' data-result='#messages' data-url='" . $array["data-url"] . "' >";
+            $str .= "<form class='table' method='post' data-method='" . $method . "' data-waiting='0' data-result='#messages' data-url='" . $array["data-url"] . "' >";
             foreach ($array["settings"]["edit"] as $key => $value) {
-                if ($_POST["method"] == "settings") {
+                if ($_POST["method"] == "modification") {
                     $sql = $GLOBALS['awe']->DB->fetch(array("sql" => "SELECT $columns FROM " . $array['table'] . " WHERE " . $wherekey . "=:" . $wherekey, "attr" => array($wherekey => $wherevalue)), PDO::FETCH_ASSOC);
                 }
                 $readonly = (isset($value["readonly"]) && $value["readonly"] != NULL && strtolower($value["readonly"]) != "false") ? "readonly" : "";
@@ -658,7 +670,7 @@ class core_template {
                 $str .= "<div class='tbody'>" . PHP_EOL;
 
                 foreach ($rows as $row) {
-                    $str .= "<form class='tr settingsajax' method='post' data-waiting='0' data-method='settings' data-result='#settings' data-url='" . $array['data-url'] . "'>" . PHP_EOL;
+                    $str .= "<form class='tr settingsajax' method='post' data-waiting='0' data-method='modification' data-result='#settings' data-url='" . $array['data-url'] . "'>" . PHP_EOL;
                     $i = 0;
                     foreach ($row as $key => $value) {
                         if ($i == 0) {

@@ -18,7 +18,7 @@ class core_db {
      * Kapcsolati konfig változó
      * @var AWE
      */
-    public AWE $AWE;
+    private AWE $AWE;
 
     /**
      * core_db konstruktora - Itt veszik fel a változók az értéküket az adott funkciókból
@@ -39,7 +39,7 @@ class core_db {
     private function getConfig($array = array()) {
         $path = "./sites/" . $this->AWE->SiteAlias . "/config.ini";
         if (!$config = parse_ini_file($path, TRUE)) {
-            $this->AWE->Logger->setError(array("text" => "E0001 - Nem található az oldal adatbázis konfigja! - " . $path));
+            $this->AWE->Logger->setError(array("text" => "E0001 - Nem található az oldal adatbázis konfigja! - " . $path,"line"=>__LINE__,"file"=>__FILE__));
         }
         return $config;
     }
@@ -57,7 +57,7 @@ class core_db {
         try {
             $pdo = new PDO($connectionString, $this->Config['database']['username'], $this->Config['database']['password']);
         } catch (Exception $exc) {
-            $this->AWE->Logger->setError(array("text" => "E0004 - Hibás adatbázis csatlakozás!"));
+            $this->AWE->Logger->setError(array("text" => "E0004 - Hibás adatbázis csatlakozás!","line"=>__LINE__,"file"=>__FILE__));
         }
         return $pdo;
     }
@@ -70,25 +70,36 @@ class core_db {
      */
     public function doQuery($array = array("sql" => "", "attr" => "")) {
         if (!isset($array['sql'])) {
-            $this->AWE->Logger->setWarn(array("text" => "W0001 - Nem adtál meg sql parancsot!"));
+            $this->AWE->Logger->setWarn(array("text" => "W0001 - Nem adtál meg sql parancsot!","line"=>__LINE__,"file"=>__FILE__));
             return FALSE;
         }
         $query = $this->Connection->prepare($array['sql']);
         if (isset($array['attr']) && !empty($array['attr'])) {
             if ($query->execute($array['attr']) == FALSE) {
-                $this->AWE->Logger->setError(array("text" => "E0005 - Hibás SQL parancs! -> " . $query->errorInfo()[2]));
+                $this->AWE->Logger->setError(array("text" => "E0005 - Hibás SQL parancs! -> " . $query->errorInfo()[2],"line"=>__LINE__,"file"=>__FILE__));
                 return FALSE;
             }
         } else {
             if ($query->execute() == FALSE) {
-                $this->AWE->Logger->setError(array("text" => "E0005 - Hibás SQL parancs! -> " . $query->errorInfo()[2]));
+                $this->AWE->Logger->setError(array("text" => "E0005 - Hibás SQL parancs! -> " . $query->errorInfo()[2],"line"=>__LINE__,"file"=>__FILE__));
                 return FALSE;
             }
         }
         return $query;
     }
 
-    function recursiveWhereTree($array = array(), $logical = FALSE, $like = "=") {
+    /**
+     * Where, Having fát készíti el
+     * @param array $array
+     * @param bool $logical  Megadja milyen  összehasonlítás legyen LIKE, =, <, >, stb..
+     * @global $this->AWE->DB->recursiveWhereTree($array = array(), $logical = FALSE, $like = "="))
+     * @return array|FALSE       
+     */
+    private function recursiveWhereTree($array = array(), $logical = FALSE, $like = "=") {
+        if (empty($array) || !is_array($array)) {
+            $GLOBALS["awe"]->Logger->setError(array("text" => "E0006 - Hibás nem megfelelő array!","line"=>__LINE__,"file"=>__FILE__));
+            return FALSE;
+        }
         $ret = array("string" => "", "attr" => array());
         if ($logical != FALSE) {
             $logicalvar = " " . $logical . " ";
@@ -102,10 +113,9 @@ class core_db {
             }
             if ($key == ".") {
                 $like = $value;
-            }
-            else if ($key == "AND NOT" || $key == "AND" || $key == "OR NOT" || $key == "OR") {
+            } else if ($key == "AND NOT" || $key == "AND" || $key == "OR NOT" || $key == "OR") {
                 if (!is_array($value)) {
-                    $GLOBALS["awe"]->Logger->setError(array("text" => "E0006 - Hibás nem megfelelő array!"));
+                    $GLOBALS["awe"]->Logger->setError(array("text" => "E0006 - Hibás nem megfelelő array!","line"=>__LINE__,"file"=>__FILE__));
                     return FALSE;
                 }
                 $reqursive = $this->recursiveWhereTree($value, $key, $like);
@@ -123,8 +133,17 @@ class core_db {
         return $ret;
     }
 
+    /**
+     * Elkészíti a lekérendő oszlopokat
+     * @param array $array  [oszlopneve]->|neve
+     * @global $this->AWE->DB->projection($array = array("oszlop" => "neve", "oszlop2" => "neve"))
+     * @return array|FALSE       
+     */
     private function projection($array = array("oszlop" => "neve", "oszlop2" => "neve")) {
-        // SELECT * FROM table WHERE as LIKE asd;
+        if (!is_array($array)) {
+            $GLOBALS["awe"]->Logger->setError(array("text" => "E0006 - Hibás nem megfelelő array!","line"=>__LINE__,"file"=>__FILE__));
+            return FALSE;
+        }
         $str = "";
         $i = 0;
         foreach ($array as $key => $value) {
@@ -138,7 +157,17 @@ class core_db {
         return $str;
     }
 
+    /**
+     * Elkészíti a join-okat
+     * @param array $array  [0]->[type],[table],[on]
+     * @global $this->AWE->DB->joins($array = array("0" => array("type" => "INNER", "table" => "tábla", "ON" => "")))
+     * @return array|FALSE       
+     */
     private function joins($array = array("0" => array("type" => "INNER", "table" => "tábla", "ON" => ""))) {
+        if (!is_array($array)) {
+            $GLOBALS["awe"]->Logger->setError(array("text" => "E0006 - Hibás nem megfelelő array!","line"=>__LINE__,"file"=>__FILE__));
+            return false;
+        }
         $str = " ";
         $i = 0;
         foreach ($array as $value) {
@@ -194,63 +223,73 @@ class core_db {
         return $str;
     }
 
-    private function limit($array) {
-        
-    }
-
-    private function offset($array) {
-        
-    }
-
-    function Select($array = array("orderby" => array("column" => "ASC", "column2" => "DESC"), "groupby" => array("column1", "column2"), "having" => array("column1 > 2"), "distinct" => FALSE, "projection" => array(), "where" => array("oszlop" => "érték", "AND" => array("oszlop" => "érték")), "joins" => array("0" => array("type" => "INNER", "table" => "tábla", "ON" => "")))) {
+    function simpleSelect($array = array("orderby" => array("column" => "ASC", "column2" => "DESC"), "groupby" => array("column1", "column2"), "having" => array("column1 > 2"), "distinct" => FALSE, "projection" => array(), "where" => array("oszlop" => "érték", "AND" => array("oszlop" => "érték")), "joins" => array("0" => array("type" => "INNER", "table" => "tábla", "ON" => "")))) {
         $projection = !empty($array['projection']) ? $this->projection($array['projection']) : "*";
         if (empty($array["table"])) {
-            $this->AWE->Logger->setError(array("text" => "E0007 - Nem adtál meg táblát az SQL lekérdezésnél"));
+            $this->AWE->Logger->setError(array("text" => "E0007 - Nem adtál meg táblát az SQL lekérdezésnél","line"=>__LINE__,"file"=>__FILE__));
             return false;
         }
         $distinct = (!empty($array["distinct"]) && $array['distinct'] == true) ? "DISTINCT " : "";
         $joins = !empty($array["joins"]) ? $this->joins($array["joins"]) : "";
         $groupby = !empty($array["groupby"]) ? $this->groupBy($array["groupby"]) : "";
-        $having = !empty($groupby) && !empty($array["having"]) ? " HAVING " . $this->having($array["having"]) : "";
+        $having = !empty($groupby) && !empty($array["having"]) ? $this->recursiveWhereTree($array["having"]) : array();
         $orderby = !empty($array["orderby"]) ? " ORDER BY " . $this->orderby($array["orderby"]) : "";
         $limit = !empty($array["limit"]) ? " LIMIT " . $array["limit"] : "";
         $offset = !empty($array["limit"]) && !empty($array["offset"]) ? " OFFSET " . $array["offset"] : "";
-        $where = !empty($array["where"]) ? $this->recursiveWhereTree($array["where"]) : "";
-        $wherestr = !empty($where) ? " WHERE " . $where["string"] : "";
-        var_dump($where);
-        $str = "SELECT " . $distinct . $projection . " FROM " . $array["table"] . $joins . $wherestr . $groupby . $having . $orderby . $limit . $offset;
-        echo $str;
-        return $this->fetchAll(array("sql" => $str, "attr" => $where["attr"]), PDO::FETCH_ASSOC);
+        $where = !empty($array["where"]) ? $this->recursiveWhereTree($array["where"]) : array();
+        $wherestr = !empty($where["string"]) ? " WHERE " . $where["string"] : "";
+        $havingstr = !empty($having["string"]) ? " HAVING " . $having["string"] : "";
+        if (!isset($where["attr"])) {
+            $where["attr"] = array();
+        }
+        if (!isset($having["attr"])) {
+            $having["attr"] = array();
+        }
+        $attr = array_merge($having["attr"], $where["attr"]);
+        $str = "SELECT " . $distinct . $projection . " FROM " . $array["table"] . $joins . $wherestr . $groupby . $havingstr . $orderby . $limit . $offset;
+        return array("sql" => $str, "attr" => $attr);
     }
 
-    /* Fetching and Querying ---> Array-el tér vissza! */
-
-    public function fetchWithCount($array, $sets = NULL) {
-        if ($array != NULL) {
+    /**
+     * Visszaadja az sql kérést a sorok számával
+     * @param array $array  [sql]
+     * @global $this->AWE->DB->fetchWithCount($array=array("sql"=>"","attr"=>""), $sets = NULL)
+     * @return array|FALSE       
+     */
+    public function fetchWithCount($array=array("sql"=>"","attr"=>""), $sets = NULL) {
+        if (!empty($array)) {
             $q = $this->doQuery($array);
             return array("result" => $q->fetch($sets), "count" => $q->rowCount());
         }
-        $this->AWE->Logger->setWarn(array("text" => "W0001 - Nem adtál meg sql parancsot!"));
+        $this->AWE->Logger->setWarn(array("text" => "W0001 - Nem adtál meg sql parancsot!","line"=>__LINE__,"file"=>__FILE__));
         return FALSE;
     }
 
-    /* Fetching and Querying */
-
-    public function fetch($array, $sets = NULL) {
-        if ($array != NULL) {
+    /**
+     * Visszaadja az sql kérés egy sorát
+     * @param array $array  [sql],[attr]
+     * @global $this->AWE->DB->fetchWithCount($array=array("sql"=>"","attr"=>""), $sets = NULL)
+     * @return array|FALSE       
+     */
+    public function fetch($array=array("sql"=>"","attr"=>""), $sets = NULL) {
+        if (!empty($array)) {
             return $this->doQuery($array)->fetch($sets);
         }
-        $this->AWE->Logger->setWarn(array("text" => "W0001 - Nem adtál meg sql parancsot!"));
+        $this->AWE->Logger->setWarn(array("text" => "W0001 - Nem adtál meg sql parancsot!","line"=>__LINE__,"file"=>__FILE__));
         return FALSE;
     }
 
-    /* FetchAll and Quering */
-
-    public function fetchAll($array, $sets = NULL) {
-        if ($array != NULL) {
+    /**
+     * Visszaadja az sql kérést összes sorát
+     * @param array $array  [sql],[attr]
+     * @global $this->AWE->DB->fetchWithCount($array=array("sql"=>"","attr"=>""), $sets = NULL)
+     * @return array|FALSE       
+     */
+    public function fetchAll($array=array("sql"=>"","attr"=>""), $sets = NULL) {
+        if (!empty($array)) {
             return $this->doQuery($array)->fetchAll($sets);
         }
-        $this->AWE->Logger->setWarn(array("text" => "W0001 - Nem adtál meg sql parancsot!"));
+        $this->AWE->Logger->setWarn(array("text" => "W0001 - Nem adtál meg sql parancsot!","line"=>__LINE__,"file"=>__FILE__));
         return FALSE;
     }
 

@@ -65,16 +65,21 @@ class adm_componentmanager {
                     $GLOBALS['awe']->Template->AjaxTable($arr);
 
                     break;
-                case "settings":
-                    $_POST["method2"]="update";
+                case "modification":
                     $GLOBALS['awe']->Template->AjaxSettingsView($arr);
 
                     break;
                 case "new":
-                    $_POST["method2"]="new";
                     $GLOBALS['awe']->Template->AjaxSettingsView($arr);
                     break;
-                case "save":
+                case "add":
+                    echo "add";
+                    if ($GLOBALS['awe']->Template->AjaxSettingsSave($arr)) {
+                        echo json_encode(array("html" => "<div class='success'><i class='fas fa-check'></i><div class='text'>Sikeres mentés!</div></div>"));
+                    }
+
+                    break;
+                case "update":
                     if ($GLOBALS['awe']->Template->AjaxSettingsSave($arr)) {
                         echo json_encode(array("html" => "<div class='success'><i class='fas fa-check'></i><div class='text'>Sikeres mentés!</div></div>"));
                     }

@@ -20,7 +20,7 @@ class adm_urlmanger {
             ),
             "where" => array(),
             "rowperpage" => "",
-            "page" => "1",
+            "page" => "2",
             "filters" => array(
                 "url_id" => array(
                     "type" => "text",
@@ -195,9 +195,7 @@ class adm_urlmanger {
         ));
 
         if (isset($array["ajax"]) && $array["ajax"] == TRUE) {
-//$this->Ajax($array);
-
-            switch ($_POST['method']) {
+          switch ($_POST['method']) {
                 case "filter":
                     $GLOBALS['awe']->Template->AjaxTable($arr);
 
@@ -217,167 +215,9 @@ class adm_urlmanger {
                     break;
             }
         } else {
-            echo $GLOBALS['awe']->Template->TableFrameGenerator($arr);
-//$this->Viewer($array);
+           echo $GLOBALS['awe']->Template->TableFrameGenerator($arr);
         }
     }
-
-    /*    public $js;
-
-      public function __construct($array) {
-
-      // GLOBALIS PARAMÉTEREK
-      $arr = array(
-      "table" => "core_url",
-      "columns" => array(
-      "url_id" => "url_id",
-      "url_seq" => "url_seq",
-      "url_pos" => "url_pos",
-      "url_url" => "url_url",
-      "url_obj->>'name'" => "name",
-      "url_obj->>'type'" => "type",
-      "url_obj->>'params'" => "params",
-      "url_obj->>'public'" => "public",
-      "url_obj->>'command'" => "command",
-      ),
-      "where" => array(),
-      "rowperpage" => "",
-      "page" => "1",
-      "filters" => array(
-      "url_id" => array(
-      "type" => "text"),
-      "url_seq" => array(
-      "type" => "text"),
-      "url_pos" => array(
-      "type" => "text"),
-      "url_url" => array(
-      "type" => "text"),
-      "url_obj->>@name@" => array(
-      "type" => "text"),
-      "url_obj->>@type@" => array(
-      "type" => "text"),
-      "url_obj->>@params@" => array(
-      "type" => "text"),
-      "url_obj->>@public@" => array(
-      "type" => "text"),
-      "url_obj->>@command@" => array(
-      "type" => "text")),
-      "data-result" => "result",
-      "data-url" => "/admin/urlmanger/ajax",
-      "edit" => array(
-      "url_id" => array("type" => "string","editable"=>FALSE),
-      "url_seq" => array("type" => "string")
-      )
-      );
-
-      if (isset($array["ajax"]) && $array["ajax"] == TRUE) {
-      //$this->Ajax($array);
-      //var_dump($_POST);
-      switch ($_POST['method']) {
-      case "filter":
-      $GLOBALS['awe']->Template->AjaxTable($arr);
-      break;
-
-      case "settings":
-      $id = $_POST['url_id'];
-      $urlsettings = $GLOBALS['awe']->DB->fetch(array(
-      'sql' => "SELECT * FROM core_url WHERE url_id=:key",
-      "attr" => array("key" => $id)), PDO::FETCH_ASSOC
-      );
-      $GLOBALS['awe']->Template->addJS("https://code.jquery.com/ui/1.12.1/jquery-ui.js", "https://code.jquery.com/jquery-1.12.4.js");
-      $GLOBALS['awe']->Template->addCSS("https://jqueryui.com/resources/demos/style.css", " https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css");
-
-      // https://jqueryui.com/tabs/#default
-      // "/admin/urlmanger/ajax" ujratöltés a cél
-
-      $files = scandir(__DIR__ . '/view');
-      $files = array_diff($files, array('.', '..'));
-      $tabs = array();
-      foreach ($files as $value) {
-      // name , value array-t kap vissza.
-      $tabs[] = (include __DIR__ . '/view/' . $value);
-      }
-
-
-      $html = '
-      <script>
-      $( function() {
-      $( "#tabs" ).tabs();
-      } );
-      $( function() {
-      $( "#draggable" ).draggable();
-      } );
-      </script>
-      <div id="draggable" class="ui-widget-content">
-
-      <div id="tabs">
-      <ul>
-      ';
-
-      foreach ($tabs as $key => $value) {
-      $html.='<li><a href="#tabs-' . $key . '">' . $value["name"] . '</a></li>';
-      //                    $html.=$value["tabdata"];
-      };
-      $html.= '
-      <li><a href="#" onclick="$(\'#draggable\').remove();">
-      <i class="fas fa-skull"></i></a>
-      </li>
-
-      </ul>
-      ';
-      foreach ($tabs as $key => $value) {
-      $html.= '<div id="tabs-' . $key . '">' . $value["tabdata"] . '</div>';
-      };
-
-      $html.='
-      </div>
-      </div>
-
-      ';
-
-      echo json_encode(array("html" => $html));
-      break;
-      case "save":
-      $id = $_POST['url_id'];
-
-      var_dump($_POST);
-      $argum = array();
-
-      $sql = 'UPDATE core_url SET ';
-      $i = 0;
-      foreach ($_POST as $key => $value) {
-      if (array_key_exists($key, $arr['edit']) && (empty($arr['edit'][$key]["editable"]) || $arr['edit'][$key]["editable"]!=FALSE)) {
-      if ($i > 0)
-      $sql.=",";
-      $sql.= "$key=" . ':key' . "$i ";
-
-      $argum["key$i"] = $value;
-      $i++;
-      }
-      } */
-    /* column1 = value1,
-      column2 = value2, ... */
-    /*
-      $sql.='WHERE url_id=' . ':key' . "$i";
-      $argum["key$i"] = $id;
-      var_dump($sql, $argum);
-      if ($i > 0) {
-      $a = $GLOBALS['awe']->DB->fetch(array(
-      'sql' => $sql,
-      "attr" => $argum), PDO::FETCH_ASSOC
-      );
-      }
-      var_dump($a);
-      break;
-
-      default: echo "meh";
-      }
-      } else {
-      echo $GLOBALS['awe']->Template->TableFrameGenerator($arr);
-      //$this->Viewer($array);
-      }
-      }
-     */
 }
 
 ?>

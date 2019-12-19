@@ -30,6 +30,7 @@ global $awe;
  * @var string $GLOBALS AWE
  * @see Example::getDemoData()
  */
+
 $awe = new AWE(array());
 /* Core osztályok hívása */
 $awe->coreInit(array());
@@ -37,47 +38,41 @@ $awe->coreInit(array());
 //var_dump($GLOBALS['awe']->LoadComponents(array("name"=>"adm_url", "params"=>array("type"=>"edit"))));
 
 
-
-$A=array(
-    "table"=>"core_url",
-   /* "limit"=>"3",
-    "offset"=>"5",*/
-    /*"orderby"=>array(
-        "url_id" => "ASC", 
-        "url_pos" => "DESC"),
-    "groupby" => array(
-        "url_pos"), 
-    "having" => array(
-        "url_pos = 'content'"),*/
-    "distinct" => FALSE,
-    "projection" => array(),
-    "where" => array(
-        "url_url" => "admin",
-        "AND" => array(
-            "."=>">",
-            "url_seq" => "2")),
-    /*"joins" => array(
-        0 => array(
-            "type" => "INNER",
-            "table" => "core_url_template",
-            "ON" => "core_url.url_url = core_url_template.url_url")
-        )*/
-    );
-/* Template betöltő hívása */
-$awe->Template->Load(array());
-var_dump($awe->DB->Select($A));
-
 /*
 $A = array(
-    "AND NOT" => array(
-        "hello" => "asd",
+    "table" => "core_url",
+    /* "limit"=>"3",
+      "offset"=>"5", */
+    /* "orderby"=>array(
+      "url_id" => "ASC",
+      "url_pos" => "DESC"),
+    "groupby" => array(
+        "url_pos"),
+    "having" => array(
         "OR" => array(
-            "."=>"LIKE",
-            "or1" => "%or 1%",
-            "or2" => "or2"
-        ),
-        "asd" => "asdda"
-    )
-);
-var_dump(tree($A));*/
+            "url_pos" => "1",
+            "AND" => array(
+                "." => ">",
+                "url_pos" => "2"))),
+    "distinct" => false,
+    "projection" => array(),
+    "where" => array(
+        "OR" => array(
+            "."=>">",
+            "url_pos" => "0",
+            "AND" => array(
+                "." => ">",
+                "url_pos" => "2"))),
+        "joins" => array(
+          0 => array(
+          "type" => "INNER",
+          "table" => "core_url_template",
+          "ON" => "core_url.url_url = core_url_template.url_url")
+          )
+);*/
+/* Template betöltő hívása */
+
+$awe->Template->Load(array());
+  die();                              
+
 ?>
