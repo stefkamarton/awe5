@@ -73,7 +73,6 @@ class adm_componentmanager {
                     $GLOBALS['awe']->Template->AjaxSettingsView($arr);
                     break;
                 case "add":
-                    echo "add";
                     if ($GLOBALS['awe']->Template->AjaxSettingsSave($arr)) {
                         echo json_encode(array("html" => "<div class='success'><i class='fas fa-check'></i><div class='text'>Sikeres mentés!</div></div>"));
                     }
