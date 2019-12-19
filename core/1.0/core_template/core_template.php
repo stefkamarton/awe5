@@ -369,11 +369,7 @@ class core_template {
                         $obj[$key] = json_encode($value);
                     }
                 }
-                //$obj[$wherekey] = $whereval;
-                var_dump($cols);
-                var_dump($colsVal);
-                var_dump($obj);
-                var_dump($GLOBALS['awe']->DB->doQuery(array("sql" => "INSERT INTO " . $array['table'] . " (" . $cols . ") VALUES (" . $colsVal . ")", "attr" => $obj)));
+                $GLOBALS['awe']->DB->doQuery(array("sql" => "INSERT INTO " . $array['table'] . " (" . $cols . ") VALUES (" . $colsVal . ")", "attr" => $obj));
                 return true;
             }
         } else {
@@ -761,7 +757,7 @@ class core_template {
 
 
             $str .= "<form class='filter' id='ajax' method='post' data-method='new' data-result='#settings' data-url='" . $array['data-url'] . "'>" . PHP_EOL;
-            $str .= "<div class='filter-input'><a class='btn' id='new' href='#'><i class='far fa-times-circle'></i> " . T("UJ-ELEM") . "</a></div>";
+            $str .= "<div class='filter-input'><a class='btn' id='new' href='#'><i class='fas fa-plus-circle'></i> " . T("UJ-ELEM") . "</a></div>";
             $str .= "</form>" . PHP_EOL;
 
 
