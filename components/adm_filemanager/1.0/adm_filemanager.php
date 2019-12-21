@@ -191,25 +191,65 @@ define("MIME_TYPES", array(
     "application/vnd.ms-powerpoint.slideshow.macroEnabled.12" => array("name" => "ppsm", "icon" => "far fa-file-powerpoint"),
     "application/json" => array("name" => "json", "icon" => "far fa-file-code")
 ));
+define("FILEMANAGER_ROOT_DIR", "./sites/" . $GLOBALS['awe']->SiteAlias . "/tmp");
 
 class adm_filemanager {
 
     function __construct($array) {
-        $this->listDirectory("./sites");
+        $this->listDirectory(FILEMANAGER_ROOT_DIR);
+    }
+
+    public function recursiveDirectoryTree($directory) {
+        $array = array();
+        $dirs = scandir($directory);
+        foreach ($dirs as $dir) {
+            if ($dir != "." && $dir != "..") {
+                if (is_dir($directory . "/" . $dir) && iterator_count(new FilesystemIterator($directory . "/" . $dir, FilesystemIterator::SKIP_DOTS)) > 0) {
+                    $array[$dir] = $this->recursiveDirectoryTree($directory . "/" . $dir);
+                } else {
+                    $array[$dir] = array();
+                }
+            }
+        }
+        return $array;
+    }
+
+    public function recursiveDirectoryTreeWriter($array) {
+        $str = "";
+        foreach ($array as $key => $value) {
+            if (!empty($value)) {
+                $str .= "<li class='expanded-directory'><div class='expanded-btn'><i class='fas fa-caret-right'></i></div> " . $key . "</li>";
+                $str .= "<ul class='expanded'>" . $this->recursiveDirectoryTreeWriter($value) . "</ul>";
+            } else {
+                $str .= "<li class='alone'>" . $key . "</li>";
+            }
+        }
+        return $str;
     }
 
     public function listDirectory($directory) {
-        $dirs = scandir($directory);
+        echo $this->recursiveDirectoryTreeWriter($this->recursiveDirectoryTree(FILEMANAGER_ROOT_DIR));
+        /*$dirs = scandir($directory);
         $files = array();
         $i = 0;
+        echo "<div id='result'><ul class='directory-tree'>";
         foreach ($dirs as $dir) {
             if ($dir != "." && $dir != "..") {
-                $files[$i] = new adm_file(array("file" => "./sites/" . $dir));
-                echo $files[$i]->fileName . " " . $files[$i]->fileModificationTime . " " . $files[$i]->fileType['name'] . " <i class='" . $files[$i]->fileType['icon'] . "'></i> " . $files[$i]->fileSize . "<br>";
-
+                $files[$i] = new adm_file(array("file" => FILEMANAGER_ROOT_DIR . "/" . $dir));
+                echo "<li>"
+                . "<div class='block'>"
+                . "<i class='" . $files[$i]->fileType['icon'] . "'></i>"
+                . "</div>"
+                . "<div class='block'>"
+                . $files[$i]->fileName
+                . "</div>"
+                . "</li>"
+                . "</div>"
+                . "</div>";
                 $i++;
             }
         }
+        echo "</ul></div>";*/
     }
 
 }
