@@ -257,62 +257,62 @@ input:focus, textarea:focus, select:focus{
 }
 
 /*Table*/
-#result .table{
+.table{
     width:90%;
     margin:20px auto;
     border-radius: 3px;
     background:var(--black);
     color: var(--white);  
 }
-#result .table .thead .tr .th{
+.table .thead .tr .th{
     padding:15px;    
 }
-#result .table .thead .tr .th .order{
+.table .thead .tr .th .order{
     display:flex;
     flex-direction:row;
     flex-wrap:nowrap;
     margin:0 5px;
     transition: .3s all linear;
 }
-#result .table .thead .tr .th .order-in{
+.table .thead .tr .th .order-in{
     opacity: 0;
     transition: .3s all linear;
 }
-#result .table .thead .tr .th .order-in.active{
+.table .thead .tr .th .order-in.active{
     color:var(--red);
     opacity: 1;
 }
-#result .table .thead .tr .th .th-in{
+.table .thead .tr .th .th-in{
     display:flex;
     flex-direction: row;
     flex-wrap:nowrap;
     justify-content: space-between;
     text-transform: uppercase;
 }
-#result .table .thead .tr .th .th-in .column-name{
+.table .thead .tr .th .th-in .column-name{
 }
-#result .table .thead .tr .th:hover .order-in{
+.table .thead .tr .th:hover .order-in{
     opacity: 1;
 }
-#result .table .thead .tr .th .order .order-in{
+.table .thead .tr .th .order .order-in{
     margin:0 5px;
     transition: .3s all linear;
 }
-#result .table .thead .tr .th .order .order-in:hover{
+.table .thead .tr .th .order .order-in:hover{
     color:var(--red);
 }
-#result .table .tbody .tr .td{
+.table .tbody .tr .td{
     vertical-align: middle;
     padding:20px 15px;
 }
-#result .table .tbody .tr{
+.table .tbody .tr{
     background-color: var(--light-black2);
     transition: .3s all linear;
 }
-#result .table .tbody .tr:nth-child(2n+1){
+.table .tbody .tr:nth-child(2n+1){
     background-color: var(--light-black);
 }
-#result .table .tbody .tr:hover{
+.table .tbody .tr:hover{
     background-color:var(--grey);
 }
 /*

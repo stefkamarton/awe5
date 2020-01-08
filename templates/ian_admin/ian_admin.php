@@ -148,6 +148,9 @@
                 $('.btn.save').on('click', function () {
                     Ajax(this);
                 });
+                $('.folder-name').on('click', function () {
+                    Ajax(this);
+                });
                 $('#pagenumber').on('keyup change', function () {
                     Ajax(this);
                 });
@@ -215,6 +218,9 @@
                     $(this).closest("#settings").hide(300);
                     $(this).closest("#settings").text("");
                 });
+                $('.folder-name').on('click', function () {
+                    Ajax(this);
+                });
                 $('.btn.save').on('click', function () {
                     Ajax(this);
                 });
@@ -240,7 +246,82 @@
             });
         </script>
 
+        <script>
+            $(document).ready(function () {
+                $('.expanded-btn').on("click", function () {
+                    var element = $(this).closest(".expanded-directory").next(".expanded");
+                    if (element.is(":hidden")) {
+                        $(this).css({'transform': 'rotate(90deg)'});
+                        element.show(500);
+                    } else {
+                        element.hide(500);
+                        $(this).css({'transform': 'rotate(0deg)'});
+                        element.find(".expanded").hide(500);
+                        element.find(".expanded-btn").css({'transform': 'rotate(0deg)'});
+                    }
 
+                });
+            });</script>
+        <style>
+            .filemanager{
+                display:flex;
+                margin-top:20px;
+                height:500px;
+                max-height:500px;
+                overflow:hidden;
+            }
+            .filemanager .directory-tree-view{
+                width:30%;
+                padding-top:50px;
+                min-width: 250px;
+                border:2px solid black;
+            }
+            .filemanager .file-list{
+                width:70%;
+                min-width: 500px;
+                border:2px solid black;
+                overflow: auto;
+            }
+            .filemanager .file-list .table{
+                margin:0;
+                width: 100%;
+                border-radius: 0;
+            }
+            .filemanager .file-list .table .tbody{
+                max-height: 480px;
+                height:480;
+                overflow:auto;
+            }
+            ul.tree-view li{
+                margin-left:10px;
+                list-style-type: none;
+                flex-direction: row;
+                display: flex;
+                align-items: center;
+                flex-wrap: nowrap;
+            }
+            ul.tree-view li .folder-name{
+                cursor: pointer;
+            }
+            ul.tree-view li .folder-icon{
+                margin-right:5px;
+            }
+            ul.tree-view li.alone .folder-icon{
+                margin-left: 20px;
+            }
+            li.alone{
+                margin-left:35px;
+            }
+            ul.expanded{
+                margin-left:35px;
+                display:none;
+            }
+            .expanded-btn{
+                width:10px;
+                cursor:pointer;
+                margin-right: 10px;
+            }
+        </style>
     <body>
 
         <!-- nav class="navbar">

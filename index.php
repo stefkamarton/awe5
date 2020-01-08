@@ -73,37 +73,4 @@ $awe->coreInit(array());
 
 $awe->Template->Load(array());
 ?>
-<script>
-    $(document).ready(function () {
-        $('.expanded-btn').on("click", function () {
-            var element = $(this).closest(".expanded-directory").next(".expanded");
-            if (element.is(":hidden")) {
-                $(this).css({'transform': 'rotate(90deg)'});
-                element.show(500);
-            } else {
-                element.hide(500);
-                $(this).css({'transform': 'rotate(0deg)'});
-                element.find(".expanded").hide(500);
-                element.find(".expanded-btn").css({'transform': 'rotate(0deg)'});
-            }
 
-        });
-    });</script>
-<style>
-    li{
-        margin-left:30px;
-        list-style-type: none;
-    }
-    li.alone{
-        margin-left:45px;
-    }
-    ul.expanded{
-        margin-left:30px;
-        display:none;
-    }
-    .expanded-btn{
-        display:inline-block;
-        width:10px;
-        text-align: center;
-    }
-</style>

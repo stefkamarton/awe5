@@ -1,569 +1,103 @@
-[2019-11-06 10:17:25][http://awe5.plugin.hu/admin/translator] E0001 - Nem található az oldal adatbázis konfigja! - ./sites/awe5.plugin.hu/config.ini
-[2019-11-06 10:17:25][http://awe5.plugin.hu/admin/translator] E0004 - Hibás adatbázis csatlakozás!
-[2019-11-06 10:23:44][http://awe5.plugin.hu/admin/translator] E0001 - Nem található az oldal adatbázis konfigja! - ./sites/awe5.plugin.hu/config.ini
-[2019-11-06 10:23:44][http://awe5.plugin.hu/admin/translator] E0004 - Hibás adatbázis csatlakozás!
-[2019-11-06 10:23:46][http://awe5.plugin.hu/admin/translator] E0001 - Nem található az oldal adatbázis konfigja! - ./sites/awe5.plugin.hu/config.ini
-[2019-11-06 10:23:46][http://awe5.plugin.hu/admin/translator] E0004 - Hibás adatbázis csatlakozás!
-[2019-11-06 10:23:59][http://awe5.plugin.hu/admin/translator] E0001 - Nem található az oldal adatbázis konfigja! - ./sites/awe5.plugin.hu/config.ini
-[2019-11-06 10:23:59][http://awe5.plugin.hu/admin/translator] E0004 - Hibás adatbázis csatlakozás!
-[2019-11-07 08:22:24][http://awe5.plugin.hu/admin/translator] E0004 - Hibás SQL parancs!
-[2019-11-07 08:27:26][http://awe5.plugin.hu/admin/translator] E0004 - Hibás SQL parancs!
-[2019-11-07 08:28:14][http://awe5.plugin.hu/admin/translator] E0004 - Hibás SQL parancs!
-[2019-11-07 08:28:16][http://awe5.plugin.hu/admin/translator] E0004 - Hibás SQL parancs!
-[2019-11-07 08:28:16][http://awe5.plugin.hu/admin/translator] E0004 - Hibás SQL parancs!
-[2019-11-07 08:30:00][http://awe5.plugin.hu/admin/translator] E0004 - Hibás SQL parancs! -> ERROR:  syntax error at or near "das"
-LINE 1: SELECT * das FROM core_translator LIMIT 10
-                 ^
-[2019-11-07 08:30:01][http://awe5.plugin.hu/admin/translator] E0004 - Hibás SQL parancs! -> ERROR:  syntax error at or near "das"
-LINE 1: SELECT * das FROM core_translator LIMIT 10
-                 ^
-[2019-11-07 08:30:01][http://awe5.plugin.hu/admin/translator] E0004 - Hibás SQL parancs! -> ERROR:  syntax error at or near "das"
-LINE 1: SELECT * das FROM core_translator LIMIT 10
-                 ^
-[2019-11-07 08:32:13][http://awe5.plugin.hu/admin/translator] E0004 - Hibás SQL parancs! -> ERROR:  syntax error at or near "das"
-LINE 1: SELECT * das FROM core_translator LIMIT 10
-                 ^
-[2019-11-07 08:32:14][http://awe5.plugin.hu/admin/translator] E0004 - Hibás SQL parancs! -> ERROR:  syntax error at or near "das"
-LINE 1: SELECT * das FROM core_translator LIMIT 10
-                 ^
-[2019-11-07 08:32:14][http://awe5.plugin.hu/admin/translator] E0004 - Hibás SQL parancs! -> ERROR:  syntax error at or near "das"
-LINE 1: SELECT * das FROM core_translator LIMIT 10
-                 ^
-[2019-11-07 08:32:14][http://awe5.plugin.hu/admin/translator] E0004 - Hibás SQL parancs! -> ERROR:  syntax error at or near "das"
-LINE 1: SELECT * das FROM core_translator LIMIT 10
-                 ^
-[2019-11-07 10:22:04][http://awe5.plugin.hu/admin/translator] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near ","
-LINE 1: SELECT tra_key, , tra_obj->'language'->>'hu_HU' AS hu_HU, tr...
-                        ^
-[2019-11-07 10:22:59][http://awe5.plugin.hu/admin/translator] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "AS"
-LINE 1: ... AS hu_HU, tra_obj->'language'->>'en_GB' AS en_GB AS languag...
-                                                             ^
-[2019-11-07 10:23:00][http://awe5.plugin.hu/admin/translator] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "AS"
-LINE 1: ... AS hu_HU, tra_obj->'language'->>'en_GB' AS en_GB AS languag...
-                                                             ^
-[2019-11-07 10:23:01][http://awe5.plugin.hu/admin/translator] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "AS"
-LINE 1: ... AS hu_HU, tra_obj->'language'->>'en_GB' AS en_GB AS languag...
-                                                             ^
-[2019-11-07 10:23:01][http://awe5.plugin.hu/admin/translator] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "AS"
-LINE 1: ... AS hu_HU, tra_obj->'language'->>'en_GB' AS en_GB AS languag...
-                                                             ^
-[2019-11-07 10:32:55][http://awe5.plugin.hu/admin/translator] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near ","
-LINE 1: SELECT tra_key , tra_obj->'language'->>'' AS , tra_obj->'lan...
-                                                     ^
-[2019-11-07 10:32:56][http://awe5.plugin.hu/admin/translator] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near ","
-LINE 1: SELECT tra_key , tra_obj->'language'->>'' AS , tra_obj->'lan...
-                                                     ^
-[2019-11-07 10:32:56][http://awe5.plugin.hu/admin/translator] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near ","
-LINE 1: SELECT tra_key , tra_obj->'language'->>'' AS , tra_obj->'lan...
-                                                     ^
-[2019-11-08 08:47:14][http://awe5.plugin.hu/admin/translator?params=eyJ0cmFfa2V5IjoiMjMiLCJkZWZfbWVyZ2UiOltdfQ] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_00000007" requires 1
-[2019-11-08 08:48:09][http://awe5.plugin.hu/admin/translator?params=eyJ0cmFfa2V5IjoiMjMiLCJkZWZfbWVyZ2UiOltdfQ] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_00000007" requires 1
-[2019-11-08 08:48:10][http://awe5.plugin.hu/admin/translator?params=eyJ0cmFfa2V5IjoiMjMiLCJkZWZfbWVyZ2UiOltdfQ] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_00000007" requires 1
-[2019-11-08 08:48:10][http://awe5.plugin.hu/admin/translator?params=eyJ0cmFfa2V5IjoiMjMiLCJkZWZfbWVyZ2UiOltdfQ] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_00000007" requires 1
-[2019-11-08 08:48:54][http://awe5.plugin.hu/admin/translator?params=eyJ0cmFfa2V5IjoiMjMiLCJkZWZfbWVyZ2UiOltdfQ] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_00000007" requires 1
-[2019-11-08 08:48:55][http://awe5.plugin.hu/admin/translator?params=eyJ0cmFfa2V5IjoiMjMiLCJkZWZfbWVyZ2UiOltdfQ] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_00000007" requires 1
-[2019-11-08 08:49:50][http://awe5.plugin.hu/admin/translator?params=eyJ0cmFfa2V5IjoiMjMiLCJkZWZfbWVyZ2UiOltdfQ] E0005 - Hibás SQL parancs! -> 
-[2019-11-08 08:52:03][http://awe5.plugin.hu/admin/translator] E0005 - Hibás SQL parancs! -> 
-[2019-11-08 08:52:06][http://awe5.plugin.hu/admin/translator] E0005 - Hibás SQL parancs! -> 
-[2019-11-08 08:52:07][http://awe5.plugin.hu/admin/translator] E0005 - Hibás SQL parancs! -> 
-[2019-11-08 08:52:08][http://awe5.plugin.hu/admin/translator] E0005 - Hibás SQL parancs! -> 
-[2019-11-08 08:52:46][http://awe5.plugin.hu/admin/translator] E0005 - Hibás SQL parancs! -> 
-[2019-11-08 08:52:47][http://awe5.plugin.hu/admin/translator] E0005 - Hibás SQL parancs! -> 
-[2019-11-08 08:52:47][http://awe5.plugin.hu/admin/translator] E0005 - Hibás SQL parancs! -> 
-[2019-11-08 09:03:09][http://awe5.plugin.hu/admin/translator/ajax] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "OR"
-LINE 1: ...e'->>'en_GB' AS en_GB FROM core_translator WHERE  OR  tra_ob...
-                                                             ^
-[2019-11-08 09:04:09][http://awe5.plugin.hu/admin/translator/ajax] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "OR"
-LINE 1: ...e'->>'en_GB' AS en_GB FROM core_translator WHERE  OR  tra_ob...
-                                                             ^
-[2019-11-08 09:04:43][http://awe5.plugin.hu/admin/translator/ajax] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "OR"
-LINE 1: ...e'->>'en_GB' AS en_GB FROM core_translator WHERE  OR  tra_ob...
-                                                             ^
-[2019-11-08 09:06:01][http://awe5.plugin.hu/admin/translator/ajax] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "WHERE"
-LINE 1: ...ge'->>'en_GB' AS en_GB FROM core_translator WHERE WHERE tra_...
-                                                             ^
-[2019-11-08 09:06:13][http://awe5.plugin.hu/admin/translator/ajax] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "WHERE"
-LINE 1: ...ge'->>'en_GB' AS en_GB FROM core_translator WHERE WHERE tra_...
-                                                             ^
-[2019-11-08 09:33:44][http://awe5.plugin.hu/admin/translator] E0005 - Hibás SQL parancs! -> ERROR:  column "language" does not exist
-LINE 1: SELECT tra_key, tra_obj->>language AS languages FROM core_tr...
+[2019-12-19 07:26:10][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  column "core_url.url_id" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT * FROM core_url WHERE (url_seq > $1) GROUP BY url_pos
+               ^
+[2019-12-19 07:26:11][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  column "core_url.url_id" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT * FROM core_url WHERE (url_seq > $1) GROUP BY url_pos
+               ^
+[2019-12-19 07:26:11][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  column "core_url.url_id" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT * FROM core_url WHERE (url_seq > $1) GROUP BY url_pos
+               ^
+[2019-12-19 07:34:08][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  column "core_url.url_id" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT * FROM core_url WHERE (url_seq > $1) GROUP BY url_pos
+               ^
+[2019-12-19 08:26:38][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  column "core_url.url_id" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT * FROM core_url WHERE (url_seq > $1) GROUP BY url_pos
+               ^
+[2019-12-19 08:27:38][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  column "core_url.url_id" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT * FROM core_url WHERE (url_seq > $1) GROUP BY url_pos
+               ^
+[2019-12-19 08:27:47][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  column "core_url.url_url" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT url_url AS url_url FROM core_url WHERE (url_seq > $1)...
+               ^
+[2019-12-19 08:27:49][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  column "core_url.url_url" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT url_url AS url_url FROM core_url WHERE (url_seq > $1)...
+               ^
+[2019-12-19 08:28:29][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "."
+LINE 1: SELECT url_url AS core_url.url_url FROM core_url WHERE (url_...
                                   ^
-[2019-11-08 09:33:56][http://awe5.plugin.hu/admin/translator] E0005 - Hibás SQL parancs! -> ERROR:  column "language" does not exist
-LINE 1: SELECT tra_key, tra_obj->>language AS languages FROM core_tr...
-                                  ^
-[2019-11-08 11:16:34][http://awe5.plugin.hu/admin/translator?params=eyJ0cmFfa2V5IjpudWxsLCJkZWZfbWVyZ2UiOltdfQ] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "OFFSET"
-LINE 1: ...language' AS languages FROM core_translator LIMIT  OFFSET 0*
-                                                              ^
-[2019-11-08 11:16:35][http://awe5.plugin.hu/admin/translator?params=eyJ0cmFfa2V5IjpudWxsLCJkZWZfbWVyZ2UiOltdfQ] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "OFFSET"
-LINE 1: ...language' AS languages FROM core_translator LIMIT  OFFSET 0*
-                                                              ^
-[2019-11-08 11:16:36][http://awe5.plugin.hu/admin/translator?params=eyJ0cmFfa2V5IjpudWxsLCJkZWZfbWVyZ2UiOltdfQ] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "OFFSET"
-LINE 1: ...language' AS languages FROM core_translator LIMIT  OFFSET 0*
-                                                              ^
-[2019-11-08 11:16:37][http://awe5.plugin.hu/admin/translator?params=eyJ0cmFfa2V5IjpudWxsLCJkZWZfbWVyZ2UiOltdfQ] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "OFFSET"
-LINE 1: ...language' AS languages FROM core_translator LIMIT  OFFSET 0*
-                                                              ^
-[2019-11-11 09:38:29][http://awe5.plugin.hu/admin/translator?params=eyJ0cmFfa2V5IjoiNDQiLCJ0cmFfZWxlbWVudFBlclBhZ2UiOiJhbGwiLCJkZWZfbWVyZ2UiOltdfQ] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at end of input
-LINE 1: ...ra_obj->'language'->>'en_GB' LIKE $1  LIMIT all OFFSET 0*all
-                                                                       ^
-[2019-11-11 09:38:31][http://awe5.plugin.hu/admin/translator?params=eyJ0cmFfa2V5IjoiNDQiLCJ0cmFfZWxlbWVudFBlclBhZ2UiOiJhbGwiLCJkZWZfbWVyZ2UiOltdfQ] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at end of input
-LINE 1: ...ra_obj->'language'->>'en_GB' LIKE $1  LIMIT all OFFSET 0*all
-                                                                       ^
-[2019-11-11 09:38:31][http://awe5.plugin.hu/admin/translator?params=eyJ0cmFfa2V5IjoiNDQiLCJ0cmFfZWxlbWVudFBlclBhZ2UiOiJhbGwiLCJkZWZfbWVyZ2UiOltdfQ] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at end of input
-LINE 1: ...ra_obj->'language'->>'en_GB' LIKE $1  LIMIT all OFFSET 0*all
-                                                                       ^
-[2019-11-11 09:38:56][http://awe5.plugin.hu/admin/translator?params=eyJ0cmFfa2V5IjoiNDQiLCJ0cmFfZWxlbWVudFBlclBhZ2UiOiJhbGwiLCJkZWZfbWVyZ2UiOltdfQ] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at end of input
-LINE 1: ...ra_obj->'language'->>'en_GB' LIKE $1  LIMIT all OFFSET 0*all
-                                                                       ^
-[2019-11-11 09:38:57][http://awe5.plugin.hu/admin/translator?params=eyJ0cmFfa2V5IjoiNDQiLCJ0cmFfZWxlbWVudFBlclBhZ2UiOiJhbGwiLCJkZWZfbWVyZ2UiOltdfQ] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at end of input
-LINE 1: ...ra_obj->'language'->>'en_GB' LIKE $1  LIMIT all OFFSET 0*all
-                                                                       ^
-[2019-11-11 09:38:57][http://awe5.plugin.hu/admin/translator?params=eyJ0cmFfa2V5IjoiNDQiLCJ0cmFfZWxlbWVudFBlclBhZ2UiOiJhbGwiLCJkZWZfbWVyZ2UiOltdfQ] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at end of input
-LINE 1: ...ra_obj->'language'->>'en_GB' LIKE $1  LIMIT all OFFSET 0*all
-                                                                       ^
-[2019-11-11 09:38:57][http://awe5.plugin.hu/admin/translator?params=eyJ0cmFfa2V5IjoiNDQiLCJ0cmFfZWxlbWVudFBlclBhZ2UiOiJhbGwiLCJkZWZfbWVyZ2UiOltdfQ] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at end of input
-LINE 1: ...ra_obj->'language'->>'en_GB' LIKE $1  LIMIT all OFFSET 0*all
-                                                                       ^
-[2019-11-11 09:38:57][http://awe5.plugin.hu/admin/translator?params=eyJ0cmFfa2V5IjoiNDQiLCJ0cmFfZWxlbWVudFBlclBhZ2UiOiJhbGwiLCJkZWZfbWVyZ2UiOltdfQ] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at end of input
-LINE 1: ...ra_obj->'language'->>'en_GB' LIKE $1  LIMIT all OFFSET 0*all
-                                                                       ^
-[2019-11-11 09:39:57][http://awe5.plugin.hu/admin/translator/ajax] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "OFFSET"
-LINE 1: ...1 OR  tra_obj->'language'->>'en_GB' LIKE $1 LIMIT  OFFSET 0*
-                                                              ^
-[2019-11-11 09:41:12][http://awe5.plugin.hu/admin/translator/ajax] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "OFFSET"
-LINE 1: ...1 OR  tra_obj->'language'->>'en_GB' LIKE $1 LIMIT  OFFSET 0*
-                                                              ^
-[2019-11-11 09:41:39][http://awe5.plugin.hu/admin/translator/ajax] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "OFFSET"
-LINE 1: ...1 OR  tra_obj->'language'->>'en_GB' LIKE $1 LIMIT  OFFSET 0*
-                                                              ^
-[2019-11-11 09:43:05][http://awe5.plugin.hu/admin/translator/ajax] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "OFFSET"
-LINE 1: ...1 OR  tra_obj->'language'->>'en_GB' LIKE $1 LIMIT  OFFSET 0*
-                                                              ^
-[2019-11-11 09:44:52][http://awe5.plugin.hu/admin/translator/ajax] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "OFFSET"
-LINE 1: ...1 OR  tra_obj->'language'->>'en_GB' LIKE $1 LIMIT  OFFSET 0*
-                                                              ^
-[2019-11-11 09:45:50][http://awe5.plugin.hu/admin/translator?params=eyJ0cmFfa2V5IjoiNDQiLCJ0cmFfZWxlbWVudFBlclBhZ2UiOiJhbGwiLCJkZWZfbWVyZ2UiOltdfQ] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at end of input
-LINE 1: ...ra_obj->'language'->>'en_GB' LIKE $1  LIMIT all OFFSET 0*all
-                                                                       ^
-[2019-11-11 09:50:13][http://awe5.plugin.hu/admin/translator/ajax] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "OFFSET"
-LINE 1: ...1 OR  tra_obj->'language'->>'en_GB' LIKE $1 LIMIT  OFFSET 0*
-                                                              ^
-[2019-11-11 09:50:44][http://awe5.plugin.hu/admin/translator/ajax] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "OFFSET"
-LINE 1: ...1 OR  tra_obj->'language'->>'en_GB' LIKE $1 LIMIT  OFFSET 0*
-                                                              ^
-[2019-11-11 10:24:04][http://awe5.plugin.hu/admin/translator?params=eyJ0cmFfa2V5IjoiNDQ1IiwidHJhX2VsZW1lbnRQZXJQYWdlIjoiYWxsIiwiZGVmX21lcmdlIjpbXX0] E0005 - Hibás SQL parancs! -> ERROR:  column "permissions" does not exist
-LINE 1: SELECT user_obj->>permissions AS Permission, user_obj->>perm...
-                          ^
-[2019-11-11 10:24:05][http://awe5.plugin.hu/admin/translator?params=eyJ0cmFfa2V5IjoiNDQ1IiwidHJhX2VsZW1lbnRQZXJQYWdlIjoiYWxsIiwiZGVmX21lcmdlIjpbXX0] E0005 - Hibás SQL parancs! -> ERROR:  column "permissions" does not exist
-LINE 1: SELECT user_obj->>permissions AS Permission, user_obj->>perm...
-                          ^
-[2019-11-11 10:24:06][http://awe5.plugin.hu/admin/translator?params=eyJ0cmFfa2V5IjoiNDQ1IiwidHJhX2VsZW1lbnRQZXJQYWdlIjoiYWxsIiwiZGVmX21lcmdlIjpbXX0] E0005 - Hibás SQL parancs! -> ERROR:  column "permissions" does not exist
-LINE 1: SELECT user_obj->>permissions AS Permission, user_obj->>perm...
-                          ^
-[2019-11-11 10:24:06][http://awe5.plugin.hu/admin/translator?params=eyJ0cmFfa2V5IjoiNDQ1IiwidHJhX2VsZW1lbnRQZXJQYWdlIjoiYWxsIiwiZGVmX21lcmdlIjpbXX0] E0005 - Hibás SQL parancs! -> ERROR:  column "permissions" does not exist
-LINE 1: SELECT user_obj->>permissions AS Permission, user_obj->>perm...
-                          ^
-[2019-11-11 10:24:06][http://awe5.plugin.hu/admin/translator?params=eyJ0cmFfa2V5IjoiNDQ1IiwidHJhX2VsZW1lbnRQZXJQYWdlIjoiYWxsIiwiZGVmX21lcmdlIjpbXX0] E0005 - Hibás SQL parancs! -> ERROR:  column "permissions" does not exist
-LINE 1: SELECT user_obj->>permissions AS Permission, user_obj->>perm...
-                          ^
-[2019-11-11 10:24:06][http://awe5.plugin.hu/admin/translator?params=eyJ0cmFfa2V5IjoiNDQ1IiwidHJhX2VsZW1lbnRQZXJQYWdlIjoiYWxsIiwiZGVmX21lcmdlIjpbXX0] E0005 - Hibás SQL parancs! -> ERROR:  column "permissions" does not exist
-LINE 1: SELECT user_obj->>permissions AS Permission, user_obj->>perm...
-                          ^
-[2019-11-12 08:23:06][http://awe5.plugin.hu/admin/translator] E0005 - Hibás SQL parancs! -> ERROR:  column "core_url_template.url_template_obj" must appear in the GROUP BY clause or be used in an aggregate function
-LINE 1: SELECT COUNT(*) FROM core_url_template ORDER BY url_template...
-                                                        ^
-[2019-11-12 09:33:42][http://awe5.plugin.hu/admin/login] E0005 - Hibás SQL parancs! -> ERROR:  column "defaults_type" does not exist
-LINE 1: SELECT defaults_obj FROM defaults WHERE defaults_type=$1
-                                                ^
-[2019-11-14 09:06:20][http://awe5.plugin.hu/admin/url1] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 1 parameters, but prepared statement "pdo_stmt_00000006" requires 2
-[2019-11-14 09:06:21][http://awe5.plugin.hu/admin/url1] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 1 parameters, but prepared statement "pdo_stmt_00000006" requires 2
-[2019-11-14 09:06:57][http://awe5.plugin.hu/admin/url1] E0005 - Hibás SQL parancs! -> 
-[2019-11-14 09:06:58][http://awe5.plugin.hu/admin/url1] E0005 - Hibás SQL parancs! -> 
-[2019-11-14 09:06:59][http://awe5.plugin.hu/admin/url1] E0005 - Hibás SQL parancs! -> 
-[2019-11-14 09:07:18][http://awe5.plugin.hu/admin/url1] E0005 - Hibás SQL parancs! -> 
-[2019-11-14 09:07:19][http://awe5.plugin.hu/admin/url1] E0005 - Hibás SQL parancs! -> 
-[2019-11-14 09:07:19][http://awe5.plugin.hu/admin/url1] E0005 - Hibás SQL parancs! -> 
-[2019-11-14 09:07:20][http://awe5.plugin.hu/admin/url1] E0005 - Hibás SQL parancs! -> 
-[2019-11-14 09:07:20][http://awe5.plugin.hu/admin/url1] E0005 - Hibás SQL parancs! -> 
-[2019-11-14 09:07:21][http://awe5.plugin.hu/admin/url1] E0005 - Hibás SQL parancs! -> 
-[2019-11-14 09:07:22][http://awe5.plugin.hu/admin/url1] E0005 - Hibás SQL parancs! -> 
-[2019-11-14 09:07:22][http://awe5.plugin.hu/admin/url1] E0005 - Hibás SQL parancs! -> 
-[2019-11-14 09:08:45][http://awe5.plugin.hu/admin/url1] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "url_pos"
-LINE 1: SELECT * FROM core_url WHERE url_url=$1 url_pos=$2 ORDER BY ...
-                                                ^
-[2019-11-14 09:08:46][http://awe5.plugin.hu/admin/url1] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "url_pos"
-LINE 1: SELECT * FROM core_url WHERE url_url=$1 url_pos=$2 ORDER BY ...
-                                                ^
-[2019-11-14 10:05:01][http://awe5.plugin.hu/admin/url] E0005 - Hibás SQL parancs! -> 
-[2019-11-14 10:05:03][http://awe5.plugin.hu/admin/url] E0005 - Hibás SQL parancs! -> 
-[2019-11-14 10:05:03][http://awe5.plugin.hu/admin/url] E0005 - Hibás SQL parancs! -> 
-[2019-11-14 10:05:04][http://awe5.plugin.hu/admin/url] E0005 - Hibás SQL parancs! -> 
-[2019-11-14 10:05:04][http://awe5.plugin.hu/admin/url] E0005 - Hibás SQL parancs! -> 
-[2019-11-14 10:05:04][http://awe5.plugin.hu/admin/url] E0005 - Hibás SQL parancs! -> 
-[2019-11-14 10:05:20][http://awe5.plugin.hu/admin/url] E0005 - Hibás SQL parancs! -> 
-[2019-11-14 10:05:21][http://awe5.plugin.hu/admin/url] E0005 - Hibás SQL parancs! -> 
-[2019-11-14 10:32:21][http://awe5.plugin.hu/admin/url] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "default"
-LINE 1: SELECT * FROM default WHERE defaults_id=$1
-                      ^
-[2019-11-14 12:17:25][http://awe5.plugin.hu/admin/url] E0005 - Hibás SQL parancs! -> ERROR:  column "default_id" does not exist
-LINE 1: SELECT defaults_obj FROM defaults WHERE default_id=$1
-                                                ^
-HINT:  Perhaps you meant to reference the column "defaults.defaults_id".
-[2019-11-14 12:17:26][http://awe5.plugin.hu/admin/url] E0005 - Hibás SQL parancs! -> ERROR:  column "default_id" does not exist
-LINE 1: SELECT defaults_obj FROM defaults WHERE default_id=$1
-                                                ^
-HINT:  Perhaps you meant to reference the column "defaults.defaults_id".
-[2019-11-14 12:17:26][http://awe5.plugin.hu/admin/url] E0005 - Hibás SQL parancs! -> ERROR:  column "default_id" does not exist
-LINE 1: SELECT defaults_obj FROM defaults WHERE default_id=$1
-                                                ^
-HINT:  Perhaps you meant to reference the column "defaults.defaults_id".
-[2019-11-14 12:17:26][http://awe5.plugin.hu/admin/url] E0005 - Hibás SQL parancs! -> ERROR:  column "default_id" does not exist
-LINE 1: SELECT defaults_obj FROM defaults WHERE default_id=$1
-                                                ^
-HINT:  Perhaps you meant to reference the column "defaults.defaults_id".
-[2019-11-15 01:20:40][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "OFFSET"
-LINE 1: ... FROM core_urlnslator WHERE url_url LIKE $1  LIMIT  OFFSET *
-                                                               ^
-[2019-11-15 01:20:42][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "OFFSET"
-LINE 1: ... FROM core_urlnslator WHERE url_url LIKE $1  LIMIT  OFFSET *
-                                                               ^
-[2019-11-16 02:44:43][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at end of input
-LINE 1: SELECT COUNT(*) FROM core_url WHERE 
-                                            ^
-[2019-11-16 02:44:45][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at end of input
-LINE 1: SELECT COUNT(*) FROM core_url WHERE 
-                                            ^
-[2019-11-16 02:45:12][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "LIMIT"
-LINE 1:  LIMIT 10 OFFSET 0
-         ^
-[2019-11-16 02:45:35][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "LIMIT"
-LINE 1:  LIMIT 10 OFFSET 0
-         ^
-[2019-11-16 02:45:36][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "LIMIT"
-LINE 1:  LIMIT 10 OFFSET 0
-         ^
-[2019-11-16 02:45:37][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "LIMIT"
-LINE 1:  LIMIT 10 OFFSET 0
-         ^
-[2019-11-16 02:45:38][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "LIMIT"
-LINE 1:  LIMIT 10 OFFSET 0
-         ^
-[2019-11-16 02:45:40][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "LIMIT"
-LINE 1:  LIMIT 10 OFFSET 0
-         ^
-[2019-11-16 02:46:05][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "LIMIT"
-LINE 1:  LIMIT 10 OFFSET 0
-         ^
-[2019-11-16 02:46:06][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "LIMIT"
-LINE 1:  LIMIT 10 OFFSET 0
-         ^
-[2019-11-16 02:46:07][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "LIMIT"
-LINE 1:  LIMIT 10 OFFSET 0
-         ^
-[2019-11-16 02:48:53][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "LIMIT"
-LINE 1:  LIMIT 10 OFFSET 0
-         ^
-[2019-11-16 02:48:54][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "LIMIT"
-LINE 1:  LIMIT 10 OFFSET 0
-         ^
-[2019-11-16 02:48:55][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "LIMIT"
-LINE 1:  LIMIT 10 OFFSET 0
-         ^
-[2019-11-16 02:48:55][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "LIMIT"
-LINE 1:  LIMIT 10 OFFSET 0
-         ^
-[2019-11-16 02:48:55][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "LIMIT"
-LINE 1:  LIMIT 10 OFFSET 0
-         ^
-[2019-11-16 02:48:55][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "LIMIT"
-LINE 1:  LIMIT 10 OFFSET 0
-         ^
-[2019-11-16 02:48:55][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "LIMIT"
-LINE 1:  LIMIT 10 OFFSET 0
-         ^
-[2019-11-16 02:48:55][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "LIMIT"
-LINE 1:  LIMIT 10 OFFSET 0
-         ^
-[2019-11-16 02:48:56][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "LIMIT"
-LINE 1:  LIMIT 10 OFFSET 0
-         ^
-[2019-11-16 02:48:56][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "LIMIT"
-LINE 1:  LIMIT 10 OFFSET 0
-         ^
-[2019-11-16 02:48:56][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "LIMIT"
-LINE 1:  LIMIT 10 OFFSET 0
-         ^
-[2019-11-16 02:48:56][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "LIMIT"
-LINE 1:  LIMIT 10 OFFSET 0
-         ^
-[2019-11-16 02:51:16][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "LIMIT"
-LINE 1:  LIMIT 10 OFFSET 0
-         ^
-[2019-11-16 02:51:17][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "LIMIT"
-LINE 1:  LIMIT 10 OFFSET 0
-         ^
-[2019-11-16 02:51:18][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "LIMIT"
-LINE 1:  LIMIT 10 OFFSET 0
-         ^
-[2019-11-17 11:16:01][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "FROM"
-LINE 1: SELECT url_id AS ID, url_seq AS Sequence, FROM core_url  LIM...
-                                                  ^
-[2019-11-17 11:16:02][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "FROM"
-LINE 1: SELECT url_id AS ID, url_seq AS Sequence, FROM core_url  LIM...
-                                                  ^
-[2019-11-17 11:16:03][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "FROM"
-LINE 1: SELECT url_id AS ID, url_seq AS Sequence, FROM core_url  LIM...
-                                                  ^
-[2019-11-17 11:16:03][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "FROM"
-LINE 1: SELECT url_id AS ID, url_seq AS Sequence, FROM core_url  LIM...
-                                                  ^
-[2019-11-17 11:18:19][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "FROM"
-LINE 1: SELECT url_id AS ID, url_seq AS Sequence,  FROM core_url  LI...
-                                                   ^
-[2019-11-17 11:18:19][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "FROM"
-LINE 1: SELECT url_id AS ID, url_seq AS Sequence,  FROM core_url  LI...
-                                                   ^
-[2019-11-17 11:18:20][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "FROM"
-LINE 1: SELECT url_id AS ID, url_seq AS Sequence,  FROM core_url  LI...
-                                                   ^
-[2019-11-17 11:18:20][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "FROM"
-LINE 1: SELECT url_id AS ID, url_seq AS Sequence,  FROM core_url  LI...
-                                                   ^
-[2019-11-17 11:18:20][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "FROM"
-LINE 1: SELECT url_id AS ID, url_seq AS Sequence,  FROM core_url  LI...
-                                                   ^
-[2019-11-17 11:19:01][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "FROM"
-LINE 1: SELECT url_id AS ID, url_seq AS Sequence,  FROM core_url  LI...
-                                                   ^
-[2019-11-17 11:19:02][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "FROM"
-LINE 1: SELECT url_id AS ID, url_seq AS Sequence,  FROM core_url  LI...
-                                                   ^
-[2019-11-17 11:19:02][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "FROM"
-LINE 1: SELECT url_id AS ID, url_seq AS Sequence,  FROM core_url  LI...
-                                                   ^
-[2019-11-17 11:19:02][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "FROM"
-LINE 1: SELECT url_id AS ID, url_seq AS Sequence,  FROM core_url  LI...
-                                                   ^
-[2019-11-17 11:19:02][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "FROM"
-LINE 1: SELECT url_id AS ID, url_seq AS Sequence,  FROM core_url  LI...
-                                                   ^
-[2019-11-17 11:19:49][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "FROM"
-LINE 1: SELECT url_id AS ID, url_seq AS Sequence,  FROM core_url  LI...
-                                                   ^
-[2019-11-17 11:19:50][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "FROM"
-LINE 1: SELECT url_id AS ID, url_seq AS Sequence,  FROM core_url  LI...
-                                                   ^
-[2019-11-17 11:20:12][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "FROM"
-LINE 1: SELECT url_id AS ID, url_seq AS Sequence,  FROM core_url  LI...
-                                                   ^
-[2019-11-17 11:21:14][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "FROM"
-LINE 1: SELECT url_id AS ID, url_seq AS Sequence,  FROM core_url  LI...
-                                                   ^
-[2019-11-17 11:21:35][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "FROM"
-LINE 1: SELECT url_id AS ID, url_seq AS Sequence,  FROM core_url  LI...
-                                                   ^
-[2019-11-17 11:21:36][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "FROM"
-LINE 1: SELECT url_id AS ID, url_seq AS Sequence,  FROM core_url  LI...
-                                                   ^
-[2019-11-17 11:21:36][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "FROM"
-LINE 1: SELECT url_id AS ID, url_seq AS Sequence,  FROM core_url  LI...
-                                                   ^
-[2019-11-17 11:21:36][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "FROM"
-LINE 1: SELECT url_id AS ID, url_seq AS Sequence,  FROM core_url  LI...
-                                                   ^
-[2019-11-17 11:21:36][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "FROM"
-LINE 1: SELECT url_id AS ID, url_seq AS Sequence,  FROM core_url  LI...
-                                                   ^
-[2019-11-17 11:24:55][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_0000000c" requires 1
-[2019-11-17 11:25:42][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_0000000c" requires 1
-[2019-11-17 11:25:43][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_0000000c" requires 1
-[2019-11-17 11:26:10][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_0000000c" requires 1
-[2019-11-17 11:26:51][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_0000000c" requires 1
-[2019-11-17 11:26:52][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_0000000c" requires 1
-[2019-11-17 11:26:52][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_0000000c" requires 1
-[2019-11-17 11:26:52][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_0000000c" requires 1
-[2019-11-17 11:27:05][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_0000000c" requires 1
-[2019-11-17 11:27:46][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 11:27:47][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 11:27:47][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 11:29:20][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_0000000c" requires 1
-[2019-11-17 11:29:20][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_0000000c" requires 1
-[2019-11-17 11:29:21][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_0000000c" requires 1
-[2019-11-17 11:29:51][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_0000000c" requires 1
-[2019-11-17 11:31:47][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_0000000c" requires 1
-[2019-11-17 11:31:48][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_0000000c" requires 1
-[2019-11-17 11:31:57][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  column "seq" does not exist
-LINE 1: SELECT COUNT(*) FROM core_url WHERE seq=$1
-                                            ^
-[2019-11-17 12:38:58][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 12:39:42][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 12:39:44][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 12:42:34][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at end of input
-LINE 1: SELECT COUNT(*) FROM core_url WHERE url_id=%$1%
-                                                       ^
-[2019-11-17 12:42:36][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at end of input
-LINE 1: SELECT COUNT(*) FROM core_url WHERE url_id=%$1%
-                                                       ^
-[2019-11-17 12:42:55][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 12:42:56][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 12:43:17][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 01:18:39][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 01:22:59][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 01:22:59][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 01:22:59][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 01:29:05][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 01:30:30][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 01:30:37][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 01:32:39][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 01:33:05][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 01:33:36][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 01:33:58][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 01:33:59][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 01:34:08][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 01:34:10][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 01:34:31][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 01:34:32][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 01:35:03][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 01:35:05][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 01:35:06][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 01:35:20][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 01:35:22][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 01:35:48][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 01:36:18][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 01:37:25][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 01:37:26][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 01:37:27][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 01:38:04][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 01:38:05][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 01:38:49][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 01:39:44][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at end of input
-LINE 1: SELECT COUNT(*) FROM core_url WHERE 
-                                            ^
-[2019-11-17 01:46:18][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at end of input
-LINE 1: SELECT COUNT(*) FROM core_url WHERE url_url LIKE $1 AND 
-                                                                ^
-[2019-11-17 03:01:59][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 03:02:05][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 03:05:40][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 03:12:15][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-17 04:39:19][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "->>"
-LINE 1: ...LECT url_id AS url_id, url_obj->>'name' AS url_obj->>'name' ...
-                                                             ^
-[2019-11-17 04:39:20][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "->>"
-LINE 1: ...LECT url_id AS url_id, url_obj->>'name' AS url_obj->>'name' ...
-                                                             ^
-[2019-11-17 04:39:21][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "->>"
-LINE 1: ...LECT url_id AS url_id, url_obj->>'name' AS url_obj->>'name' ...
-                                                             ^
-[2019-11-17 05:45:44][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  OFFSET must not be negative
-[2019-11-18 01:39:57][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  operator does not exist: jsonb ~~ unknown
-LINE 1: SELECT COUNT(*) FROM adm_faq WHERE faq_obj LIKE $1
-                                                   ^
-HINT:  No operator matches the given name and argument type(s). You might need to add explicit type casts.
-[2019-11-18 01:40:02][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  operator does not exist: jsonb ~~ unknown
-LINE 1: SELECT COUNT(*) FROM adm_faq WHERE faq_obj LIKE $1
-                                                   ^
-HINT:  No operator matches the given name and argument type(s). You might need to add explicit type casts.
-[2019-11-18 01:41:40][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  operator does not exist: jsonb ~~ unknown
-LINE 1: SELECT COUNT(*) FROM adm_faq WHERE faq_obj LIKE $1
-                                                   ^
-HINT:  No operator matches the given name and argument type(s). You might need to add explicit type casts.
-[2019-11-21 10:27:00][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  OFFSET must not be negative
-[2019-11-21 10:27:01][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  OFFSET must not be negative
-[2019-11-21 10:27:02][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  OFFSET must not be negative
-[2019-11-21 10:27:02][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  OFFSET must not be negative
-[2019-11-21 10:27:03][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  OFFSET must not be negative
-[2019-11-22 11:32:38][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-22 12:35:03][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "' AS descriptions, faq_obj->>'"
-LINE 1: ..., faq_obj->>'type AS type, faq_obj->>'descriptions' AS descr...
-                                                             ^
-[2019-11-22 12:35:05][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "' AS descriptions, faq_obj->>'"
-LINE 1: ..., faq_obj->>'type AS type, faq_obj->>'descriptions' AS descr...
-                                                             ^
-[2019-11-22 12:35:17][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "' AS descriptions, faq_obj->>'"
-LINE 1: ..., faq_obj->>'type AS type, faq_obj->>'descriptions' AS descr...
-                                                             ^
-[2019-11-22 12:35:18][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "' AS descriptions, faq_obj->>'"
-LINE 1: ..., faq_obj->>'type AS type, faq_obj->>'descriptions' AS descr...
-                                                             ^
-[2019-11-22 12:35:18][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "' AS descriptions, faq_obj->>'"
-LINE 1: ..., faq_obj->>'type AS type, faq_obj->>'descriptions' AS descr...
-                                                             ^
-[2019-11-22 01:15:40][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near ","
-LINE 1: SELECT , faq_id, faq_obj->>@type@, faq_obj->>@descriptions@,...
+[2019-12-19 08:29:01][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  column "core_url.url_url" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT core_url.url_url AS url_url FROM core_url WHERE (url_...
                ^
-[2019-11-22 01:16:48][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near ","
-LINE 1: SELECT , faq_id, faq_obj->>'type', faq_obj->>'descriptions',...
+[2019-12-19 08:29:31][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  column "core_url.url_url" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT core_url.url_url AS url_url FROM core_url WHERE (url_...
                ^
-[2019-11-22 01:16:49][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near ","
-LINE 1: SELECT , faq_id, faq_obj->>'type', faq_obj->>'descriptions',...
-               ^
-[2019-11-22 01:17:24][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near ","
-LINE 1: SELECT , faq_idfaq_obj->>'type'faq_obj->>'descriptions'faq_o...
-               ^
-[2019-11-22 01:17:50][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  unterminated quoted string at or near "' FROM adm_faq WHERE faq_id=$1"
-LINE 1: ...'type', faq_obj->>'descriptions', faq_obj->>''code' FROM adm...
+[2019-12-19 08:33:02][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  column "core_url.url_seq" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: ...AS url_pos FROM core_url GROUP BY url_pos HAVING (url_seq > ...
                                                              ^
-[2019-11-22 01:18:59][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  unterminated quoted string at or near "' FROM adm_faq WHERE faq_id=$1"
-LINE 1: ...'type', faq_obj->>'descriptions', faq_obj->>''code' FROM adm...
+[2019-12-19 08:33:53][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  column "core_url.url_seq" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: ...AS url_pos FROM core_url GROUP BY url_pos HAVING (url_seq > ...
                                                              ^
-[2019-11-22 01:26:17][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "->>"
-LINE 1: ...LECT faq_id AS faq_id, faq_obj->>@type@ AS faq_obj->>'type',...
+[2019-12-19 08:33:54][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  column "core_url.url_seq" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: ...AS url_pos FROM core_url GROUP BY url_pos HAVING (url_seq > ...
                                                              ^
-[2019-11-22 01:26:59][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "'faq_id'"
-LINE 1: SELECT faq_id AS 'faq_id', faq_obj->>@type@ AS 'faq_obj->>'t...
-                         ^
-[2019-11-22 01:28:06][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "'faq_id'"
-LINE 1: SELECT faq_id AS 'faq_id', faq_obj->>'type' AS 'faq_obj->>@t...
-                         ^
-[2019-11-22 01:29:36][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "->>@"
-LINE 1: ...LECT faq_id AS faq_id, faq_obj->>'type' AS faq_obj->>@type@,...
-                                                             ^
-[2019-11-22 01:30:45][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "->>*"
-LINE 1: ...LECT faq_id AS faq_id, faq_obj->>'type' AS faq_obj->>*type*,...
-                                                             ^
-[2019-11-22 01:31:03][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "->>~"
-LINE 1: ...LECT faq_id AS faq_id, faq_obj->>'type' AS faq_obj->>~type~,...
-                                                             ^
-[2019-11-22 01:32:00][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "->>"
-LINE 1: ...LECT faq_id AS faq_id, faq_obj->>'type' AS faq_obj->>§type§,...
-                                                             ^
-[2019-11-22 01:34:27][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "->>"
-LINE 1: ...LECT faq_id AS faq_id, faq_obj->>'type' AS faq_obj->>§type§,...
-                                                             ^
-[2019-11-22 01:34:28][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "->>"
-LINE 1: ...LECT faq_id AS faq_id, faq_obj->>'type' AS faq_obj->>§type§,...
-                                                             ^
-[2019-11-22 01:34:29][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "->>"
-LINE 1: ...LECT faq_id AS faq_id, faq_obj->>'type' AS faq_obj->>§type§,...
-                                                             ^
-[2019-11-22 01:35:07][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near ","
-LINE 1: SELECT faq_id AS , faq_obj->>'type' AS , faq_obj->>'descript...
-                         ^
-[2019-11-22 02:50:16][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-22 02:50:44][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-22 02:51:49][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> 
-[2019-11-22 02:52:25][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "table"
-LINE 1: UPDATE table SET url_id=$1 , url_seq=$2 WHERE url_id=$3
-               ^
-[2019-11-22 02:53:15][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "table"
-LINE 1: UPDATE table SET url_id=$1 , url_seq=$2 WHERE url_id=$3
-               ^
-[2019-11-22 02:54:35][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "table"
-LINE 1: UPDATE table SETurl_id=$1 ,url_seq=$2 WHERE url_id=$3
-               ^
-[2019-11-22 02:55:04][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "table"
-LINE 1: UPDATE table SETurl_id=$1 ,url_seq=$2 WHERE url_id=$3
-               ^
-[2019-11-22 02:55:44][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near "table"
-LINE 1: UPDATE table SET url_id=$1 ,url_seq=$2 WHERE url_id=$3
-               ^
-[2019-11-23 10:05:57][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near ","
-LINE 1: SELECT faq_id AS , faq_obj->>'type' AS  FROM adm_faq WHERE f...
-                         ^
-[2019-11-23 10:06:01][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near ","
-LINE 1: SELECT faq_id AS , faq_obj->>'type' AS  FROM adm_faq WHERE f...
-                         ^
-[2019-11-23 10:06:08][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  syntax error at or near ","
-LINE 1: SELECT faq_id AS , faq_obj->>'type' AS  FROM adm_faq WHERE f...
-                         ^
+[2019-12-19 08:34:18][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_0000001c" requires 1
+[2019-12-19 08:34:47][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_0000001c" requires 1
+[2019-12-19 08:34:48][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_0000001c" requires 1
+[2019-12-19 08:35:06][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_0000001c" requires 1
+[2019-12-19 08:38:14][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_0000001c" requires 1
+[2019-12-19 08:39:04][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_0000001c" requires 1
+[2019-12-19 08:39:05][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_0000001c" requires 1
+[2019-12-19 08:39:05][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_0000001c" requires 1
+[2019-12-19 08:39:06][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_0000001c" requires 1
+[2019-12-19 08:39:50][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_0000001c" requires 1
+[2019-12-19 08:39:52][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_0000001c" requires 1
+[2019-12-19 08:39:53][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_0000001c" requires 1
+[2019-12-19 08:39:53][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_0000001c" requires 1
+[2019-12-19 08:40:12][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_0000001c" requires 1
+[2019-12-19 08:44:42][http://awe5.plugin.hu] E0005 - Hibás SQL parancs! -> ERROR:  bind message supplies 0 parameters, but prepared statement "pdo_stmt_0000001c" requires 1
+[2019-12-19 09:12:41][http://awe5.plugin.hu][/var/www/html/core/1.0/core_db/core_db.php - Line:79]E0005 - Hibás SQL parancs! -> ERROR:  invalid input syntax for type numeric: ">"
+[2019-12-19 09:14:50][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:79]E0005 - Hibás SQL parancs! -> ERROR:  invalid input syntax for type numeric: ">"
+[2019-12-19 09:19:03][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:Array]E0005 - Hibás SQL parancs! -> ERROR:  invalid input syntax for type numeric: ">"
+[2019-12-19 09:19:04][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:Array]E0005 - Hibás SQL parancs! -> ERROR:  invalid input syntax for type numeric: ">"
+[2019-12-19 09:19:05][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:Array]E0005 - Hibás SQL parancs! -> ERROR:  invalid input syntax for type numeric: ">"
+[2019-12-19 09:21:05][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:Array]E0005 - Hibás SQL parancs! -> ERROR:  invalid input syntax for type numeric: ">"
+[2019-12-19 09:21:05][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:Array]E0005 - Hibás SQL parancs! -> ERROR:  invalid input syntax for type numeric: ">"
+[2019-12-19 09:22:22][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:Array]E0005 - Hibás SQL parancs! -> ERROR:  invalid input syntax for type numeric: ">"
+[2019-12-19 09:22:58][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:Array]E0005 - Hibás SQL parancs! -> ERROR:  invalid input syntax for type numeric: ">"
+[2019-12-19 09:22:59][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:Array]E0005 - Hibás SQL parancs! -> ERROR:  invalid input syntax for type numeric: ">"
+[2019-12-19 09:24:08][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:79]E0005 - Hibás SQL parancs! -> ERROR:  invalid input syntax for type numeric: ">"
+[2019-12-19 09:24:10][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:79]E0005 - Hibás SQL parancs! -> ERROR:  invalid input syntax for type numeric: ">"
+[2019-12-19 09:41:25][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:79]E0005 - Hibás SQL parancs! -> ERROR:  invalid input syntax for type numeric: ">"
+[2019-12-19 09:42:53][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:79]E0005 - Hibás SQL parancs! -> ERROR:  invalid input syntax for integer: ">"
+[2019-12-19 09:44:13][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:79]E0005 - Hibás SQL parancs! -> ERROR:  invalid input syntax for integer: ">"
+[2019-12-19 09:44:13][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:79]E0005 - Hibás SQL parancs! -> ERROR:  invalid input syntax for integer: ">"
+[2019-12-19 11:40:59][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:79]E0005 - Hibás SQL parancs! -> 
+[2019-12-19 11:41:50][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:79]E0005 - Hibás SQL parancs! -> 
+[2019-12-19 11:49:59][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:79]E0005 - Hibás SQL parancs! -> 
+[2019-12-19 11:50:33][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:79]E0005 - Hibás SQL parancs! -> 
+[2019-12-19 11:51:54][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:79]E0005 - Hibás SQL parancs! -> 
+[2019-12-19 11:52:40][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:79]E0005 - Hibás SQL parancs! -> 
+[2019-12-19 11:54:26][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:79]E0005 - Hibás SQL parancs! -> ERROR:  null value in column "id" violates not-null constraint
+DETAIL:  Failing row contains (null, 1.0, {"list": {"columns": []}}).
+[2019-12-19 11:55:56][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:79]E0005 - Hibás SQL parancs! -> ERROR:  null value in column "id" violates not-null constraint
+DETAIL:  Failing row contains (null, 1.0, {"list": {"columns": []}}).
+[2019-12-19 11:57:40][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:79]E0005 - Hibás SQL parancs! -> ERROR:  null value in column "id" violates not-null constraint
+DETAIL:  Failing row contains (null, 1.0, {"list": {"columns": ["jghg"]}}).
+[2019-12-19 12:04:06][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:79]E0005 - Hibás SQL parancs! -> 
+[2019-12-19 12:05:14][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:79]E0005 - Hibás SQL parancs! -> 
+[2019-12-19 12:06:22][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:79]E0005 - Hibás SQL parancs! -> 
+[2019-12-19 12:08:16][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:79]E0005 - Hibás SQL parancs! -> 
+[2019-12-19 12:10:27][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:79]E0005 - Hibás SQL parancs! -> 
+[2019-12-19 12:11:09][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:79]E0005 - Hibás SQL parancs! -> 
+[2019-12-19 12:11:51][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:79]E0005 - Hibás SQL parancs! -> 
+[2019-12-19 12:12:41][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:79]E0005 - Hibás SQL parancs! -> 
+[2019-12-19 12:17:05][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:79]E0005 - Hibás SQL parancs! -> 
+[2019-12-19 12:17:50][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:79]E0005 - Hibás SQL parancs! -> 
+[2019-12-19 12:20:16][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:79]E0005 - Hibás SQL parancs! -> 
+[2019-12-19 12:23:00][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:79]E0005 - Hibás SQL parancs! -> 
+[2019-12-19 12:23:45][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:79]E0005 - Hibás SQL parancs! -> 
+[2019-12-19 12:24:49][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:79]E0005 - Hibás SQL parancs! -> ERROR:  invalid input syntax for type json
+DETAIL:  Token "Array" is invalid.
+CONTEXT:  JSON data, line 1: Array
+[2019-12-19 12:28:53][http://awe5.plugin.hu][/core/1.0/core_db/core_db.php - Line:79]E0005 - Hibás SQL parancs! -> ERROR:  null value in column "id" violates not-null constraint
+DETAIL:  Failing row contains (null, 1.0, {"list": {"columns": []}}).
