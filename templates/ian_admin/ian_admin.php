@@ -38,7 +38,45 @@
                 }
             }
             ;
+            function AjaxFileUpload(obj) {
+                e.preventDefault();
+                $.ajax({
+                    url: "upload.php",
+                    type: "POST",
+                    data: new FormData(this),
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    beforeSend: function ()
+                    {
+                        //$("#preview").fadeOut();
+                        $("#err").fadeOut();
+                    },
+                    success: function (data)
+                    {
+                        if (data == 'invalid')
+                        {
+                            // invalid file format.
+                            $("#err").html("Invalid File !").fadeIn();
+                        } else
+                        {
+                            // view uploaded file.
+                            $("#preview").html(data).fadeIn();
+                            $("#form")[0].reset();
+                        }
+                    },
+                    error: function (e)
+                    {
+                        $("#err").html(e).fadeIn();
+                    }
+                });
+            }
             function Ajax(obj) {
+
+                /*ProgressBar*/
+                var bar = $('.bar');
+                var percent = $('.percent');
+
                 if (typeof (timeoutID) != "undefined" && timeoutID !== null) {
                     clearTimeout(timeoutID);
                 }
@@ -55,30 +93,46 @@
                     var waiting = 1500;
                 }
                 timeoutID = setTimeout(function () {
-                    var formdata = $(obj).closest('form').serializeObject();
-                    var data = {};
-                    $.each(formdata, function (key, value) {
-                        data[key] = value;
-                    });
-
-                    data['url_params'] = getUrlParameter('params');
-                    if (typeof (data['url_params']) == "undefined" && data['url_params'] == null) {
-                        data['url_params'] = "";
+                    /*var formdata = $(obj).closest('form').serializeObject();
+                     var data = {};
+                     $.each(formdata, function (key, value) {
+                     data[key] = value;
+                     });
+                     */
+                    urlParameter = getUrlParameter('params');
+                    var formData = new FormData($(obj).closest('form')[0]);
+                    if (typeof (urlParameter) == "undefined" && urlParameter == null) {
+                        urlParameter = "";
                     }
+                    formData.append('url_params', urlParameter);
 
-                    console.log(data['url_params']);
-                    data['method'] = method;
+                    console.log(formData);
+                    formData.append('method', method);
                     $.ajax({
                         type: "POST",
                         url: url,
                         dataType: "json",
-                        data: data,
+                        processData: false,
+                        contentType: false,
+                        data: formData,
                         beforeSend: function (data, textStatus) {
+
+                            /*ProgressBar*/
+                            var percentVal = '0%';
+                            bar.width(percentVal);
+                            percent.html(percentVal);
+
                             if (method == "save") {
                                 $(result).html("Saving...");
                             } else {
                                 $(result).html("<div class='message'><div class='info'><i class='fas fa-2x fa-info-circle'></i><div class='text'><?php echo T("loading") ?></div></div></div>");
                             }
+                        },
+                        uploadProgress: function (event, position, total, percentComplete) {
+                            console.log("ittvagyok");
+                            var percentVal = percentComplete + '%';
+                            bar.width(percentVal);
+                            percent.html(percentVal);
                         },
                         success: function (data, textStatus) {
                             $(result).html(data.html);
@@ -179,6 +233,10 @@
                     clone.find(":text").val("");
                     item.after(clone);
                     console.log(clone);
+                });
+
+                $('#fileupload').on("change", function () {
+                    Ajax(this);
                 });
 
             });
@@ -377,6 +435,18 @@
                 ?>
             </div>
         </div>
+        <form id='fileupload' method="post" enctype="multipart/form-data"  data-waiting='0' data-method='fileupload' data-result='#upload' data-url='/admin/adm_filemanager/ajax'>
+            <input type='text' name='text' value='22'/>
+            <input class="input-file" id="fileInput" type="file" name="file">
+
+        </form>
+        <div id='upload'>
+        </div>
+        <div class="progress">
+            <div class="bar"></div >
+            <div class="percent">0%</div >
+        </div>
+
         <!-- footer class="footer">
             <div class="footer-in">
                 <a href="#" class="box">

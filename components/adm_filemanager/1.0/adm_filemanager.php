@@ -192,7 +192,11 @@ define("MIME_TYPES", array(
     "application/json" => array("name" => "json", "icon" => "far fa-file-code")
 ));
 define("FILEMANAGER_ROOT_DIR", getcwd() . "/sites/" . $GLOBALS['awe']->SiteAlias . "/tmp");
-define("ADM_FILEMANAGER_AJAX_VIEW", array("waiting" => "0", "method" => "view", "url" => "/admin/adm_filemanager/ajax", "result" => "#directorylist"));
+define("ADM_FILEMANAGER_AJAX_VIEW", array(
+    "waiting" => "0",
+    "method" => "view",
+    "url" => "/admin/adm_filemanager/ajax",
+    "result" => "#directorylist"));
 
 class adm_filemanager {
 
@@ -205,7 +209,18 @@ class adm_filemanager {
 
 
         if (isset($array["ajax"]) && $array["ajax"] == TRUE) {
-            echo json_encode(array("url_params" => $this->AWE->addUrlParams(array("filemanager_view_path" => FILEMANAGER_ROOT_DIR . $_POST['path'])), "html" => $this->listDirectoryElements(FILEMANAGER_ROOT_DIR . $_POST['path'])));
+            switch ($_POST['method']) {
+                case "view":
+                    echo json_encode(array("url_params" => $this->AWE->addUrlParams(array("filemanager_view_path" => FILEMANAGER_ROOT_DIR . $_POST['path'])), "html" => $this->listDirectoryElements(FILEMANAGER_ROOT_DIR . $_POST['path'])));
+                    break;
+                case "fileupload":
+                    var_dump($_POST);
+                    var_dump($_FILES);
+                    $file = $_FILES['file']['name'];
+                    move_uploaded_file($_FILES['file']['tmp_name'], "/tmp/" . $file);
+
+                    break;
+            }
         } else {
 
             if (!empty($this->Params["filemanager_view_path"])) {
