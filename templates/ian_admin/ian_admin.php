@@ -38,39 +38,7 @@
                 }
             }
             ;
-            function AjaxFileUpload(obj) {
-                e.preventDefault();
-                $.ajax({
-                    url: "upload.php",
-                    type: "POST",
-                    data: new FormData(this),
-                    contentType: false,
-                    cache: false,
-                    processData: false,
-                    beforeSend: function ()
-                    {
-                        //$("#preview").fadeOut();
-                        $("#err").fadeOut();
-                    },
-                    success: function (data)
-                    {
-                        if (data == 'invalid')
-                        {
-                            // invalid file format.
-                            $("#err").html("Invalid File !").fadeIn();
-                        } else
-                        {
-                            // view uploaded file.
-                            $("#preview").html(data).fadeIn();
-                            $("#form")[0].reset();
-                        }
-                    },
-                    error: function (e)
-                    {
-                        $("#err").html(e).fadeIn();
-                    }
-                });
-            }
+            var AjaxCall; //Global Ajax variable
             function Ajax(obj) {
 
                 /*ProgressBar*/
@@ -93,12 +61,6 @@
                     var waiting = 1500;
                 }
                 timeoutID = setTimeout(function () {
-                    /*var formdata = $(obj).closest('form').serializeObject();
-                     var data = {};
-                     $.each(formdata, function (key, value) {
-                     data[key] = value;
-                     });
-                     */
                     urlParameter = getUrlParameter('params');
                     var formData = new FormData($(obj).closest('form')[0]);
                     if (typeof (urlParameter) == "undefined" && urlParameter == null) {
@@ -108,7 +70,7 @@
 
                     console.log(formData);
                     formData.append('method', method);
-                    $.ajax({
+                    AjaxCall = $.ajax({
                         type: "POST",
                         url: url,
                         dataType: "json",
@@ -128,11 +90,34 @@
                                 $(result).html("<div class='message'><div class='info'><i class='fas fa-2x fa-info-circle'></i><div class='text'><?php echo T("loading") ?></div></div></div>");
                             }
                         },
+                        xhr: function () {
+                            var xhr = new window.XMLHttpRequest();
+                            xhr.upload.addEventListener("progress", function (evt) {
+                                if (evt.lengthComputable) {
+                                    var percentComplete = (evt.loaded / evt.total) * 100;
+                                    
+                                    if (percentComplete == 100) {
+                                        var prevent_leave = false;
+                                    } else {
+                                        var prevent_leave = true;
+
+                                    }
+                                    $(window).on('beforeunload', function(){
+                                        if (prevent_leave) {
+                                            return "Your files are not completely uploaded...";
+                                        }
+                                    });
+                                    
+                                    console.log("ittvagyok");
+                                    var percentVal = Math.round(percentComplete) + '%';
+                                    bar.width(percentVal);
+                                    percent.html(percentVal);
+                                }
+                            }, false);
+                            return xhr;
+                        },
                         uploadProgress: function (event, position, total, percentComplete) {
-                            console.log("ittvagyok");
-                            var percentVal = percentComplete + '%';
-                            bar.width(percentVal);
-                            percent.html(percentVal);
+
                         },
                         success: function (data, textStatus) {
                             $(result).html(data.html);
@@ -358,7 +343,7 @@
                 align-items: center;
                 flex-wrap: nowrap;
             }
-            ul.tree-view li .folder-name{
+            ul.tree-view li .folder-name, form.folder-name{
                 cursor: pointer;
             }
             ul.tree-view li .folder-icon{

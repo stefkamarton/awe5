@@ -206,7 +206,7 @@ class adm_filemanager {
     function __construct($array) {
         $this->AWE = &$GLOBALS['awe'];
         $this->Params = $this->AWE->getUrlParams();
-
+        echo $this->asd;
 
         if (isset($array["ajax"]) && $array["ajax"] == TRUE) {
             switch ($_POST['method']) {
@@ -214,11 +214,11 @@ class adm_filemanager {
                     echo json_encode(array("url_params" => $this->AWE->addUrlParams(array("filemanager_view_path" => FILEMANAGER_ROOT_DIR . $_POST['path'])), "html" => $this->listDirectoryElements(FILEMANAGER_ROOT_DIR . $_POST['path'])));
                     break;
                 case "fileupload":
-                    var_dump($_POST);
-                    var_dump($_FILES);
+                    //var_dump($_POST);
+                    //var_dump($_FILES);
                     $file = $_FILES['file']['name'];
-                    move_uploaded_file($_FILES['file']['tmp_name'], "/tmp/" . $file);
-
+                    move_uploaded_file($_FILES['file']['tmp_name'], getcwd()."/sites/".$this->AWE->SiteAlias."/tmp/" . $file);
+                    echo json_encode(array("html"=> getcwd()."/sites/".$this->AWE->SiteAlias."/tmp"));
                     break;
             }
         } else {
@@ -233,7 +233,7 @@ class adm_filemanager {
                         "file-list" => $this->listDirectoryElements($path)));
         }
     }
-
+    
     public function createWindow($array = array("directory-tree" => "", "file-list" => "")) {
         if (!empty($array)) {
             echo "<div class='filemanager'>";
