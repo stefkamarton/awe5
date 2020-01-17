@@ -52,7 +52,8 @@
                 var result = $(obj).closest('form').data("result");
                 var method = $(obj).closest('form').data("method");
                 var loadingmsg = $(obj).closest('form').data("loadingmsg");
-
+                var datatags = $(obj).closest('form').data();
+                
                 if (typeof (loadingmsg) != "undefined" && loadingmsg !== null) {
                     $(result).html(loadingmsg);
                 }
@@ -66,10 +67,12 @@
                     if (typeof (urlParameter) == "undefined" && urlParameter == null) {
                         urlParameter = "";
                     }
-                    formData.append('url_params', urlParameter);
+                    $.each(datatags, function(key,value){
+                       formData.append("__"+key+"__",value);
+                    });
+                    formData.append('__urlparams__', urlParameter);
 
                     console.log(formData);
-                    formData.append('method', method);
                     AjaxCall = $.ajax({
                         type: "POST",
                         url: url,

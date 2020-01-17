@@ -9,8 +9,10 @@ class core_template {
     private $CSS;
     private $LoadedPositions;
     public $Params;
+    private AWE $AWE;
 
     public function __construct() {
+        $this->AWE = &$GLOBALS["awe"];
         $this->Template = $this->getTemplate(array());
         $this->BodyClass = $GLOBALS['awe']->getUrlId(array());
         $this->JS = array();
@@ -200,11 +202,11 @@ class core_template {
             return false;
         }
         foreach ($objs as $obj) {
-            $json = (array) json_decode($obj['url_obj']);
-            if ($json["auth"] == NULL || $GLOBALS['awe']->Permissions->Check(array("permissions" => $json["auth"]))) {
-                if ($json["public"] == TRUE) {
-                    $this->LoadComponents($json);
-                    eval($json["command"]);
+            $obj['url_obj'] = json_decode($obj['url_obj'],true);
+            if ($obj['url_obj']["auth"] == NULL || $GLOBALS['awe']->Permissions->Check(array("permissions" => $obj['url_obj']["auth"]))) {
+                if ($obj['url_obj']["public"] == TRUE) {
+                    $this->LoadComponents($obj);
+                    eval($obj['url_obj']["command"]);
                 }
             } else {
                 echo "<br>Nincs jog<br>";
@@ -214,12 +216,12 @@ class core_template {
     }
 
     public function LoadComponents($array) {
-        if (!isset($array["params"]))
-            $array["params"] = array();
-        if (isset($array["name"])) {
-            $result = $GLOBALS['awe']->DB->fetch(array("sql" => "SELECT defaults_obj FROM defaults WHERE defaults_id=:defaults_id", "attr" => array("defaults_id" => $array["name"])), PDO::FETCH_ASSOC);
+        if (!isset($array['url_obj']["params"]))
+            $array['url_obj']["params"] = array();
+        if (isset($array['url_obj']["name"])) {
+            $result = $this->AWE->getSettings(array("settings_id" => $array["url_id"]));
             if ($result != NULL || $result != FALSE) {
-                $result = (array) json_decode($result['defaults_obj']);
+                $array = array_merge($array, $result);
                 if (isset($result["js"])) {
                     foreach ($result["js"] as $js) {
                         $GLOBALS['awe']->Template->addJS(array("js" => $js));
@@ -231,23 +233,26 @@ class core_template {
                     }
                 }
                 if (isset($result["version"])) {
-                    $file = "./components/" . $array["name"] . "/" . $result["version"] . "/" . $array["name"] . ".php";
+                    $file = "./components/" . $array['url_obj']["name"] . "/" . $result["version"] . "/" . $array['url_obj']["name"] . ".php";
+                    $path = "./components/" . $array['url_obj']["name"] . "/" . $result["version"] . "/";
+                    $array = array_merge($array, array("path" => $path));
                     if (file_exists($file)) {
                         require_once $file;
-                        $array["params"] = (array) $array["params"];
-                        $GLOBALS['awe']->Components[$array["name"]] = new $array["name"]($array["params"]);
+                        $array['url_obj']["params"] = (array) $array['url_obj']["params"];
+                        $GLOBALS['awe']->Components[$array['url_obj']["name"]] = new $array['url_obj']["name"]($array);
                         return TRUE;
                     }
                 }
             } else {
-                $file = "./components/" . $array["name"] . "/";
+                $file = "./components/" . $array['url_obj']["name"] . "/";
                 $dir = scandir($file);
-
-                $file = $file . $dir[(count($dir) - 1)] . "/" . $array["name"] . ".php";
+                $path = $file . $dir[(count($dir) - 1)] . "/";
+                $file = $file . $dir[(count($dir) - 1)] . "/" . $array['url_obj']["name"] . ".php";
                 if (file_exists($file)) {
+                    $array = array_merge($array, array("path" => $path));
                     require_once $file;
-                    $array["params"] = array("install" => "true");
-                    $GLOBALS['awe']->Components[$array["name"]] = new $array["name"]($array["params"]);
+                    //$array['url_obj']["params"] = array("install" => "true");
+                    $GLOBALS['awe']->Components[$array['url_id']] = new $array['url_obj']["name"]($array);
                     return TRUE;
                 }
             }

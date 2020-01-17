@@ -3,7 +3,6 @@
 /**
  * @source
  *  */
-
 class AWE {
 
     /**
@@ -124,7 +123,7 @@ class AWE {
         $this->Url = $this->getUrl(array());
         $this->Language = $this->getCurrentLanguage(array());
         $this->DebugMode = true;
-        
+
         /* Core fileok betöltése */
         $this->coreLoader(array());
 
@@ -164,7 +163,7 @@ class AWE {
         $this->User = new core_user(array());
         $this->Permissions = new core_permission(array());
         $this->Template = new core_template(array());
-        
+
         //ha admin oldalit akar elérni...
         if (FALSE && $this->stringStartsWith(array("string" => $this->Url, "substring" => "/admin"))) {
             if (!$this->User->isLoggedIn()) {
@@ -175,17 +174,17 @@ class AWE {
         }
         $this->afterInit(array());
     }
-    
+
     /**
      * Megvizsgálja, hogy az adott string JSON-e
      * @param array $array  [string]=>""
      * @global $GLOBALS["awe"]->isJSON(array("string"=>""))
      * @return bool       
      */
-    public function isJSON($array = array("string"=>"")) {
+    public function isJSON($array = array("string" => "")) {
         return is_string($array['string']) && is_array(json_decode($array['string'], true)) ? true : false;
     }
-    
+
     /**
      * Visszaadja a gyökértől az elérési utat
      * @param string $__dir__  string | \__DIR\__ | \__FILE__
@@ -240,7 +239,7 @@ class AWE {
      * @global $GLOBALS["awe"]->stringContains(array("string"=>"","substring"=>""))
      * @return bool       
      */
-    public function stringContains($array=array("string"=>"","substring"=>"")) {
+    public function stringContains($array = array("string" => "", "substring" => "")) {
         $array['string'] = mb_strtolower($array['string']);
         $array['substring'] = mb_strtolower($array['substring']);
 
@@ -256,7 +255,7 @@ class AWE {
      * @global $GLOBALS["awe"]->stringEndsWith(array("string"=>"","substring"=>""))
      * @return bool       
      */
-    public function stringEndsWith($array=array("string"=>"","substring"=>"")) {
+    public function stringEndsWith($array = array("string" => "", "substring" => "")) {
         $array['string'] = mb_strtolower($array['string']);
         $array['substring'] = mb_strtolower($array['substring']);
 
@@ -275,7 +274,7 @@ class AWE {
      * @global $GLOBALS["awe"]->stringStartsWith(array("string"=>"","substring"=>""))
      * @return bool       
      */
-    public function stringStartsWith($array=array("string"=>"","substring"=>"")) {
+    public function stringStartsWith($array = array("string" => "", "substring" => "")) {
         $array['string'] = mb_strtolower($array['string']);
         $array['substring'] = mb_strtolower($array['substring']);
 
@@ -291,7 +290,7 @@ class AWE {
      * @global $GLOBALS["awe"]->base64url_encode(array("string"=>""))
      * @return string       
      */
-    public function base64url_encode($array=array("data"=>"")) {
+    public function base64url_encode($array = array("data" => "")) {
         $b64 = base64_encode($array['data']);
         if ($b64 === FALSE)
             return FALSE;
@@ -305,7 +304,7 @@ class AWE {
      * @global $GLOBALS["awe"]->base64url_decode(array("data"=>"","strict"=>""))
      * @return array       
      */
-    public function base64url_decode($array=array("data")) {
+    public function base64url_decode($array = array("data")) {
         if (!isset($array['strict'])) {
             $array['strict'] = FALSE;
         }
@@ -322,7 +321,7 @@ class AWE {
      * @global $GLOBALS["awe"]->addUrlParams(array(0=>"",1=>"","forced_merge"=>""))
      * @return string|NULL      
      */
-    public function addUrlParams($array=array(0=>"",1=>"","forced_merge"=>"")) {
+    public function addUrlParams($array = array(0 => "", 1 => "", "forced_merge" => "")) {
         if (isset($array) && $array != NULL) {
             $getParams = $this->getUrlParams(array());
             if ($getParams != NULL) {
@@ -343,9 +342,11 @@ class AWE {
      * @global $GLOBALS["awe"]->getUrlParams(array()))
      * @return string|NULL       
      */
-    public function getUrlParams($array=array()) {
-        if (isset($_GET['params']) && $_GET['params'] != "") {
-            return (array) json_decode($this->base64url_decode(array("data" => $_GET['params'])));
+    public function getUrlParams($array = array()) {
+        if (!empty($array)) {
+            return json_decode($this->base64url_decode(array("data" => $array)),true);
+        } else if (isset($_GET['params']) && $_GET['params'] != "") {
+            return json_decode($this->base64url_decode(array("data" => $_GET['params'])),true);
         }
         return NULL;
     }
@@ -355,7 +356,7 @@ class AWE {
      * @param array $array  Jelenleg semmilyen paramétert nem kap
      * @return string       
      */
-    private function getUrl($array=array()) {
+    private function getUrl($array = array()) {
         $url = explode("?", $_SERVER['REQUEST_URI']);
         return $url[0];
     }
@@ -365,7 +366,7 @@ class AWE {
      * @param array $array  Jelenleg semmilyen paramétert nem kap
      * @return string       
      */
-    private function getCoreVersion($array=array()) {
+    private function getCoreVersion($array = array()) {
         $json = file_get_contents("./sites/sites.json");
         $array = json_decode($json, true);
         if (isset($array[$this->SiteAlias]["core"])) {
@@ -379,7 +380,7 @@ class AWE {
      * @param array $array  Jelenleg semmilyen paramétert nem kap
      * @return string       
      */
-    private function getSiteAlias($array=array()) {
+    private function getSiteAlias($array = array()) {
         $domain = $_SERVER['HTTP_HOST'];
         $json = file_get_contents("./sites/sites.json");
         $json = json_decode($json, true);
@@ -415,7 +416,7 @@ class AWE {
      * @param array $array  Jelenleg semmilyen paramétert nem kap
      * @return string       
      */
-    private function getCurrentLanguage($array=array()) {
+    private function getCurrentLanguage($array = array()) {
         return "hu_HU";
     }
 
@@ -424,7 +425,7 @@ class AWE {
      * @param array $array  Jelenleg semmilyen paramétert nem kap
      * @return string       
      */
-    private function getAvailableLanguage($array=array()) {
+    private function getAvailableLanguage($array = array()) {
         $result = $this->DB->fetch(array("sql" => "SELECT defaults_obj FROM defaults WHERE defaults_id=:defaults_id", "attr" => array("defaults_id" => "available_languages")));
         $result = (array) json_decode($result['defaults_obj']);
         return $result['languages'];
@@ -443,10 +444,42 @@ class AWE {
      * Lekérdezi a domainnevet
      * @param array $array  [defaults_id]->| adott objektum default értékeivel tér vissza
      * @global $GLOBALS["awe"]->getDomain(array("defaults_id"=>"")))
-     * @return string       
+     * @return array       
      */
     public function getDefaults($array) {
         return $this->DB->fetchAll(array("sql" => "SELECT defaults_obj FROM defaults WHERE defaults_id=:defaults_id", "attr" => array("defaults_id" => $array["defaults_id"])), PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Lekérdezi a domainnevet
+     * @param array $array  [defaults_id]->| adott objektum default értékeivel tér vissza
+     * @global $GLOBALS["awe"]->getDomain(array("defaults_id"=>"")))
+     * @return array       
+     */
+    public function getSettings($array) {
+        $sql = array(
+            "distinct" => FALSE,
+            "projection" => array(),
+            "table" => "settings",
+            "where" => array(
+                "AND" => array("settings_id" => $array["settings_id"])));
+        $result = $this->DB->simpleSelect($sql);
+        $ret = array();
+        if (count($result) > 0) {
+            foreach ($result[0] as $key => $value) {
+                if ($this->isJSON(array("string" => $value))) {
+                    $newval = json_decode($value);
+                    foreach ($newval as $key => $value) {
+                        $ret[$key] = $value;
+                    }
+                } else {
+                    $ret[$key] = $value;
+                }
+            }
+        } else {
+            return NULL;
+        }
+        return $ret;
     }
 
 }
@@ -454,13 +487,14 @@ class AWE {
 /* ------------------------ */
 /* Funkciók */
 /* ------------------------ */
-    /**
-     * Visszatér a kulcs fordításával
-     * @param string $expression  Fordítandó kifejezés
-     * @param bool $comment  HTML komment kirakása
-     * @global T($expression,$comment=FALSE)
-     * @return string       
-     */
+
+/**
+ * Visszatér a kulcs fordításával
+ * @param string $expression  Fordítandó kifejezés
+ * @param bool $comment  HTML komment kirakása
+ * @global T($expression,$comment=FALSE)
+ * @return string       
+ */
 function T($expression, $comment = FALSE) {
     $exp = $GLOBALS['awe']->Translator->getExpression(array("key" => $expression));
     if ($comment == true)
@@ -468,12 +502,12 @@ function T($expression, $comment = FALSE) {
     return $exp;
 }
 
-    /**
-     * Meghívja az adott pozíciók metódusait
-     * @param string $position  Pozíció neve
-     * @global getPos(array($position)
-     * @return bool       
-     */
+/**
+ * Meghívja az adott pozíciók metódusait
+ * @param string $position  Pozíció neve
+ * @global getPos(array($position)
+ * @return bool       
+ */
 function getPos($position) {
     return $GLOBALS['awe']->Template->getPosition(array("position" => $position));
 }

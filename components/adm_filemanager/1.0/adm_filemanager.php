@@ -202,61 +202,70 @@ class adm_filemanager {
 
     private AWE $AWE;
     private $Params;
+    private $Elements = array();
 
     function __construct($array) {
         $this->AWE = &$GLOBALS['awe'];
-        $this->Params = $this->AWE->getUrlParams();
-        echo $this->asd;
-
-        if (isset($array["ajax"]) && $array["ajax"] == TRUE) {
-            switch ($_POST['method']) {
-                case "view":
-                    echo json_encode(array("url_params" => $this->AWE->addUrlParams(array("filemanager_view_path" => FILEMANAGER_ROOT_DIR . $_POST['path'])), "html" => $this->listDirectoryElements(FILEMANAGER_ROOT_DIR . $_POST['path'])));
-                    break;
-                case "fileupload":
-                    //var_dump($_POST);
-                    //var_dump($_FILES);
-                    $file = $_FILES['file']['name'];
-                    move_uploaded_file($_FILES['file']['tmp_name'], getcwd()."/sites/".$this->AWE->SiteAlias."/tmp/" . $file);
-                    echo json_encode(array("html"=> getcwd()."/sites/".$this->AWE->SiteAlias."/tmp"));
-                    break;
-            }
+        if (isset($_POST['__urlparams__'])) {
+            $this->Params = $this->AWE->getUrlParams($_POST['__urlparams__']);
         } else {
+            $this->Params = $this->AWE->getUrlParams();
+        }
+        if (!empty($this->Params["filemanager_view_path"])) {
+            $this->Elements['path'] = $this->Params["filemanager_view_path"];
+        } else {
+            $this->Elements['path'] = FILEMANAGER_ROOT_DIR;
+        }
+        //
 
-            if (!empty($this->Params["filemanager_view_path"])) {
-                $path = $this->Params["filemanager_view_path"];
+        if (isset($array['url_obj']["params"]["ajax"]) && $array['url_obj']["params"]["ajax"] == TRUE) {
+            //var_dump($this->Params);
+            $this->Elements['config'] = array_merge($array, $this->AWE->getSettings(array("settings_id" => $_POST['__comid__'])));
+            if (!empty($this->Elements['config']["template"]) && is_file($this->Elements['config']["path"] . "templates/" . $this->Elements['config']["template"] . "/" . $this->Elements['config']["template"] . ".php")) {
+                /* Template betöltés */
+                require_once($this->Elements['config']["path"] . "templates/" . $this->Elements['config']["template"] . "/" . $this->Elements['config']["template"] . ".php");
+
+                /* Adott mappa listájának elkészítése */
+                if(empty($_POST['path'])){
+                    
+                    $this->Params['filemanager_view_path']= str_replace("/".end(split('/',$this->Params['filemanager_view_path'])), "", $this->Params['filemanager_view_path']);
+                }
+                if (isset($this->Params['filemanager_view_path'])) {
+                    //$this->Params['filemanager_view_path'] = str_replace(FILEMANAGER_ROOT_DIR, "", $this->Params['filemanager_view_path']);
+                    //var_dump($this->Params['filemanager_view_path']);
+                    $this->Elements['directory_elements'] = $this->directoryElements($this->Params['filemanager_view_path'] . "/" . $_POST['path']);
+                } else {
+                    $this->Elements['directory_elements'] = $this->directoryElements(FILEMANAGER_ROOT_DIR . $_POST['path']);
+                }
+                switch ($_POST['__method__']) {
+                    case "view":
+                        echo json_encode(array("url_params" => $this->AWE->addUrlParams(array("filemanager_view_path" => FILEMANAGER_ROOT_DIR . $_POST['path'])), "html" => listDirectoryElements($this->Elements)));
+                        break;
+                    case "fileupload":
+                        //var_dump($_POST);
+                        //var_dump($_FILES);
+                        $file = $_FILES['file']['name'];
+                        move_uploaded_file($_FILES['file']['tmp_name'], getcwd() . "/sites/" . $this->AWE->SiteAlias . "/tmp/" . $file);
+                        echo json_encode(array("html" => getcwd() . "/sites/" . $this->AWE->SiteAlias . "/tmp"));
+                        break;
+                }
             } else {
-                $path = FILEMANAGER_ROOT_DIR;
+                $this->AWE->Logger->setError(array("text" => "E0008 - Komponens template-je nem található", "line" => __LINE__, "file" => __FILE__));
             }
-            $this->createWindow(
-                    array("directory-tree" => $this->directoryTree(FILEMANAGER_ROOT_DIR),
-                        "file-list" => $this->listDirectoryElements($path)));
-        }
-    }
-    
-    public function createWindow($array = array("directory-tree" => "", "file-list" => "")) {
-        if (!empty($array)) {
-            echo "<div class='filemanager'>";
-            /* Directory Tree */
-            echo "<div class='directory-tree-view'>";
-            echo "<div class='directory-tree-view-in'>";
-            echo $array['directory-tree'];
-            echo "</div>";
-            echo "</div>";
-
-            /* File-list */
-            echo "<div class='file-list'>";
-            echo "<div class='file-list-in' id='" . substr(ADM_FILEMANAGER_AJAX_VIEW['result'], 1) . "'>";
-            echo $array['file-list'];
-            echo "</div>";
-            echo "</div>";
-            echo "</div>";
         } else {
-            return FALSE;
+            $this->Elements['config'] = $array;
+            if (!empty($this->Elements['config']["template"]) && is_file($this->Elements['config']["path"] . "templates/" . $this->Elements['config']["template"] . "/" . $this->Elements['config']["template"] . ".php")) {
+                require_once($this->Elements['config']["path"] . "templates/" . $this->Elements['config']["template"] . "/" . $this->Elements['config']["template"] . ".php");
+                $this->Elements['directory_elements'] = $this->directoryElements($this->Elements['path']);
+                $this->Elements['directory_tree'] = $this->recursiveDirectoryTree(FILEMANAGER_ROOT_DIR);
+                display($this->Elements);
+            } else {
+                $this->AWE->Logger->setError(array("text" => "E0008 - Komponens template-je nem található", "line" => __LINE__, "file" => __FILE__));
+            }
         }
     }
 
-    public function listDirectoryElements($directory, $viewmode = "list") {
+    public function directoryElements($directory, $viewmode = "list") {
         $array = array();
         $dirs = scandir($directory);
         foreach ($dirs as $dir) {
@@ -264,61 +273,7 @@ class adm_filemanager {
                 $array[$dir] = new adm_file(array("file" => $directory . "/" . $dir));
             }
         }
-        $str = "";
-        if (!empty($array)) {
-            $path = str_replace(FILEMANAGER_ROOT_DIR, "", $directory);
-            if ($viewmode == "list") {
-
-                $str .= "<div class='table'>";
-                $str .= "<form class='thead'>";
-                $str .= "<div class='tr'>"
-                        . "<div class='th'>fajlnev<div class='order'><div class='order-in '><label for='filemanager_name_ASC'><i class='fas fa-sort-alpha-down'></i></label><input style='display:none;' id='filemanager_name_ASC' name='orderby' class='asc' type='radio' value='filemanager_name:ASC'></div><div class='order-in '><label for='filemanager_name_DESC'><i class='fas fa-sort-alpha-up'></i></label><input style='display:none;' id='filemanager_name_DESC' name='orderby' class='desc' type='radio' value='filemanager_name:DESC'></div></div></div>"
-                        . "<div class='th'>tipus</div>"
-                        . "<div class='th'>meret</div>"
-                        . "<div class='th'>modositas</div>"
-                        . "</div>";
-                $str .= "</form>";
-                $str .= "<div class='tbody'>";
-                foreach ($array as $key => $value) {
-                    $path = str_replace(FILEMANAGER_ROOT_DIR, "", $directory);
-                    if ($key == "..") {
-                        $sPath = explode("/", $path);
-                        $i = 0;
-                        $path = "";
-                        foreach ($sPath as $v2) {
-                            if ($i < (count($sPath) - 1)) {
-                                if (!empty($v2)) {
-                                    $path .= "/" . $v2;
-                                }
-                            }
-                            $i++;
-                        }
-                        $key = "";
-                    } else {
-                        $key = "/" . $key;
-                    }
-                    if ($value->fileType["name"] == "folder")
-                        $folder = "folder-name";
-                    else
-                        $folder = "";
-                    $str .= "<div class='tr'>"
-                            . "<form class='td $folder' data-waiting='" . ADM_FILEMANAGER_AJAX_VIEW['waiting'] . "' data-method='" . ADM_FILEMANAGER_AJAX_VIEW["method"] . "' data-result='" . ADM_FILEMANAGER_AJAX_VIEW["result"] . "' data-url='" . ADM_FILEMANAGER_AJAX_VIEW["url"] . "'><input style='display:none;' name='path' type='text' value='" . $path . $key . "' readOnly /><div class='file-icon'><i class='" . $value->fileType['icon'] . "'></i></div><div class='file-name'>" . $value->fileName . "</div></form>"
-                            . "<div class='td file-name'>" . $value->fileType["name"] . "</div>"
-                            . "<div class='td file-name'>" . $value->fileSize . "</div>"
-                            . "<div class='td file-name'>" . $value->fileModificationTime . "</div>"
-                            . "</div>";
-                }
-                $str .= "</div>";
-                $str .= "</div>";
-            }
-        } else {
-            $str .= "<div class='table'>";
-            $str .= "<div class='tbody'>";
-            $str .= "<div class='tr'><div class='td'>Nincs mit megjeleníteni!</div></div>";
-            $str .= "</div>";
-            $str .= "</div>";
-        }
-        return $str;
+        return $array;
     }
 
     public function recursiveDirectoryTree($directory) {
@@ -336,44 +291,6 @@ class adm_filemanager {
             }
         }
         return $array;
-    }
-
-    public function recursiveDirectoryTreeWriter($array, $path = "") {
-        $str = "";
-        foreach ($array as $key => $value) {
-            if (!empty($value)) {
-                $str .= "<li class='expanded-directory'><div class='expanded-btn'><i class='fas fa-angle-right'></i></div><div class='folder-icon'><i class='fas fa-folder'></i></div><form data-waiting='" . ADM_FILEMANAGER_AJAX_VIEW['waiting'] . "' data-method='" . ADM_FILEMANAGER_AJAX_VIEW["method"] . "' data-result='" . ADM_FILEMANAGER_AJAX_VIEW["result"] . "' data-url='" . ADM_FILEMANAGER_AJAX_VIEW["url"] . "' class='folder-name'>" . $key . "<input style='display:none;' name='path' type='text' value='" . $path . "/" . $key . "' readOnly /></form></li>";
-                $str .= "<ul class='tree-view expanded'>" . $this->recursiveDirectoryTreeWriter($value, $path . "/" . $key) . "</ul>";
-            } else {
-                $str .= "<li class='alone'><div class='folder-icon'><i class='fas fa-folder'></i></div><form class='folder-name' data-waiting='" . ADM_FILEMANAGER_AJAX_VIEW['waiting'] . "' data-method='" . ADM_FILEMANAGER_AJAX_VIEW["method"] . "' data-result='" . ADM_FILEMANAGER_AJAX_VIEW["result"] . "' data-url='" . ADM_FILEMANAGER_AJAX_VIEW["url"] . "'>" . $key . "<input style='display:none;' name='path' type='text' value='" . $path . "/" . $key . "' readOnly /></form></li>";
-            }
-        }
-        return $str;
-    }
-
-    public function directoryTree($directory) {
-        return "<ul class='tree-view'>" . $this->recursiveDirectoryTreeWriter($this->recursiveDirectoryTree(FILEMANAGER_ROOT_DIR)) . "</ul>";
-        /* $dirs = scandir($directory);
-          $files = array();
-          $i = 0;
-          echo "<div id='result'><ul class='directory-tree'>";
-          foreach ($dirs as $dir) {
-          if ($dir != "." && $dir != "..") {
-          $files[$i] = new adm_file(array("file" => FILEMANAGER_ROOT_DIR . "/" . $dir));
-          echo "<li>"
-          . "<div class='block'>"
-          . "<i class='" . $files[$i]->fileType['icon'] . "'></i>"
-          . "</div>"
-          . "<div class='block'>"
-          . $files[$i]->fileName
-          . "</div>"
-          . "</li>"
-          . "</div>"
-          . "</div>";
-          $i++;
-          }
-          }
-          echo "</ul></div>"; */
     }
 
 }

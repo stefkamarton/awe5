@@ -247,7 +247,7 @@ class core_db {
         }
         $attr = array_merge($having["attr"], $where["attr"]);
         $str = "SELECT " . $distinct . $projection . " FROM " . $array["table"] . $joins . $wherestr . $groupby . $havingstr . $orderby . $limit . $offset;
-        return array("sql" => $str, "attr" => $attr);
+        return $this->fetchAll(array("sql" => $str, "attr" => $attr),PDO::FETCH_ASSOC);
     }
 
     /**
