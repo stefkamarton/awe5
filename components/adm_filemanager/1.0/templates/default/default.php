@@ -1,13 +1,28 @@
 <?php
 
-
 function display($array) {
-    createWindow(array("file-list" => listDirectoryElements($array), "directory-tree"=>directoryTree($array)));
-    echo "asd";
+    createWindow(array("file-list" => listDirectoryElements($array), "directory-tree" => directoryTree($array)));
+    uploadForm($array);
 }
-function ajaxView($array){
+
+function ajaxView($array) {
     return $str;
 }
+
+function uploadForm($array) {
+    
+    echo "<form id='fileupload' method='post' enctype='multipart/form-data' data-comid='" . $array['config']['url_id'] . "' data-waiting='0' data-method='fileupload' data-result='#upload' data-url='".ADM_FILEMANAGER_AJAX_VIEW["url"]."'>
+            <input type='text' name='text' value='22'/>
+            <input class='input-file' id='fileInput' type='file' name='file'>
+        </form>
+        <div id='upload'>
+        </div>
+        <div class='progress'>
+            <div class='bar'></div >
+            <div class='percent'>0%</div >
+        </div>";
+}
+
 function createWindow($array) {
     if (!empty($array)) {
         echo "<div class='filemanager'>";
@@ -35,10 +50,10 @@ function recursiveDirectoryTreeWriter($array, $path = "") {
     echo "<br>";
     foreach ($array['directory_tree'] as $key => $value) {
         if (!empty($value)) {
-            $str .= "<li class='expanded-directory'><div class='expanded-btn'><i class='fas fa-angle-right'></i></div><div class='folder-icon'><i class='fas fa-folder'></i></div><form data-comid='".$array['config']['url_id']."' data-waiting='" . $array['config']['waiting'] . "' data-method='" . ADM_FILEMANAGER_AJAX_VIEW["method"] . "' data-result='" . ADM_FILEMANAGER_AJAX_VIEW["result"] . "' data-url='" . ADM_FILEMANAGER_AJAX_VIEW["url"] . "' class='folder-name'>" . $key . "<input style='display:none;' name='path' type='text' value='" . $path . "/" . $key . "' readOnly /></form></li>";
-            $str .= "<ul class='tree-view expanded'>" . recursiveDirectoryTreeWriter(array_merge($array,array("directory_tree"=>$value)), $path . "/" . $key) . "</ul>";
+            $str .= "<li class='expanded-directory'><div class='expanded-btn'><i class='fas fa-angle-right'></i></div><div class='folder-icon'><i class='fas fa-folder'></i></div><form data-comid='" . $array['config']['url_id'] . "' data-waiting='" . $array['config']['waiting'] . "' data-method='" . ADM_FILEMANAGER_AJAX_VIEW["method2"] . "' data-result='" . ADM_FILEMANAGER_AJAX_VIEW["result"] . "' data-url='" . ADM_FILEMANAGER_AJAX_VIEW["url"] . "' class='folder-name'>" . $key . "<input style='display:none;' name='path' type='text' value='" . $path . "/" . $key . "' readOnly /></form></li>";
+            $str .= "<ul class='tree-view expanded'>" . recursiveDirectoryTreeWriter(array_merge($array, array("directory_tree" => $value)), $path . "/" . $key) . "</ul>";
         } else {
-            $str .= "<li class='alone'><div class='folder-icon'><i class='fas fa-folder'></i></div><form class='folder-name' data-comid='".$array['config']['url_id']."' data-waiting='" . ADM_FILEMANAGER_AJAX_VIEW['waiting'] . "' data-method='" . ADM_FILEMANAGER_AJAX_VIEW["method"] . "' data-result='" . ADM_FILEMANAGER_AJAX_VIEW["result"] . "' data-url='" . ADM_FILEMANAGER_AJAX_VIEW["url"] . "'>" . $key . "<input style='display:none;' name='path' type='text' value='" . $path . "/" . $key . "' readOnly /></form></li>";
+            $str .= "<li class='alone'><div class='folder-icon'><i class='fas fa-folder'></i></div><form class='folder-name' data-comid='" . $array['config']['url_id'] . "' data-waiting='" . ADM_FILEMANAGER_AJAX_VIEW['waiting'] . "' data-method='" . ADM_FILEMANAGER_AJAX_VIEW["method2"] . "' data-result='" . ADM_FILEMANAGER_AJAX_VIEW["result"] . "' data-url='" . ADM_FILEMANAGER_AJAX_VIEW["url"] . "'>" . $key . "<input style='display:none;' name='path' type='text' value='" . $path . "/" . $key . "' readOnly /></form></li>";
         }
     }
     return $str;
@@ -64,18 +79,8 @@ function listDirectoryElements($array) {
         $str .= "<div class='tbody'>";
         foreach ($array['directory_elements'] as $key => $value) {
             if ($key == "..") {
-                $sPath = explode("/", $path);
-                $i = 0;
-                $path = "";
-                foreach ($sPath as $v2) {
-                    if ($i < (count($sPath) - 1)) {
-                        if (!empty($v2)) {
-                            $path .= "/" . $v2;
-                        }
-                    }
-                    $i++;
-                }
-                $key = "";
+                $path="";
+//                $key = "";
             } else {
                 $key = "/" . $key;
             }
@@ -84,7 +89,7 @@ function listDirectoryElements($array) {
             else
                 $folder = "";
             $str .= "<div class='tr'>"
-                    . "<form class='td $folder' data-comid='".$array['config']['url_id']."' data-waiting='" . ADM_FILEMANAGER_AJAX_VIEW['waiting'] . "' data-method='" . ADM_FILEMANAGER_AJAX_VIEW["method"] . "' data-result='" . ADM_FILEMANAGER_AJAX_VIEW["result"] . "' data-url='" . ADM_FILEMANAGER_AJAX_VIEW["url"] . "'><input style='display:none;' name='path' type='text' value='" . $path . $key . "' readOnly /><div class='file-icon'><i class='" . $value->fileType['icon'] . "'></i></div><div class='file-name'>" . $value->fileName . "</div></form>"
+                    . "<form class='td $folder' data-comid='" . $array['config']['url_id'] . "' data-waiting='" . ADM_FILEMANAGER_AJAX_VIEW['waiting'] . "' data-method='" . ADM_FILEMANAGER_AJAX_VIEW["method"] . "' data-result='" . ADM_FILEMANAGER_AJAX_VIEW["result"] . "' data-url='" . ADM_FILEMANAGER_AJAX_VIEW["url"] . "'><input style='display:none;' name='path' type='text' value='" . $path . $key . "' readOnly /><div class='file-icon'><i class='" . $value->fileType['icon'] . "'></i></div><div class='file-name'>" . $value->fileName . "</div></form>"
                     . "<div class='td file-name'>" . $value->fileType["name"] . "</div>"
                     . "<div class='td file-name'>" . $value->fileSize . "</div>"
                     . "<div class='td file-name'>" . $value->fileModificationTime . "</div>"

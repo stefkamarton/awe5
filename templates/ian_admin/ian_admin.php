@@ -53,7 +53,7 @@
                 var method = $(obj).closest('form').data("method");
                 var loadingmsg = $(obj).closest('form').data("loadingmsg");
                 var datatags = $(obj).closest('form').data();
-                
+
                 if (typeof (loadingmsg) != "undefined" && loadingmsg !== null) {
                     $(result).html(loadingmsg);
                 }
@@ -67,12 +67,20 @@
                     if (typeof (urlParameter) == "undefined" && urlParameter == null) {
                         urlParameter = "";
                     }
-                    $.each(datatags, function(key,value){
-                       formData.append("__"+key+"__",value);
+                    $.each(datatags, function (key, value) {
+                        formData.append("__" + key + "__", value);
                     });
                     formData.append('__urlparams__', urlParameter);
-
-                    console.log(formData);
+                    var ttlSize = 0;
+                    $(obj).closest('form').find('input[type="file"]').each(function () {
+                        ttlSize += this.files[0].size;
+                    });
+                    var maxSize = Math.ceil(ttlSize / 1048576) + Math.ceil($(obj).closest('form').not("[type='file']").serialize().length / 1048576);
+                    if (maxSize => 5) {
+                        formData.append('__uploadmaxsize__', maxSize + 10);
+                    } else {
+                        formData.append('__uploadmaxsize__', 10);
+                    }
                     AjaxCall = $.ajax({
                         type: "POST",
                         url: url,
@@ -98,19 +106,19 @@
                             xhr.upload.addEventListener("progress", function (evt) {
                                 if (evt.lengthComputable) {
                                     var percentComplete = (evt.loaded / evt.total) * 100;
-                                    
+
                                     if (percentComplete == 100) {
                                         var prevent_leave = false;
                                     } else {
                                         var prevent_leave = true;
 
                                     }
-                                    $(window).on('beforeunload', function(){
+                                    $(window).on('beforeunload', function () {
                                         if (prevent_leave) {
                                             return "Your files are not completely uploaded...";
                                         }
                                     });
-                                    
+
                                     console.log("ittvagyok");
                                     var percentVal = Math.round(percentComplete) + '%';
                                     bar.width(percentVal);
@@ -423,17 +431,7 @@
                 ?>
             </div>
         </div>
-        <form id='fileupload' method="post" enctype="multipart/form-data"  data-waiting='0' data-method='fileupload' data-result='#upload' data-url='/admin/adm_filemanager/ajax'>
-            <input type='text' name='text' value='22'/>
-            <input class="input-file" id="fileInput" type="file" name="file">
 
-        </form>
-        <div id='upload'>
-        </div>
-        <div class="progress">
-            <div class="bar"></div >
-            <div class="percent">0%</div >
-        </div>
 
         <!-- footer class="footer">
             <div class="footer-in">

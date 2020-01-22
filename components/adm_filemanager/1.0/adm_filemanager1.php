@@ -217,17 +217,15 @@ class adm_filemanager {
         }
 
 
-        if (!empty($this->Params["filemanager_view_path"]) && isset($this->Params['filemanager_view_path'])) {
+
+        if (!empty($this->Params["filemanager_view_path"])) {
             $this->Elements['path'] = $this->Params["filemanager_view_path"];
         } else {
             $this->Elements['path'] = FILEMANAGER_ROOT_DIR;
         }
-        //var_dump($this->Elements['path']);
+        //
 
         if (isset($array['url_obj']["params"]["ajax"]) && $array['url_obj']["params"]["ajax"] == TRUE) {
-            var_dump($_POST['__uploadmaxsize__']);
-            //ini_set('upload_max_filesize', $_POST['__uploadmaxsize__']."M");
-            var_dump(ini_get('upload_max_filesize'));
             $this->AjaxCall($array);
         } else {
             $this->SimpleCall($array);
@@ -235,21 +233,16 @@ class adm_filemanager {
     }
 
     private function AjaxCall($array) {
-        if ($_POST['__method__'] != 'fileupload') {
-            if (ADM_FILEMANAGER_AJAX_VIEW['method2'] != $_POST['__method__']) {
-                /* Adott mappa listájának elkészítése */
-                if (empty($_POST['path'])) {
-                    if (!empty($this->Elements['path'])) {
-                        $strA = explode('/', $this->Elements['path']);
-                        $this->Elements['path'] = str_replace("/" . end($strA), "", $this->Elements['path']);
-                    } else {
-                        $this->Elements['path'] = FILEMANAGER_ROOT_DIR;
-                    }
-                } else {
-                    $this->Elements['path'] = $this->Elements['path'] . $_POST['path'];
-                }
+
+        /* Adott mappa listájának elkészítése */
+        if (empty($_POST['path'])) {
+            //var_dump($this->Elements['path']);
+            if (!empty($this->Params['filemanager_view_path'])) {
+                $strA = explode('/', $this->Params['filemanager_view_path']);
+                $this->Params['filemanager_view_path'] = str_replace("/" . end($strA), "", $this->Params['filemanager_view_path']);
+                //$this->Elements['path'] = $this->Params['filemanager_view_path'];
             } else {
-                $this->Elements['path'] = FILEMANAGER_ROOT_DIR . $_POST['path'];
+                $this->Params['filemanager_view_path'] = FILEMANAGER_ROOT_DIR . $_POST['path'];
             }
         }
         /* Konfig lekérdezés */
@@ -257,22 +250,29 @@ class adm_filemanager {
         if (!empty($this->Elements['config']['settings_id'])) {
             $this->Elements['config']['url_id'] = $this->Elements['config']['settings_id'];
         }
+
         if (!empty($this->Elements['config']["template"]) && is_file($this->Elements['config']["path"] . "templates/" . $this->Elements['config']["template"] . "/" . $this->Elements['config']["template"] . ".php")) {
             require_once($this->Elements['config']["path"] . "templates/" . $this->Elements['config']["template"] . "/" . $this->Elements['config']["template"] . ".php");
+
             if ($_POST['__method__'] != 'fileupload') {
-                $this->Elements['directory_elements'] = $this->directoryElements($this->Elements['path']);
+                if (isset($this->Params['filemanager_view_path']) && $_POST['__method__'] != ADM_FILEMANAGER_AJAX_VIEW['method2']) {
+                    $this->Elements['directory_elements'] = $this->directoryElements($this->Params['filemanager_view_path'] . "/" . $_POST['path']);
+                }
             }
             switch ($_POST['__method__']) {
                 case "view":
-                    echo json_encode(array("url_params" => $this->AWE->addUrlParams(array("filemanager_view_path" => $this->Elements['path'])), "html" => listDirectoryElements($this->Elements)));
+                    //var_dump($this->Elements);
+                    echo json_encode(array("url_params" => $this->AWE->addUrlParams(array("filemanager_view_path" => $this->Params['filemanager_view_path'])), "html" => listDirectoryElements($this->Elements)));
                     break;
                 case ADM_FILEMANAGER_AJAX_VIEW['method2']:
-                    echo json_encode(array("url_params" => $this->AWE->addUrlParams(array("filemanager_view_path" => $this->Elements['path'])), "html" => listDirectoryElements($this->Elements)));
+                    echo json_encode(array("url_params" => $this->AWE->addUrlParams(array("filemanager_view_path" => $this->Params['filemanager_view_path'])), "html" => listDirectoryElements($this->Elements)));
                     break;
                 case "fileupload":
+                    //var_dump($_POST);
+                    //var_dump($_FILES);
                     $file = $_FILES['file']['name'];
-                    move_uploaded_file($_FILES['file']['tmp_name'], $this->Elements['path'] . "/" . $file);
-                    echo json_encode(array("html" => $this->Elements['path']));
+                    move_uploaded_file($_FILES['file']['tmp_name'], getcwd() . "/sites/" . $this->AWE->SiteAlias . "/tmp/" . $file);
+                    echo json_encode(array("html" => getcwd() . "/sites/" . $this->AWE->SiteAlias . "/tmp"));
                     break;
             }
         } else {

@@ -122,7 +122,7 @@ class AWE {
         $this->CoreVersion = $this->getCoreVersion(array());
         $this->Url = $this->getUrl(array());
         $this->Language = $this->getCurrentLanguage(array());
-        $this->DebugMode = true;
+        $this->DebugMode = false;
 
         /* Core fileok betöltése */
         $this->coreLoader(array());
