@@ -3,6 +3,8 @@
 function display($array) {
     createWindow(array("file-list" => listDirectoryElements($array), "directory-tree" => directoryTree($array)));
     uploadForm($array);
+    echo "<div>".$array["__counter__"]["files"]."</div>";
+    echo "<div>".$array["__counter__"]["directories"]."</div>";
 }
 
 function ajaxView($array) {
@@ -11,7 +13,7 @@ function ajaxView($array) {
 
 function uploadForm($array) {
     
-    echo "<form id='fileupload' method='post' enctype='multipart/form-data' data-comid='" . $array['config']['url_id'] . "' data-waiting='0' data-method='fileupload' data-result='#upload' data-url='".ADM_FILEMANAGER_AJAX_VIEW["url"]."'>
+    echo "<form id='fileupload' method='post' enctype='multipart/form-data' data-progressbar='#main-bar' data-comid='" . $array['config']['url_id'] . "' data-waiting='0' data-method='fileupload' data-result='#upload' data-url='".ADM_FILEMANAGER_AJAX_VIEW["url"]."'>
             <input type='text' name='text' value='22'/>
             <input class='input-file' id='fileInput' type='file' name='file'>
         </form>
@@ -74,13 +76,14 @@ function listDirectoryElements($array) {
                 . "<div class='th'>tipus</div>"
                 . "<div class='th'>meret</div>"
                 . "<div class='th'>modositas</div>"
+                . "<div class='th'>muveletek</div>"
                 . "</div>";
-        $str .= "</form>";
-        $str .= "<div class='tbody'>";
+        $str .= "</form></div>";
+        $str .= "<div class='table'><div class='tbody'>";
         foreach ($array['directory_elements'] as $key => $value) {
             if ($key == "..") {
                 $path="";
-//                $key = "";
+                $key = "";
             } else {
                 $key = "/" . $key;
             }
@@ -89,10 +92,11 @@ function listDirectoryElements($array) {
             else
                 $folder = "";
             $str .= "<div class='tr'>"
-                    . "<form class='td $folder' data-comid='" . $array['config']['url_id'] . "' data-waiting='" . ADM_FILEMANAGER_AJAX_VIEW['waiting'] . "' data-method='" . ADM_FILEMANAGER_AJAX_VIEW["method"] . "' data-result='" . ADM_FILEMANAGER_AJAX_VIEW["result"] . "' data-url='" . ADM_FILEMANAGER_AJAX_VIEW["url"] . "'><input style='display:none;' name='path' type='text' value='" . $path . $key . "' readOnly /><div class='file-icon'><i class='" . $value->fileType['icon'] . "'></i></div><div class='file-name'>" . $value->fileName . "</div></form>"
+                    . "<form class='td $folder' data-progressbar='#main-bar' data-comid='" . $array['config']['url_id'] . "' data-waiting='" . ADM_FILEMANAGER_AJAX_VIEW['waiting'] . "' data-method='" . ADM_FILEMANAGER_AJAX_VIEW["method"] . "' data-result='" . ADM_FILEMANAGER_AJAX_VIEW["result"] . "' data-url='" . ADM_FILEMANAGER_AJAX_VIEW["url"] . "'><input style='display:none;' name='path' type='text' value='" . $path . $key . "' readOnly /><div class='file-icon'><i class='" . $value->fileType['icon'] . "'></i></div><div class='file-name'>" . $value->fileName . "</div></form>"
                     . "<div class='td file-name'>" . $value->fileType["name"] . "</div>"
                     . "<div class='td file-name'>" . $value->fileSize . "</div>"
                     . "<div class='td file-name'>" . $value->fileModificationTime . "</div>"
+                    . "<div class='td file-name'><i class='fas fa-sort-alpha-down'></i></div>"
                     . "</div>";
         }
         $str .= "</div>";

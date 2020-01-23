@@ -209,6 +209,7 @@ class adm_filemanager {
         $this->AWE = &$GLOBALS['awe'];
 
 
+
         /* GetURL Params */
         if (isset($_POST['__urlparams__'])) {
             $this->Params = $this->AWE->getUrlParams($_POST['__urlparams__']);
@@ -225,9 +226,9 @@ class adm_filemanager {
         //var_dump($this->Elements['path']);
 
         if (isset($array['url_obj']["params"]["ajax"]) && $array['url_obj']["params"]["ajax"] == TRUE) {
-            var_dump($_POST['__uploadmaxsize__']);
+            //var_dump($_POST['__uploadmaxsize__']);
             //ini_set('upload_max_filesize', $_POST['__uploadmaxsize__']."M");
-            var_dump(ini_get('upload_max_filesize'));
+            //var_dump(ini_get('upload_max_filesize'));
             $this->AjaxCall($array);
         } else {
             $this->SimpleCall($array);
@@ -261,18 +262,19 @@ class adm_filemanager {
             require_once($this->Elements['config']["path"] . "templates/" . $this->Elements['config']["template"] . "/" . $this->Elements['config']["template"] . ".php");
             if ($_POST['__method__'] != 'fileupload') {
                 $this->Elements['directory_elements'] = $this->directoryElements($this->Elements['path']);
+                $this->getFilesCounter($this->Elements['directory_elements']);
             }
             switch ($_POST['__method__']) {
                 case "view":
-                    echo json_encode(array("url_params" => $this->AWE->addUrlParams(array("filemanager_view_path" => $this->Elements['path'])), "html" => listDirectoryElements($this->Elements)));
+                    echo json_encode(array("__url_params__" => $this->AWE->addUrlParams(array("filemanager_view_path" => $this->Elements['path'])), "html" => array("#directorylist" => array("mode" => "override", "html" => listDirectoryElements($this->Elements)))));
                     break;
                 case ADM_FILEMANAGER_AJAX_VIEW['method2']:
-                    echo json_encode(array("url_params" => $this->AWE->addUrlParams(array("filemanager_view_path" => $this->Elements['path'])), "html" => listDirectoryElements($this->Elements)));
+                    echo json_encode(array("__url_params__" => $this->AWE->addUrlParams(array("filemanager_view_path" => $this->Elements['path'])), "html" => array("#directorylist" => array("mode" => "override", "html" => listDirectoryElements($this->Elements)))));
                     break;
                 case "fileupload":
                     $file = $_FILES['file']['name'];
                     move_uploaded_file($_FILES['file']['tmp_name'], $this->Elements['path'] . "/" . $file);
-                    echo json_encode(array("html" => $this->Elements['path']));
+                    echo json_encode(array("html" => array("#upload" => array("mode" => "append", "html" => $this->Elements['path']))));
                     break;
             }
         } else {
@@ -285,10 +287,24 @@ class adm_filemanager {
         if (!empty($this->Elements['config']["template"]) && is_file($this->Elements['config']["path"] . "templates/" . $this->Elements['config']["template"] . "/" . $this->Elements['config']["template"] . ".php")) {
             require_once($this->Elements['config']["path"] . "templates/" . $this->Elements['config']["template"] . "/" . $this->Elements['config']["template"] . ".php");
             $this->Elements['directory_elements'] = $this->directoryElements($this->Elements['path']);
+            $this->getFilesCounter($this->Elements['directory_elements']);
             $this->Elements['directory_tree'] = $this->recursiveDirectoryTree(FILEMANAGER_ROOT_DIR);
             display($this->Elements);
         } else {
             $this->AWE->Logger->setError(array("text" => "E0008 - Komponens template-je nem található", "line" => __LINE__, "file" => __FILE__));
+        }
+    }
+
+    private function getFilesCounter($array) {
+        $this->Elements["__counter__"] = array();
+        $this->Elements["__counter__"]["directories"] = 0;
+        $this->Elements["__counter__"]["files"] = 0;
+        foreach ($array as $key => $value) {
+            if ($value->fileType['name'] == "folder" && $value->fileName != "..") {
+                $this->Elements["__counter__"]["directories"]++;
+            } else {
+                $this->Elements["__counter__"]["files"]++;
+            }
         }
     }
 

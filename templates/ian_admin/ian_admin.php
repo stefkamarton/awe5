@@ -49,13 +49,12 @@
                     clearTimeout(timeoutID);
                 }
                 var url = $(obj).closest('form').data("url");
-                var result = $(obj).closest('form').data("result");
                 var method = $(obj).closest('form').data("method");
-                var loadingmsg = $(obj).closest('form').data("loadingmsg");
+                var progressbar = $(obj).closest('form').data("progressbar");
                 var datatags = $(obj).closest('form').data();
 
-                if (typeof (loadingmsg) != "undefined" && loadingmsg !== null) {
-                    $(result).html(loadingmsg);
+                if (typeof (progressbar) != "undefined" && progressbar !== null) {
+                    percent = $(progressbar);
                 }
                 var waiting = $(obj).closest('form').data("waiting");
                 if (typeof (waiting) == "undefined" && waiting == null) {
@@ -93,13 +92,9 @@
                             /*ProgressBar*/
                             var percentVal = '0%';
                             bar.width(percentVal);
+                            percent.css("background-color", "red");
                             percent.html(percentVal);
-
-                            if (method == "save") {
-                                $(result).html("Saving...");
-                            } else {
-                                $(result).html("<div class='message'><div class='info'><i class='fas fa-2x fa-info-circle'></i><div class='text'><?php echo T("loading") ?></div></div></div>");
-                            }
+                            percent.width(percentVal);
                         },
                         xhr: function () {
                             var xhr = new window.XMLHttpRequest();
@@ -118,23 +113,47 @@
                                             return "Your files are not completely uploaded...";
                                         }
                                     });
-
-                                    console.log("ittvagyok");
                                     var percentVal = Math.round(percentComplete) + '%';
-                                    bar.width(percentVal);
+                                    percent.width(percentVal);
+                                    percent.width(percentVal);
                                     percent.html(percentVal);
                                 }
                             }, false);
                             return xhr;
                         },
-                        uploadProgress: function (event, position, total, percentComplete) {
-
-                        },
                         success: function (data, textStatus) {
-                            $(result).html(data.html);
-                            if (typeof (data.url_params) != "undefined" && data.url_params !== null) {
-                                window.history.replaceState({}, '<?php echo $GLOBALS['awe']->Domain; ?>', '<?php echo $GLOBALS['awe']->Url; ?>' + '?params=' + data.url_params);
+
+                            $.each(data.html, function (key, value) {
+                                if (value.mode == "append") {
+                                    $(key).append(value.html)
+                                } else if (value.mode == "override") {
+                                    $(key).html(value.html)
+                                }
+                            });
+
+                            var domain = window.location.origin;
+                            var url = window.location.pathname;
+                            var params = getUrlParameter("params");
+
+                            if (typeof (data.__url__) != "undefined" && data.__url__ !== null) {
+                                url = data.__url__;
                             }
+                            if (typeof (data.__domain__) != "undefined" && data.__domain__ !== null) {
+                                domain = data.__domain__;
+                            }
+                            if (typeof (data.__url_params__) != "undefined" && data.__url_params__ !== null) {
+                                params = '?params=' + data.__url_params__;
+                            } else if (typeof (params) != "undefined" && params !== null) {
+                                params = '?params=' + params;
+
+                            } else {
+                                params = "";
+                            }
+                            window.history.replaceState({}, domain, url + params);
+
+                            percent.css("background-color", "transparent");
+                            bar.width("0%");
+                            percent.html("");
 
                         },
                         error: function (req, status, err) {
@@ -144,6 +163,20 @@
                     });
                 }, waiting);
             }
+            var getUrlParameter = function getUrlParameter(sParam) {
+                var sPageURL = window.location.search.substring(1),
+                        sURLVariables = sPageURL.split('&'),
+                        sParameterName,
+                        i;
+
+                for (i = 0; i < sURLVariables.length; i++) {
+                    sParameterName = sURLVariables[i].split('=');
+
+                    if (sParameterName[0] === sParam) {
+                        return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+                    }
+                }
+            };
             function prevPage(obj) {
                 var inp = $(obj).closest('form').find("input[name='pagenumber']");
                 var val = parseInt(inp.val());
@@ -400,7 +433,7 @@
                     <div class="separator"><h3><?php echo T("system"); ?></h3><hr></div>
                     <ul>
         <?php //echo $awe->admMenu;    ?>
-        <?php //getPos("systemmenu");     ?>
+        <?php //getPos("systemmenu");       ?>
                     </ul>
                 </div>
                 <div class="menu-block">
@@ -424,6 +457,22 @@
             </div>
 
         </div-->
+
+        <div class="message-box">
+            <div class="message-box-in">
+                <div class="message">
+                    <div class="message-in">
+                        2313123131
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="asd">
+            2313123131
+        </div>
+        <div class="progress-bar">
+            <div class="bar" id="main-bar"></div>
+        </div>
         <div class="content">
             <div class="content-in result">
                 <h1><?php /* $GLOBALS['awe']->ComponentName; */ ?></h1>
@@ -447,75 +496,34 @@
             </div>
         </footer-->
     </body>
-    <script>/**
-     * jQuery serializeObject
-     * @copyright 2014, macek <paulmacek@gmail.com>
-     * @link https://github.com/macek/jquery-serialize-object
-     * @license BSD
-     * @version 2.5.0
-     */
-         !function (e, i) {
-             if ("function" == typeof define && define.amd)
-                 define(["exports", "jquery"], function (e, r) {
-                     return i(e, r)
-                 });
-             else if ("undefined" != typeof exports) {
-                 var r = require("jquery");
-                 i(exports, r)
-             } else
-                 i(e, e.jQuery || e.Zepto || e.ender || e.$)
-         }(this, function (e, i) {
-             function r(e, r) {
-                 function n(e, i, r) {
-                     return e[i] = r, e
-                 }
-                 function a(e, i) {
-                     for (var r, a = e.match(t.key); void 0 !== (r = a.pop()); )
-                         if (t.push.test(r)) {
-                             var u = s(e.replace(/\[\]$/, ""));
-                             i = n([], u, i)
-                         } else
-                             t.fixed.test(r) ? i = n([], r, i) : t.named.test(r) && (i = n({}, r, i));
-                     return i
-                 }
-                 function s(e) {
-                     return void 0 === h[e] && (h[e] = 0), h[e]++
-                 }
-                 function u(e) {
-                     switch (i('[name="' + e.name + '"]', r).attr("type")) {
-                         case"checkbox":
-                             return"on" === e.value ? !0 : e.value;
-                         default:
-                             return e.value
-                     }
-                 }
-                 function f(i) {
-                     if (!t.validate.test(i.name))
-                         return this;
-                     var r = a(i.name, u(i));
-                     return l = e.extend(!0, l, r), this
-                 }
-                 function d(i) {
-                     if (!e.isArray(i))
-                         throw new Error("formSerializer.addPairs expects an Array");
-                     for (var r = 0, t = i.length; t > r; r++)
-                         this.addPair(i[r]);
-                     return this
-                 }
-                 function o() {
-                     return l
-                 }
-                 function c() {
-                     return JSON.stringify(o())
-                 }
-                 var l = {}, h = {};
-                 this.addPair = f, this.addPairs = d, this.serialize = o, this.serializeJSON = c
-             }
-             var t = {validate: /^[a-z_][a-z0-9_]*(?:\[(?:\d*|[a-z0-9_]+)\])*$/i, key: /[a-z0-9_]+|(?=\[\])/gi, push: /^$/, fixed: /^\d+$/, named: /^[a-z0-9_]+$/i};
-             return r.patterns = t, r.serializeObject = function () {
-                 return new r(i, this).addPairs(this.serializeArray()).serialize()
-             }, r.serializeJSON = function () {
-                 return new r(i, this).addPairs(this.serializeArray()).serializeJSON()
-             }, "undefined" != typeof i.fn && (i.fn.serializeObject = r.serializeObject, i.fn.serializeJSON = r.serializeJSON), e.FormSerializer = r, r
-         });</script>
+    <script>
+        $(document).ready(function () {
+            var tId;
+            $(".message-box .message:last").hide().slideDown();
+            clearTimeout(tId);
+            tId = setTimeout(function () {
+                $(".message-box .message:last").hide(1000);
+                delay(1000);
+                $(".message-box .message:last").detach(1000);
+            }, 10000);
+        });
+    </script>
 </html>
+<style>
+
+    .progress-bar{
+        position: fixed;
+        top:0;
+        height: 2px;
+        width:100%;
+    }
+    .progress-bar .bar{
+        width: 0%;
+        height:2px;
+        position: absolute;
+        left:0;
+        top:0;
+        background-color: transparent;
+        transition: .3s linear width;
+    }
+</style>

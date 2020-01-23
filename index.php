@@ -1,9 +1,9 @@
 <?php
 
-ini_set('upload_max_filesize',"20M");
+/*ini_set('upload_max_filesize',"20M");
 ini_set('post_max_size',"20M");
             var_dump(ini_get('upload_max_filesize'));
-
+*/
 function HTTP_AUTH() {
     $AUTH_USER = 'uzletembermagazin';
     $AUTH_PASS = '123456';
