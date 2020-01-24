@@ -23,6 +23,31 @@
             });
         </script>
         <script>
+            var tId;
+            var count = $(".message-box .message").length;
+            newMessage("HIBAAA", "HELLO W", "");
+            function newMessage(type, title, txt, link) {
+                $('.message-box .message-box-in').prepend("<div class='message " + type + "' style='display:none;'><div class='message-in'><h2 class='message-head'>" + title + "</h2><p class='message-text'>" + txt + "</p></div></div>");
+                $(".message").each(function (index) {
+                    if ($(this).is(":hidden")) {
+                        $(this).show("slide", {direction: "right"}, 1000);
+                    }
+                });
+                hideMessage();
+            }
+            function hideMessage() {
+                tId = setTimeout(function () {
+                    $(".message-box .message").eq(0).hide("slide", {direction: "right"}, 1000);
+                    setTimeout(function () {
+                        $('.message-box .message').eq(0).remove();
+                    }, 1000);
+                    if ($(".message-box .message").length > 0) {
+                        clearTimeout(tId);
+                        hideMessage();
+                    }
+                }, 15000);
+            }
+
             function getUrlParameter(sParam) {
                 var sPageURL = window.location.search.substring(1),
                         sURLVariables = sPageURL.split('&'),
@@ -83,6 +108,7 @@
                     AjaxCall = $.ajax({
                         type: "POST",
                         url: url,
+                        async: false,
                         dataType: "json",
                         processData: false,
                         contentType: false,
@@ -130,6 +156,25 @@
                                     $(key).html(value.html)
                                 }
                             });
+                            $.each(data.message, function (key, value) {
+                                var type = "";
+                                var title = "";
+                                var text = "";
+                                var link = "";
+                                if (typeof (value.type) != "undefined" && value.type !== null) {
+                                    type = value.type;
+                                }
+                                if (typeof (value.title) != "undefined" && value.title !== null) {
+                                    title = value.title;
+                                }
+                                if (typeof (value.text) != "undefined" && value.text !== null) {
+                                    text = value.text;
+                                }
+                                if (typeof (value.link) != "undefined" && value.link !== null) {
+                                    link = value.link;
+                                }
+                                newMessage(type, title, text, link);
+                            });
 
                             var domain = window.location.origin;
                             var url = window.location.pathname;
@@ -154,10 +199,9 @@
                             percent.css("background-color", "transparent");
                             bar.width("0%");
                             percent.html("");
-
                         },
                         error: function (req, status, err) {
-                            console.log(req);
+                            newMessage(status, "Error", err, "");
                             console.log('Something went wrong', status, err);
                         }
                     });
@@ -208,6 +252,14 @@
                 Ajax(obj);
             }
             $(document).ready(function () {
+                $('.message-box .message').mouseenter(function () {
+                    clearTimeout(tId);
+                    console.log("mose");
+                });
+                $('.message-box .message').mouseleave(function () {
+                    console.log("mose1");
+                    hideMessage();
+                });
                 $(function () {
                     $('form#ajax').attr('onsubmit', 'return false');
                 });
@@ -271,6 +323,14 @@
             });
 
             $(document).ajaxComplete(function () {
+                $('.message-box .message').mouseenter(function () {
+                    clearTimeout(tId);
+                    console.log("mose");
+                });
+                $('.message-box .message').mouseleave(function () {
+                    console.log("mose1");
+                    hideMessage();
+                });
                 $(function () {
                     $('form#ajax').attr('onsubmit', 'return false');
                 });
@@ -462,7 +522,22 @@
             <div class="message-box-in">
                 <div class="message">
                     <div class="message-in">
-                        2313123131
+                        <div class="message-head">
+                            Hiba 404!
+                        </div>
+                        <div class="message-body">
+                            Hiba .....;
+                        </div>
+                    </div>
+                </div>
+                <div class="message">
+                    <div class="message-in">
+                        <div class="message-head">
+                            Hiba 404!
+                        </div>
+                        <div class="message-body">
+                            Hiba .....;
+                        </div>
                     </div>
                 </div>
             </div>
@@ -496,21 +571,25 @@
             </div>
         </footer-->
     </body>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script>
-        $(document).ready(function () {
-            var tId;
-            $(".message-box .message:last").hide().slideDown();
-            clearTimeout(tId);
-            tId = setTimeout(function () {
-                $(".message-box .message:last").hide(1000);
-                delay(1000);
-                $(".message-box .message:last").detach(1000);
-            }, 10000);
-        });
+
     </script>
 </html>
 <style>
-
+    .message-box{
+        width:250px;
+        position:fixed;
+        bottom:10px;
+        right:10px;
+    }
+    .message-box .message{
+        background:var(--green);
+        color:var(--black);
+        padding: 20px 15px;
+        margin:10px auto;
+    }
     .progress-bar{
         position: fixed;
         top:0;
