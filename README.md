@@ -1,4 +1,1 @@
-# awe5
-# CMS
-dsadasd
-dasdas
+Imagemagick jp2/webp támogatás kell!!!!

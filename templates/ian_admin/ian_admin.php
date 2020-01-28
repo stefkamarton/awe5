@@ -151,9 +151,9 @@
 
                             $.each(data.html, function (key, value) {
                                 if (value.mode == "append") {
-                                    $(key).append(value.html)
+                                    $(jqID(key)).append(value.html)
                                 } else if (value.mode == "override") {
-                                    $(key).html(value.html)
+                                    $(jqID(key)).html(value.html)
                                 }
                             });
                             $.each(data.message, function (key, value) {
@@ -206,6 +206,11 @@
                         }
                     });
                 }, waiting);
+            }
+            function jqID(myid) {
+
+                return "#" + myid.replace(/(:|\.|\[|\]|,|=|@)/g, "\\$1");
+
             }
             var getUrlParameter = function getUrlParameter(sParam) {
                 var sPageURL = window.location.search.substring(1),

@@ -73,7 +73,7 @@ function directoryTree($array) {
 function listDirectoryElements($array) {
     $str = "";
     if (!empty($array['directory_elements'])) {
-        if (substr($array['path'], -1) == "/") {
+        if (substr($array['path'], -1)=="/") {
             $array['path'] = substr($array['path'], 0, -1);
         }
         $path = str_replace(FILEMANAGER_ROOT_DIR, "", $array['path']);
@@ -99,21 +99,8 @@ function listDirectoryElements($array) {
                 $folder = "folder-name";
             else
                 $folder = "";
-            if (strpos($value->fileType["icon"], "image") !== false) {
-                $thumbpath = str_replace(FILEMANAGER_ROOT_DIR, "", $array['path']);
-                $fmpath = str_replace(getcwd(), "", FILEMANAGER_ROOT_DIR);
-                $thumbpath = explode("/", $thumbpath);
-                $thumbname = "";
-                foreach ($thumbpath as $tp) {
-                    $thumbname .= $tp . "_";
-                }
-                $thumb = "<img src='" . $GLOBALS['awe']->Domain . $fmpath . "/.thumbs/" . $thumbname . $value->fileName."_thumb.webp" . "'>";
-            } else {
-                $thumb = "<i class='" . $value->fileType['icon'] . "'></i>";
-            }
             $str .= "<div class='tr'>"
-                    . "<form class='td $folder' data-progressbar='#main-bar' data-comid='" . $array['config']['url_id'] . "' data-waiting='" . ADM_FILEMANAGER_AJAX_VIEW['waiting'] . "' data-method='" . ADM_FILEMANAGER_AJAX_VIEW["method"] . "' data-url='" . ADM_FILEMANAGER_AJAX_VIEW["url"] . "'><input style='display:none;' name='path' type='text' value='" . $path . $key . "' readOnly />"
-                    . "<div class='file-icon'>$thumb</div><div class='file-name'>" . $value->fileName . "</div></form>"
+                    . "<form class='td $folder' data-progressbar='#main-bar' data-comid='" . $array['config']['url_id'] . "' data-waiting='" . ADM_FILEMANAGER_AJAX_VIEW['waiting'] . "' data-method='" . ADM_FILEMANAGER_AJAX_VIEW["method"] . "' data-url='" . ADM_FILEMANAGER_AJAX_VIEW["url"] . "'><input style='display:none;' name='path' type='text' value='" . $path . $key . "' readOnly /><div class='file-icon'><i class='" . $value->fileType['icon'] . "'></i></div><div class='file-name'>" . $value->fileName . "</div></form>"
                     . "<div class='td file-name'>" . $value->fileType["name"] . "</div>"
                     . "<div class='td file-name'>" . $value->fileSize . "</div>"
                     . "<div class='td file-name'>" . $value->fileModificationTime . "</div>"

@@ -61,7 +61,6 @@ define("MIME_TYPES", array(
     "application/x-java-archive" => "jar",
     "application/x-java-jnlp-file" => "jnlp",
     "image/jpeg" => array("name" => "jpg", "icon" => "far fa-file-image"),
-    "image/webp" => array("name" => "jpg", "icon" => "far fa-file-image"),
     "application/x-javascript" => "js",
     "audio/midi" => array("name" => "midi", "icon" => "far fa-file-audio"),
     "application/x-killustrator" => "kil",
@@ -261,10 +260,9 @@ class adm_filemanager {
         }
         if (!empty($this->Elements['config']["template"]) && is_file($this->Elements['config']["path"] . "templates/" . $this->Elements['config']["template"] . "/" . $this->Elements['config']["template"] . ".php")) {
             require_once($this->Elements['config']["path"] . "templates/" . $this->Elements['config']["template"] . "/" . $this->Elements['config']["template"] . ".php");
-            if ($_POST['__method__'] != 'fileupload') {
-                $this->Elements['directory_elements'] = $this->directoryElements($this->Elements['path']);
-                $this->getFilesCounter($this->Elements['directory_elements']);
-            }
+
+            $this->Elements['directory_elements'] = $this->directoryElements($this->Elements['path']);
+            $this->getFilesCounter($this->Elements['directory_elements']);
             switch ($_POST['__method__']) {
                 case "view":
                     echo json_encode(array("__url_params__" => $this->AWE->addUrlParams(array("filemanager_view_path" => $this->Elements['path'])), "html" => array($this->Elements['config']['url_id'] . "_directorylist" => array("mode" => "override", "html" => listDirectoryElements($this->Elements)))));
@@ -275,65 +273,11 @@ class adm_filemanager {
                 case "fileupload":
                     $file = $_FILES['file']['name'];
                     move_uploaded_file($_FILES['file']['tmp_name'], $this->Elements['path'] . "/" . $file);
-                    $this->convertToWebP($this->Elements['path'], $file);
-                    try {
-                        $this->generateThumbnail($this->Elements['path'], $file, 128, 128, 90);
-                    } catch (ImagickException $e) {
-                        echo $e->getMessage();
-                    } catch (Exception $e) {
-                        echo $e->getMessage();
-                    }
-                    unlink($this->Elements['path'] . "/" . $file);
-                    $this->Elements['directory_elements'] = $this->directoryElements($this->Elements['path']);
-                    $this->getFilesCounter($this->Elements['directory_elements']);
                     echo json_encode(array("html" => array($this->Elements['config']['url_id'] . "_directorylist" => array("mode" => "override", "html" => listDirectoryElements($this->Elements)), "upload" => array("mode" => "append", "html" => $this->Elements['path']))));
                     break;
             }
         } else {
             $this->AWE->Logger->setError(array("text" => "E0008 - Komponens template-je nem található", "line" => __LINE__, "file" => __FILE__));
-        }
-    }
-
-    function convertToWebP($path, $img) {
-        $imgPath = $path . "/" . $img;
-        if (is_file($imgPath)) {
-            $imagick = new Imagick($imgPath);
-            $imagick->setOption('webp:method', '6');
-            $imagick->setImageCompression(Imagick::COMPRESSION_JPEG);
-            $imagick->setImageCompressionQuality(90);
-            $filename_no_ext = explode('.', $img);
-            $filename_no_ext = reset($filename_no_ext);
-
-            $imagick->writeImage('webp:' . $path . "/" . $filename_no_ext . ".webp");
-            return true;
-        } else {
-            throw new Exception("No valid image provided with {$img}.");
-        }
-    }
-
-    function generateThumbnail($path, $img, $width, $height, $quality = 90) {
-        $imgPath = $path . "/" . $img;
-        if (is_file($imgPath)) {
-            $imagick = new Imagick($imgPath);
-            $imagick->setOption('webp:method', '6');
-            $imagick->setImageCompression(Imagick::COMPRESSION_JPEG);
-            $imagick->setImageCompressionQuality($quality);
-            $imagick->thumbnailImage($width, $height, true, false);
-            $filename_no_ext = explode('.', $img);
-            $filename_no_ext = reset($filename_no_ext);
-            $thumbpath = str_replace(FILEMANAGER_ROOT_DIR, "", $path);
-            $thumbpath = explode("/", $thumbpath);
-            $thumbname = "";
-            foreach ($thumbpath as $value) {
-                $thumbname .= $value . "_";
-            }
-            if (!file_exists(FILEMANAGER_ROOT_DIR . "/.thumbs")) {
-                mkdir(FILEMANAGER_ROOT_DIR . "/.thumbs", 0777, true);
-            }
-            $imagick->writeImage('webp:' . FILEMANAGER_ROOT_DIR . "/.thumbs/" . $thumbname . $filename_no_ext . '.webp_thumb' . '.webp');
-            return true;
-        } else {
-            throw new Exception("No valid image provided with {$img}.");
         }
     }
 
