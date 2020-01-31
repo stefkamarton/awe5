@@ -61,7 +61,7 @@ define("MIME_TYPES", array(
     "application/x-java-archive" => "jar",
     "application/x-java-jnlp-file" => "jnlp",
     "image/jpeg" => array("name" => "jpg", "icon" => "far fa-file-image"),
-    "image/webp" => array("name" => "jpg", "icon" => "far fa-file-image"),
+    "image/webp" => array("name" => "webp", "icon" => "far fa-file-image"),
     "application/x-javascript" => "js",
     "audio/midi" => array("name" => "midi", "icon" => "far fa-file-audio"),
     "application/x-killustrator" => "kil",
@@ -199,6 +199,7 @@ define("ADM_FILEMANAGER_AJAX_VIEW", array(
     "method2" => "view2",
     "url" => "/admin/adm_filemanager/ajax",
     "result" => "#directorylist"));
+define("DENIED_FILENAMES", array("." . "..", ".thumbs"));
 
 class adm_filemanager {
 
@@ -254,6 +255,7 @@ class adm_filemanager {
                 $this->Elements['path'] = FILEMANAGER_ROOT_DIR . $_POST['path'];
             }
         }
+
         /* Konfig lekérdezés */
         $this->Elements['config'] = array_merge($this->AWE->getSettings(array("settings_id" => $_POST['__comid__'])), $array);
         if (!empty($this->Elements['config']['settings_id'])) {
@@ -265,6 +267,7 @@ class adm_filemanager {
                 $this->Elements['directory_elements'] = $this->directoryElements($this->Elements['path']);
                 $this->getFilesCounter($this->Elements['directory_elements']);
             }
+
             switch ($_POST['__method__']) {
                 case "view":
                     echo json_encode(array("__url_params__" => $this->AWE->addUrlParams(array("filemanager_view_path" => $this->Elements['path'])), "html" => array($this->Elements['config']['url_id'] . "_directorylist" => array("mode" => "override", "html" => listDirectoryElements($this->Elements)))));
@@ -283,7 +286,7 @@ class adm_filemanager {
                     } catch (Exception $e) {
                         echo $e->getMessage();
                     }
-                    unlink($this->Elements['path'] . "/" . $file);
+                    //unlink($this->Elements['path'] . "/" . $file);
                     $this->Elements['directory_elements'] = $this->directoryElements($this->Elements['path']);
                     $this->getFilesCounter($this->Elements['directory_elements']);
                     echo json_encode(array("html" => array($this->Elements['config']['url_id'] . "_directorylist" => array("mode" => "override", "html" => listDirectoryElements($this->Elements)), "upload" => array("mode" => "append", "html" => $this->Elements['path']))));
@@ -297,14 +300,25 @@ class adm_filemanager {
     function convertToWebP($path, $img) {
         $imgPath = $path . "/" . $img;
         if (is_file($imgPath)) {
-            $imagick = new Imagick($imgPath);
-            $imagick->setOption('webp:method', '6');
-            $imagick->setImageCompression(Imagick::COMPRESSION_JPEG);
+            $imagick = new Imagick(realpath($imgPath));
+            $imagick->setImageFormat('webp');
+            //$imagick->setOption('webp:method', '6');
+            $imagick->setImageCompression(Imagick::COMPRESSION_BZIP);
             $imagick->setImageCompressionQuality(90);
             $filename_no_ext = explode('.', $img);
-            $filename_no_ext = reset($filename_no_ext);
+            unset($filename_no_ext[count($filename_no_ext)]);
+            $filename_no_ext = join(".", $filename_no_ext);
 
-            $imagick->writeImage('webp:' . $path . "/" . $filename_no_ext . ".webp");
+
+            //$imagick->setImageCompression(Imagick::COMPRESSION_JPEG);
+            //$imagick->setImageCompressionQuality($quality);
+            //$imagick->thumbnailImage($width, $height, false, false);
+            //$filename_no_ext = reset(explode('.', $img));
+            if (file_put_contents($path . "/" . $filename_no_ext . ".webp", $imagick) === false) {
+                throw new Exception("Could not put contents.");
+            }
+
+            //$imagick->writeImage('webp:' . $path . "/" . $filename_no_ext . ".webp");
             return true;
         } else {
             throw new Exception("No valid image provided with {$img}.");
@@ -320,7 +334,8 @@ class adm_filemanager {
             $imagick->setImageCompressionQuality($quality);
             $imagick->thumbnailImage($width, $height, true, false);
             $filename_no_ext = explode('.', $img);
-            $filename_no_ext = reset($filename_no_ext);
+            unset($filename_no_ext[count($filename_no_ext)]);
+            $filename_no_ext = join(".", $filename_no_ext);
             $thumbpath = str_replace(FILEMANAGER_ROOT_DIR, "", $path);
             $thumbpath = explode("/", $thumbpath);
             $thumbname = "";
@@ -368,7 +383,7 @@ class adm_filemanager {
 
         $dirs = scandir($directory);
         foreach ($dirs as $dir) {
-            if ($dir != "." && ($dir != ".." || (FILEMANAGER_ROOT_DIR != $directory && FILEMANAGER_ROOT_DIR . "/" != $directory))) {
+            if ($dir != "." && ($dir != ".." && $dir != ".thumbs" || (FILEMANAGER_ROOT_DIR != $directory && FILEMANAGER_ROOT_DIR . "/" != $directory))) {
                 $array[$dir] = new adm_file(array("file" => $directory . "/" . $dir));
             }
         }

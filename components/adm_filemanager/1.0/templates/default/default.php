@@ -89,36 +89,46 @@ function listDirectoryElements($array) {
         $str .= "</form></div>";
         $str .= "<div class='table'><div class='tbody'>";
         foreach ($array['directory_elements'] as $key => $value) {
-            if ($key == "..") {
-                $path = "";
-                $key = "";
-            } else {
-                $key = "/" . $key;
-            }
-            if ($value->fileType["name"] == "folder")
-                $folder = "folder-name";
-            else
-                $folder = "";
-            if (strpos($value->fileType["icon"], "image") !== false) {
+            if ($value->fileType["name"] != "webp") {
+                if ($key == "..") {
+                    $path = "";
+                    $key = "";
+                } else {
+                    $key = "/" . $key;
+                }
+                if ($value->fileType["name"] == "folder")
+                    $folder = "folder-name";
+                else {
+                    $folder = "";
+                }
                 $thumbpath = str_replace(FILEMANAGER_ROOT_DIR, "", $array['path']);
-                $fmpath = str_replace(getcwd(), "", FILEMANAGER_ROOT_DIR);
+                $relpath = "/tmp" . $thumbpath . "/";
                 $thumbpath = explode("/", $thumbpath);
                 $thumbname = "";
                 foreach ($thumbpath as $tp) {
                     $thumbname .= $tp . "_";
                 }
-                $thumb = "<img src='" . $GLOBALS['awe']->Domain . $fmpath . "/.thumbs/" . $thumbname . $value->fileName."_thumb.webp" . "'>";
-            } else {
-                $thumb = "<i class='" . $value->fileType['icon'] . "'></i>";
+                if (strpos($value->fileType["icon"], "image") !== false) {
+
+                    $thumb = "<img src='" . $GLOBALS['awe']->Domain . "/tmp/.thumbs/" . $thumbname . $value->fileName . "_thumb.webp" . "'>";
+                } else {
+                    $thumb = "<i class='" . $value->fileType['icon'] . "'></i>";
+                }
+                $str .= "<div class='tr'>"
+                        . "<form class='td $folder' data-progressbar='#main-bar' data-comid='" . $array['config']['url_id'] . "' data-waiting='" . ADM_FILEMANAGER_AJAX_VIEW['waiting'] . "' data-method='" . ADM_FILEMANAGER_AJAX_VIEW["method"] . "' data-url='" . ADM_FILEMANAGER_AJAX_VIEW["url"] . "'><input style='display:none;' name='path' type='text' value='" . $path . $key . "' readOnly />"
+                        . "<div class='file-icon'>$thumb</div>";
+                if (empty($folder)) {
+                    $str .= "<a href='" . $GLOBALS['awe']->Domain . $relpath . $value->fileName . "' class='file-name'>" . $value->fileName . "</a>";
+                } else {
+                    $str .= "<div class='file-name'>" . $value->fileName . "</div>";
+                }
+                $str .= "</form>"
+                        . "<div class='td file-name'>" . $value->fileType["name"] . "</div>"
+                        . "<div class='td file-name'>" . $value->fileSize . "</div>"
+                        . "<div class='td file-name'>" . $value->fileModificationTime . "</div>"
+                        . "<div class='td file-name'><i class='fas fa-sort-alpha-down'></i></div>"
+                        . "</div>";
             }
-            $str .= "<div class='tr'>"
-                    . "<form class='td $folder' data-progressbar='#main-bar' data-comid='" . $array['config']['url_id'] . "' data-waiting='" . ADM_FILEMANAGER_AJAX_VIEW['waiting'] . "' data-method='" . ADM_FILEMANAGER_AJAX_VIEW["method"] . "' data-url='" . ADM_FILEMANAGER_AJAX_VIEW["url"] . "'><input style='display:none;' name='path' type='text' value='" . $path . $key . "' readOnly />"
-                    . "<div class='file-icon'>$thumb</div><div class='file-name'>" . $value->fileName . "</div></form>"
-                    . "<div class='td file-name'>" . $value->fileType["name"] . "</div>"
-                    . "<div class='td file-name'>" . $value->fileSize . "</div>"
-                    . "<div class='td file-name'>" . $value->fileModificationTime . "</div>"
-                    . "<div class='td file-name'><i class='fas fa-sort-alpha-down'></i></div>"
-                    . "</div>";
         }
         $str .= "</div>";
         $str .= "</div>";

@@ -11,8 +11,8 @@ RewriteBase /
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_URI} .*\.(css)
-RewriteRule ^lib/(.*)$ sites/%{HTTP_HOST}/gfx/$1 [NC,L]
+RewriteCond %{REQUEST_URI} .*\.(css|webp|jpg)
+RewriteRule ^tmp/(.*)$ sites/%{HTTP_HOST}/tmp/$1 [NC,L]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
