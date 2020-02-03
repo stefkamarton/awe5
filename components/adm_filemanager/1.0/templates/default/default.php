@@ -110,7 +110,7 @@ function listDirectoryElements($array) {
                 }
                 if (strpos($value->fileType["icon"], "image") !== false) {
 
-                    $thumb = "<img src='" . $GLOBALS['awe']->Domain . "/tmp/.thumbs/" . $thumbname . $value->fileName . "_thumb.webp" . "'>";
+                    $thumb = "<img src='" . $GLOBALS['awe']->Domain . "/tmp/.thumbs/" . $thumbname . $value->fileName . "_thumb.jpg" . "'>";
                 } else {
                     $thumb = "<i class='" . $value->fileType['icon'] . "'></i>";
                 }
@@ -126,7 +126,11 @@ function listDirectoryElements($array) {
                         . "<div class='td file-name'>" . $value->fileType["name"] . "</div>"
                         . "<div class='td file-name'>" . $value->fileSize . "</div>"
                         . "<div class='td file-name'>" . $value->fileModificationTime . "</div>"
-                        . "<div class='td file-name'><i class='fas fa-sort-alpha-down'></i></div>"
+                        . "<div class='td file-name'>"
+                        .       "<form class='td ajax' id='ajaxclick' data-progressbar='#main-bar' data-comid='" . $array['config']['url_id'] . "' data-waiting='" . ADM_FILEMANAGER_AJAX_VIEW['waiting'] . "' data-method='" . ADM_FILEMANAGER_AJAX_VIEW["delete"] . "' data-url='" . ADM_FILEMANAGER_AJAX_VIEW["url"] . "'>"
+                        .           "<input style='display:none' type='text' name='filename' value='".$value->fileName."' readOnly/>xx"
+                        .       "</form>"
+                        . "</div>"
                         . "</div>";
             }
         }

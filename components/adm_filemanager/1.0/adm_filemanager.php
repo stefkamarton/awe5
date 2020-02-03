@@ -197,6 +197,7 @@ define("ADM_FILEMANAGER_AJAX_VIEW", array(
     "waiting" => "0",
     "method" => "view",
     "method2" => "view2",
+    "delete" => "confirmdelete",
     "url" => "/admin/adm_filemanager/ajax",
     "result" => "#directorylist"));
 define("DENIED_FILENAMES", array("." . "..", ".thumbs"));
@@ -211,14 +212,22 @@ class adm_filemanager {
         $this->AWE = &$GLOBALS['awe'];
 
 
-
         /* GetURL Params */
         if (isset($_POST['__urlparams__'])) {
             $this->Params = $this->AWE->getUrlParams($_POST['__urlparams__']);
         } else {
             $this->Params = $this->AWE->getUrlParams();
         }
-
+        if (isset($_POST["__comid__"]) && isset($this->Params[$_POST["__comid__"]])) {
+            $this->Params = $this->Params[$_POST["__comid__"]];
+        } else {
+            if(isset($this->Params[$array["url_id"]])) {
+                $this->Params = $this->Params[$array["url_id"]];
+            } else {
+                $this->Params = NULL;
+            }
+        }
+        //
 
         if (!empty($this->Params["filemanager_view_path"]) && isset($this->Params['filemanager_view_path'])) {
             $this->Elements['path'] = $this->Params["filemanager_view_path"];
@@ -241,21 +250,26 @@ class adm_filemanager {
         if ($_POST['__method__'] != 'fileupload') {
             if (ADM_FILEMANAGER_AJAX_VIEW['method2'] != $_POST['__method__']) {
                 /* Adott mappa listájának elkészítése */
-                if (empty($_POST['path'])) {
-                    if (!empty($this->Elements['path'])) {
-                        $strA = explode('/', $this->Elements['path']);
-                        $this->Elements['path'] = str_replace("/" . end($strA), "", $this->Elements['path']);
+                if (empty($_POST['filename'])) {
+                    if (empty($_POST['path'])) {
+                        if (!empty($this->Elements['path'])) {
+                            $strA = explode('/', $this->Elements['path']);
+                            $this->Elements['path'] = str_replace("/" . end($strA), "", $this->Elements['path']);
+                        } else {
+                            $this->Elements['path'] = FILEMANAGER_ROOT_DIR;
+                        }
                     } else {
-                        $this->Elements['path'] = FILEMANAGER_ROOT_DIR;
+                        $this->Elements['path'] = $this->Elements['path'] . $_POST['path'];
                     }
                 } else {
-                    $this->Elements['path'] = $this->Elements['path'] . $_POST['path'];
+                    if (empty($this->Elements['path'])) {
+                        $this->Elements['path'] = FILEMANAGER_ROOT_DIR;
+                    }
                 }
             } else {
                 $this->Elements['path'] = FILEMANAGER_ROOT_DIR . $_POST['path'];
             }
         }
-
         /* Konfig lekérdezés */
         $this->Elements['config'] = array_merge($this->AWE->getSettings(array("settings_id" => $_POST['__comid__'])), $array);
         if (!empty($this->Elements['config']['settings_id'])) {
@@ -267,13 +281,33 @@ class adm_filemanager {
                 $this->Elements['directory_elements'] = $this->directoryElements($this->Elements['path']);
                 $this->getFilesCounter($this->Elements['directory_elements']);
             }
-
             switch ($_POST['__method__']) {
                 case "view":
-                    echo json_encode(array("__url_params__" => $this->AWE->addUrlParams(array("filemanager_view_path" => $this->Elements['path'])), "html" => array($this->Elements['config']['url_id'] . "_directorylist" => array("mode" => "override", "html" => listDirectoryElements($this->Elements)))));
+                    echo json_encode(array("__url_params__" => $this->AWE->addUrlParams(array($array['url_id'] => array("filemanager_view_path" => $this->Elements['path']))), "html" => array($this->Elements['config']['url_id'] . "_directorylist" => array("mode" => "override", "html" => listDirectoryElements($this->Elements)))));
                     break;
                 case ADM_FILEMANAGER_AJAX_VIEW['method2']:
-                    echo json_encode(array("__url_params__" => $this->AWE->addUrlParams(array("filemanager_view_path" => $this->Elements['path'])), "html" => array($this->Elements['config']['url_id'] . "_directorylist" => array("mode" => "override", "html" => listDirectoryElements($this->Elements)))));
+                    echo json_encode(array("__url_params__" => $this->AWE->addUrlParams(array($array['url_id'] => array("filemanager_view_path" => $this->Elements['path']))), "html" => array($this->Elements['config']['url_id'] . "_directorylist" => array("mode" => "override", "html" => listDirectoryElements($this->Elements)))));
+                    break;
+                case "confirmdelete":
+                    $question = ""
+                        . "<div class='confirm'>"
+                        .   "<div class='question-in'>Biztos?</div>"
+                        .       "<div class='answers'>"
+                        .           "<div class='answer'>"
+                        .               "<form id='ajaxclick' data-progressbar='#main-bar' data-comid='".$array['url_id']."' data-waiting='" . ADM_FILEMANAGER_AJAX_VIEW['waiting'] . "' data-method='" . ADM_FILEMANAGER_AJAX_VIEW["delete"] . "' data-url='" . ADM_FILEMANAGER_AJAX_VIEW["url"] . "'>"
+                        .                   "<a>Igen</a>"
+                        .               "</form>"
+                        .           "</div>"
+                        .           "<div class='answer'>Nem</div></div></div>";
+                    echo json_encode(array("html" => array("confirm"=>array("mode"=>"confirm", "html"=>$question))));
+                    break;
+                case "delete":
+                    if (is_dir($this->Elements['path'] . "/" . $_POST['filename'])) {
+                        $this->delete_directory($this->Elements['path'] . "/" . $_POST['filename']);
+                    } else {
+                        unlink($this->Elements['path'] . "/" . $_POST['filename']);
+                    }
+
                     break;
                 case "fileupload":
                     $file = $_FILES['file']['name'];
@@ -297,6 +331,24 @@ class adm_filemanager {
         }
     }
 
+    function delete_directory($dirname) {
+        if (is_dir($dirname))
+            $dir_handle = opendir($dirname);
+        if (!$dir_handle)
+            return false;
+        while ($file = readdir($dir_handle)) {
+            if ($file != "." && $file != "..") {
+                if (!is_dir($dirname . "/" . $file))
+                    unlink($dirname . "/" . $file);
+                else
+                    delete_directory($dirname . '/' . $file);
+            }
+        }
+        closedir($dir_handle);
+        rmdir($dirname);
+        return true;
+    }
+
     function convertToWebP($path, $img) {
         $imgPath = $path . "/" . $img;
         if (is_file($imgPath)) {
@@ -308,12 +360,6 @@ class adm_filemanager {
             $filename_no_ext = explode('.', $img);
             unset($filename_no_ext[count($filename_no_ext)]);
             $filename_no_ext = join(".", $filename_no_ext);
-
-
-            //$imagick->setImageCompression(Imagick::COMPRESSION_JPEG);
-            //$imagick->setImageCompressionQuality($quality);
-            //$imagick->thumbnailImage($width, $height, false, false);
-            //$filename_no_ext = reset(explode('.', $img));
             if (file_put_contents($path . "/" . $filename_no_ext . ".webp", $imagick) === false) {
                 throw new Exception("Could not put contents.");
             }
@@ -329,7 +375,7 @@ class adm_filemanager {
         $imgPath = $path . "/" . $img;
         if (is_file($imgPath)) {
             $imagick = new Imagick($imgPath);
-            $imagick->setOption('webp:method', '6');
+            $imagick->setImageFormat('jpg');
             $imagick->setImageCompression(Imagick::COMPRESSION_JPEG);
             $imagick->setImageCompressionQuality($quality);
             $imagick->thumbnailImage($width, $height, true, false);
@@ -345,7 +391,13 @@ class adm_filemanager {
             if (!file_exists(FILEMANAGER_ROOT_DIR . "/.thumbs")) {
                 mkdir(FILEMANAGER_ROOT_DIR . "/.thumbs", 0777, true);
             }
-            $imagick->writeImage('webp:' . FILEMANAGER_ROOT_DIR . "/.thumbs/" . $thumbname . $filename_no_ext . '.webp_thumb' . '.webp');
+            //$imagick->writeImage('webp:' . FILEMANAGER_ROOT_DIR . "/.thumbs/" . $thumbname . $filename_no_ext . '.webp_thumb' . '.webp');
+            if (file_put_contents(FILEMANAGER_ROOT_DIR . "/.thumbs/" . $thumbname . $filename_no_ext . '_thumb' . '.jpg', $imagick) === false) {
+                throw new Exception("Could not put contents.");
+            }
+
+            //$imagick->writeImage('webp:' . $path . "/" . $filename_no_ext . ".webp");
+
             return true;
         } else {
             throw new Exception("No valid image provided with {$img}.");
@@ -415,10 +467,12 @@ class adm_file {
     public $fileSize;
     public $fileType;
     public $fileModificationTime;
+    public $Commands;
     private AWE $AWE;
 
     function __construct($array) {
         $this->AWE = &$GLOBALS['awe'];
+        $this->Commands = array();
         $tf = explode("/", $array['file']);
         $this->fileName = end($tf);
         $this->fileModificationTime = date("Y/m/d H:i:s", filemtime($array['file']));

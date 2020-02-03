@@ -154,6 +154,8 @@
                                     $(jqID(key)).append(value.html)
                                 } else if (value.mode == "override") {
                                     $(jqID(key)).html(value.html)
+                                } else if (value.mode == "confirm") {
+                                    $("body").append(value.html)
                                 }
                             });
                             $.each(data.message, function (key, value) {
@@ -277,6 +279,9 @@
                 $("#ajax :input, #ajax select").on('keyup change', function () {
                     Ajax(this);
                 });
+                $("form#ajaxclick").on('click', function () {
+                    Ajax(this);
+                });
                 $(".settingsajax").on("click", function () {
                     Ajax(this);
                 });
@@ -352,6 +357,9 @@
                     $('.settingsajax').attr('onsubmit', 'return false');
                 });
                 $("#ajax :input, #ajax select").on('keyup change', function () {
+                    Ajax(this);
+                });
+                $("form#ajaxclick").on('click', function () {
                     Ajax(this);
                 });
                 $("#addnew").on("click", function () {
@@ -497,7 +505,7 @@
                 <div class="menu-block">
                     <div class="separator"><h3><?php echo T("system"); ?></h3><hr></div>
                     <ul>
-        <?php //echo $awe->admMenu;    ?>
+        <?php //echo $awe->admMenu;     ?>
         <?php //getPos("systemmenu");       ?>
                     </ul>
                 </div>
