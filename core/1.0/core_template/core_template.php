@@ -202,7 +202,7 @@ class core_template {
             return false;
         }
         foreach ($objs as $obj) {
-            $obj['url_obj'] = json_decode($obj['url_obj'],true);
+            $obj['url_obj'] = json_decode($obj['url_obj'], true);
             if ($obj['url_obj']["auth"] == NULL || $GLOBALS['awe']->Permissions->Check(array("permissions" => $obj['url_obj']["auth"]))) {
                 if ($obj['url_obj']["public"] == TRUE) {
                     $this->LoadComponents($obj);

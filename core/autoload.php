@@ -344,9 +344,9 @@ class AWE {
      */
     public function getUrlParams($array = array()) {
         if (!empty($array)) {
-            return json_decode($this->base64url_decode(array("data" => $array)),true);
+            return json_decode($this->base64url_decode(array("data" => $array)), true);
         } else if (isset($_GET['params']) && $_GET['params'] != "") {
-            return json_decode($this->base64url_decode(array("data" => $_GET['params'])),true);
+            return json_decode($this->base64url_decode(array("data" => $_GET['params'])), true);
         }
         return NULL;
     }
@@ -510,4 +510,60 @@ function T($expression, $comment = FALSE) {
  */
 function getPos($position) {
     return $GLOBALS['awe']->Template->getPosition(array("position" => $position));
+}
+
+/* function str_replace_first($from, $to, $content) {
+  $from = '/' . preg_quote($from, '/') . '/';
+  $to = '/' . preg_quote($to, '/') . '/';
+
+  return preg_replace($from, $to, $content, 1);
+  } */
+
+function str_replace_first($str_pattern, $str_replacement, $string) {
+
+    if (strpos($string, $str_pattern) !== false) {
+        $occurrence = strpos($string, $str_pattern);
+        return substr_replace($string, $str_replacement, strpos($string, $str_pattern), strlen($str_pattern));
+    }
+
+    return $string;
+}
+
+function print_var_name($var) {
+    foreach ($GLOBALS as $var_name => $value) {
+        if ($value === $var) {
+            return $var_name;
+        }
+    }
+
+    return false;
+}
+
+function Format($str, ...$args) {
+    if (!empty($args)) {
+        $formats = array(
+            "%t" => "T", "%s" => "", "%v" => "print_var_name", "%h" => "htmlspecialchars"
+        );
+        $counter = 0;
+        foreach ($formats as $format => $func) {
+            str_replace("\\" . $format, substr_replace($format, "@", strpos($format, "%") + 1, 0), $str);
+            while ($pos = strpos($str, $format) != false && count($args) > $counter) {
+                if (isset($args[$counter])) {
+                    if (empty($func)) {
+                        $str = str_replace_first($format, $args[$counter], $str);
+                    } else {
+                        $str = html_entity_decode(str_replace_first($format, $func($args[$counter]), $str));
+                    }
+                } else {
+                    $GLOBALS['awe']->Logger->setError(array("text" => "Nem adtál meg elég argumentumot!", "line" => __LINE__, "file" => __FILE__));
+                    break;
+                }
+                $counter++;
+            }
+        }
+        if (count($args) > $counter) {
+            $GLOBALS['awe']->Logger->setError(array("text" => "Túl sok paramétert adtál meg!", "line" => __LINE__, "file" => __FILE__));
+        }
+    }
+    return $str;
 }

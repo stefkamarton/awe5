@@ -108,7 +108,6 @@
                     AjaxCall = $.ajax({
                         type: "POST",
                         url: url,
-                        async: false,
                         dataType: "json",
                         processData: false,
                         contentType: false,
@@ -134,6 +133,7 @@
                                         var prevent_leave = true;
 
                                     }
+                                    console.log("adsadas");
                                     $(window).on('beforeunload', function () {
                                         if (prevent_leave) {
                                             return "Your files are not completely uploaded...";
@@ -158,6 +158,7 @@
                                     $("body").append(value.html)
                                 }
                             });
+                            console.log(data.message);
                             $.each(data.message, function (key, value) {
                                 var type = "";
                                 var title = "";

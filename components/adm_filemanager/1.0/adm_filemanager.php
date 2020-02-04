@@ -198,6 +198,7 @@ define("ADM_FILEMANAGER_AJAX_VIEW", array(
     "method" => "view",
     "method2" => "view2",
     "delete" => "confirmdelete",
+    "confirmdelete" => "delete",
     "url" => "/admin/adm_filemanager/ajax",
     "result" => "#directorylist"));
 define("DENIED_FILENAMES", array("." . "..", ".thumbs"));
@@ -211,7 +212,6 @@ class adm_filemanager {
     function __construct($array) {
         $this->AWE = &$GLOBALS['awe'];
 
-
         /* GetURL Params */
         if (isset($_POST['__urlparams__'])) {
             $this->Params = $this->AWE->getUrlParams($_POST['__urlparams__']);
@@ -221,14 +221,13 @@ class adm_filemanager {
         if (isset($_POST["__comid__"]) && isset($this->Params[$_POST["__comid__"]])) {
             $this->Params = $this->Params[$_POST["__comid__"]];
         } else {
-            if(isset($this->Params[$array["url_id"]])) {
+            if (isset($this->Params[$array["url_id"]])) {
                 $this->Params = $this->Params[$array["url_id"]];
             } else {
                 $this->Params = NULL;
             }
         }
         //
-
         if (!empty($this->Params["filemanager_view_path"]) && isset($this->Params['filemanager_view_path'])) {
             $this->Elements['path'] = $this->Params["filemanager_view_path"];
         } else {
@@ -283,23 +282,27 @@ class adm_filemanager {
             }
             switch ($_POST['__method__']) {
                 case "view":
-                    echo json_encode(array("__url_params__" => $this->AWE->addUrlParams(array($array['url_id'] => array("filemanager_view_path" => $this->Elements['path']))), "html" => array($this->Elements['config']['url_id'] . "_directorylist" => array("mode" => "override", "html" => listDirectoryElements($this->Elements)))));
+                    echo json_encode(array("__url_params__" => $this->AWE->addUrlParams(array($this->Elements['config']['url_id'] => array("filemanager_view_path" => $this->Elements['path']))), "html" => array($this->Elements['config']['url_id'] . "_directorylist" => array("mode" => "override", "html" => listDirectoryElements($this->Elements)))));
                     break;
                 case ADM_FILEMANAGER_AJAX_VIEW['method2']:
-                    echo json_encode(array("__url_params__" => $this->AWE->addUrlParams(array($array['url_id'] => array("filemanager_view_path" => $this->Elements['path']))), "html" => array($this->Elements['config']['url_id'] . "_directorylist" => array("mode" => "override", "html" => listDirectoryElements($this->Elements)))));
+                    echo json_encode(array(
+                        "__url_params__" => $this->AWE->addUrlParams(array($this->Elements['config']['url_id'] =>
+                            array("filemanager_view_path" => $this->Elements['path']))),
+                        "html" => array($this->Elements['config']['url_id'] . "_directorylist" => array("mode" => "override", "html" => listDirectoryElements($this->Elements)))));
                     break;
                 case "confirmdelete":
-                    $question = ""
-                        . "<div class='confirm'>"
-                        .   "<div class='question-in'>Biztos?</div>"
-                        .       "<div class='answers'>"
-                        .           "<div class='answer'>"
-                        .               "<form id='ajaxclick' data-progressbar='#main-bar' data-comid='".$array['url_id']."' data-waiting='" . ADM_FILEMANAGER_AJAX_VIEW['waiting'] . "' data-method='" . ADM_FILEMANAGER_AJAX_VIEW["delete"] . "' data-url='" . ADM_FILEMANAGER_AJAX_VIEW["url"] . "'>"
-                        .                   "<a>Igen</a>"
-                        .               "</form>"
-                        .           "</div>"
-                        .           "<div class='answer'>Nem</div></div></div>";
-                    echo json_encode(array("html" => array("confirm"=>array("mode"=>"confirm", "html"=>$question))));
+                    $question = Format(""
+                            . "<div id='%s_confirm' class='confirm'>"
+                            . "<div class='question-in'>Biztos?</div>"
+                            . "<div class='answers'>"
+                            . "<div class='answer'>"
+                            . "<form id='ajaxclick' data-progressbar='#main-bar' data-comid='%s' data-waiting='%s' data-method='%s' data-url='%s'>"
+                            . "<a>Igen</a>"
+                            . "<input type='text' value='%s' name='filename' style='display:none;' readOnly />"
+                            . "</form>"
+                            . "</div>"
+                            . "<div class='answer'>Nem</div></div></div>", $_POST['filename'], $this->Elements['config']['url_id'], ADM_FILEMANAGER_AJAX_VIEW['waiting'], ADM_FILEMANAGER_AJAX_VIEW["confirmdelete"], ADM_FILEMANAGER_AJAX_VIEW["url"], $_POST['filename']);
+                    echo json_encode(array("html" => array("confirm" => array("mode" => "confirm", "html" => $question))));
                     break;
                 case "delete":
                     if (is_dir($this->Elements['path'] . "/" . $_POST['filename'])) {
@@ -307,6 +310,14 @@ class adm_filemanager {
                     } else {
                         unlink($this->Elements['path'] . "/" . $_POST['filename']);
                     }
+                    $this->Elements['directory_elements'] = $this->directoryElements($this->Elements['path']);
+                    $this->getFilesCounter($this->Elements['directory_elements']);
+                    echo json_encode(
+                            array("message" => array(0 => array("type" => "success", "title" => "Sikeres törlés!", "text" => "Sikeresen törölted ezt a fájl-t: <b>" . $_POST['filename'] . "</b>")),
+                                "html" => array($_POST['filename'] . "_confirm" => array("mode" => "override", "html" => ""),
+                                    $this->Elements['config']['url_id'] . "_directorylist" => array("mode" => "override", "html" => listDirectoryElements($this->Elements)),
+                                    "upload" => array("mode" => "append", "html" => $this->Elements['path']))));
+
 
                     break;
                 case "fileupload":
