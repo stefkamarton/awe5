@@ -11,6 +11,36 @@ function ajaxView($array) {
     return $str;
 }
 
+/* --Delete Section-- */
+
+function confirmDeletionMessage($array) {
+    $args = array(
+        "{filename}" => $_POST['filename'],
+        "{comid}" => $array['config']['url_id'],
+        "{waiting}" => $array['config']['waiting'],
+        "{url}" => ADM_FILEMANAGER_AJAX_VIEW["url"],
+        "{method}" => ADM_FILEMANAGER_AJAX_VIEW["confirmdelete"],
+        "{yes}" => T("yes"),
+        "{no}" => T("no"),
+        "{areyousure}" => T("areyousure")
+    );
+    $question = ""
+            . "<div id='{filename}_confirm' class='confirm'>"
+            . "<div class='question-in'>{areyousure}<b>{filename}</b>?</div>"
+            . "<div class='answers'>"
+            . "<div class='answer'>"
+            . "<form id='ajaxclick' class='close-confirm' data-progressbar='#main-bar' data-comid='{comid}' data-waiting='{waiting}' data-method='{method}' data-url='{url}'>"
+            . "<a>{yes}</a>"
+            . "<input type='text' value='{filename}' name='filename' style='display:none;' readOnly />"
+            . "</form>"
+            . "</div>"
+            . "<div class='answer close-confirm'>{no}</div></div></div>";
+    return strtr($question, $args);
+}
+
+/* --Delete Section-- */
+
+/* --Upload Section-- */
 function uploadForm($array) {
     /* --- HTML --- */
     $str = "<form id='fileupload' method='post' enctype='multipart/form-data' data-progressbar='#main-bar' data-comid='%s' data-waiting='0' data-method='fileupload' data-url='%s'>"
@@ -26,6 +56,8 @@ function uploadForm($array) {
     /* --- HTML --- */
     echo Format($str, $array['config']['url_id'], ADM_FILEMANAGER_AJAX_VIEW["url"]);
 }
+/* --Upload Section-- */
+
 
 function createWindow($array) {
     if (!empty($array)) {
@@ -61,9 +93,12 @@ function recursiveDirectoryTreeWriter($array, $path = "") {
     $args = array("{formdata}" => $formTag);
     $counter = 0;
     foreach ($array['directory_tree'] as $key => $value) {
+        $args["{rDTW" . $counter . "}"] = recursiveDirectoryTreeWriter(array_merge($array, array("directory_tree" => $value)));
+        $args["{rDTWF" . $counter . "}"] = recursiveDirectoryTreeWriter(array_merge($array, array("directory_tree" => $value)), $path . "/" . $key);
+        $args["{key" . $counter . "}"] = $key;
+        $args["{pathWithKey" . $counter . "}"] = $path . "/" . $key;
         if (!empty($value)) {
             if ($key == "/") {
-                $args["{rDTW." . $counter . "}"] = recursiveDirectoryTreeWriter(array_merge($array, array("directory_tree" => $value)));
                 /* --- HTML --- */
                 $str .= "<li class='expanded-directory'>"
                         . "<div class='expanded-btn'>"
@@ -72,38 +107,34 @@ function recursiveDirectoryTreeWriter($array, $path = "") {
                         . "<div class='folder-icon'>"
                         . "<i class='fas fa-folder'></i>"
                         . "</div>"
-                        . "<form {formdata} class='folder-name'>{key.$counter}<input style='display:none;' name='path' type='text' value='' readOnly /></form></li>"
-                        . "<ul class='tree-view expanded'>{rDTW}.$counter</ul>";
+                        . "<form {formdata} class='folder-name'>{key" . $counter . "}<input style='display:none;' name='path' type='text' value='' readOnly /></form></li>"
+                        . "<ul class='tree-view expanded'>{rDTW" . $counter . "}</ul>";
                 /* --- HTML --- */
             } else {
-                array_push($args, $formTag, $key, $path . "/" . $key, recursiveDirectoryTreeWriter(array_merge($array, array("directory_tree" => $value)), $path . "/" . $key));
-
                 /* --- HTML --- */
                 $str .= "<li class='expanded-directory'>"
                         . "<div class='expanded-btn'>"
                         . "<i class='fas fa-angle-right'></i>"
                         . "</div>"
                         . "<div class='folder-icon'>"
-                        . "<i class='fas fa-folder'></i></div><form %s class='folder-name'>%s<input style='display:none;' name='path' type='text' value='%s' readOnly /></form></li>";
-                $str .= "<ul class='tree-view expanded'>%s</ul>";
+                        . "<i class='fas fa-folder'></i></div><form {formdata} class='folder-name'>{key" . $counter . "}<input style='display:none;' name='path' type='text' value='{pathWithKey" . $counter . "}' readOnly /></form></li>";
+                $str .= "<ul class='tree-view expanded'>{rDTWF" . $counter . "}</ul>";
                 /* --- HTML --- */
             }
         } else {
-            array_push($args, ...[$formTag, $key, $path . "/" . $key]);
-
             /* --- HTML --- */
             $str .= "<li class='alone'>"
                     . "<div class='folder-icon'>"
                     . "<i class='fas fa-folder'></i>"
                     . "</div>"
-                    . "<form %s class='folder-name'>%s<input style='display:none;' name='path' type='text' value='%s' readOnly />"
+                    . "<form {formdata} class='folder-name'>{key" . $counter . "}<input style='display:none;' name='path' type='text' value='{pathWithKey" . $counter . "}' readOnly />"
                     . "</form>"
                     . "</li>";
             /* --- HTML --- */
         }
         $counter++;
     }
-    return Format($str, ...$args);
+    return strtr($str, $args);
 }
 
 function directoryTree($array) {
@@ -112,40 +143,56 @@ function directoryTree($array) {
 
 function listDirectoryElements($array) {
     $str = "";
+
+    $args = array(
+        "{comid}" => $array['config']['url_id'],
+        "{waiting}" => $array['config']['waiting'],
+        "{url}" => ADM_FILEMANAGER_AJAX_VIEW["url"]
+    );
+    $formTag = strtr("data-comid='{comid}' data-waiting='{waiting}' data-url='{url}'", $args);
     $args = array();
+    $args["{formtag}"] = $formTag;
     if (!empty($array['directory_elements'])) {
         if (substr($array['path'], -1) == "/") {
             $array['path'] = substr($array['path'], 0, -1);
         }
         $path = str_replace(FILEMANAGER_ROOT_DIR, "", $array['path']);
+        $args["{fajlnev}"] = T("fajlnev");
+        $args["{tipus}"] = T("tipus");
+        $args["{meret}"] = T("meret");
+        $args["{modositasdatuma}"] = T("modositasdatuma");
+        $args["{muveletek}"] = T("muveletek");
 
-        array_push($args, ...["fajlnev", "tipus", "meret", "modositasdatuma", "muveletek"]);
         /* --- HTML --- */
         $str .= "<div class='table'>";
         $str .= "<form class='thead'>";
         $str .= "<div class='tr'>"
-                . "<div class='th'>%t<div class='order'><div class='order-in '><label for='filemanager_name_ASC'><i class='fas fa-sort-alpha-down'></i></label><input style='display:none;' id='filemanager_name_ASC' name='orderby' class='asc' type='radio' value='filemanager_name:ASC'></div><div class='order-in '><label for='filemanager_name_DESC'><i class='fas fa-sort-alpha-up'></i></label><input style='display:none;' id='filemanager_name_DESC' name='orderby' class='desc' type='radio' value='filemanager_name:DESC'></div></div></div>"
-                . "<div class='th'>%t</div>"
-                . "<div class='th'>%t</div>"
-                . "<div class='th'>%t</div>"
-                . "<div class='th'>%t</div>"
+                . "<div class='th'>{fajlnev}<div class='order'><div class='order-in '><label for='filemanager_name_ASC'><i class='fas fa-sort-alpha-down'></i></label><input style='display:none;' id='filemanager_name_ASC' name='orderby' class='asc' type='radio' value='filemanager_name:ASC'></div><div class='order-in '><label for='filemanager_name_DESC'><i class='fas fa-sort-alpha-up'></i></label><input style='display:none;' id='filemanager_name_DESC' name='orderby' class='desc' type='radio' value='filemanager_name:DESC'></div></div></div>"
+                . "<div class='th'>{tipus}</div>"
+                . "<div class='th'>{meret}</div>"
+                . "<div class='th'>{modositasdatuma}</div>"
+                . "<div class='th'>{muveletek}</div>"
                 . "</div>";
         $str .= "</form></div>";
         $str .= "<div class='table'><div class='tbody'>";
         /* --- HTML --- */
-
+        $counter = 0;
         foreach ($array['directory_elements'] as $key => $value) {
+
             if ($value->fileType["name"] != "webp") {
                 if ($key == "..") {
-                    $path = "";
-                    $key = "";
+                    //$path = "";
+                    $s = explode("/", $path);
+                    unset($s[count($s) - 1]);
+                    $s = implode("/", $s);
+                    $spath = $s;
                 } else {
-                    $key = "/" . $key;
+                    $spath = $path . "/" . $key;
                 }
                 if ($value->fileType["name"] == "folder")
-                    $folder = "folder-name";
+                    $args["{folder" . $counter . "}"] = "folder-name";
                 else {
-                    $folder = "";
+                    $args["{folder" . $counter . "}"] = "";
                 }
                 $thumbpath = str_replace(FILEMANAGER_ROOT_DIR, "", $array['path']);
                 $relpath = "/tmp" . $thumbpath . "/";
@@ -156,14 +203,16 @@ function listDirectoryElements($array) {
                 }
                 if (strpos($value->fileType["icon"], "image") !== false) {
 
-                    $thumb = "<img src='" . $GLOBALS['awe']->Domain . "/tmp/.thumbs/" . $thumbname . $value->fileName . "_thumb.jpg" . "'>";
+                    $args["{thumbs" . $counter . "}"] = "<img src='" . $GLOBALS['awe']->Domain . "/tmp/.thumbs/" . $thumbname . $value->fileName . "_thumb.jpg" . "'>";
                 } else {
-                    $thumb = "<i class='" . $value->fileType['icon'] . "'></i>";
+                    $args["{thumbs" . $counter . "}"] = "<i class='" . $value->fileType['icon'] . "'></i>";
                 }
+                $args["{pathkey" . $counter . "}"] = $spath;
+                $args["{method" . $counter . "}"] = "data-method='" . ADM_FILEMANAGER_AJAX_VIEW["method2"] . "'";
                 /* --- HTML --- */
                 $str .= "<div class='tr'>"
-                        . "<form class='td $folder' data-progressbar='#main-bar' data-comid='" . $array['config']['url_id'] . "' data-waiting='" . ADM_FILEMANAGER_AJAX_VIEW['waiting'] . "' data-method='" . ADM_FILEMANAGER_AJAX_VIEW["method"] . "' data-url='" . ADM_FILEMANAGER_AJAX_VIEW["url"] . "'><input style='display:none;' name='path' type='text' value='" . $path . $key . "' readOnly />"
-                        . "<div class='file-icon'>$thumb</div>";
+                        . "<form class='td {folder" . $counter . "}' data-progressbar='#main-bar' {formtag} {method" . $counter . "}><input style='display:none;' name='path' type='text' value='{pathkey" . $counter . "}' readOnly />"
+                        . "<div class='file-icon'>{thumbs" . $counter . "}</div>";
                 /* --- HTML --- */
                 if (empty($folder)) {
                     /* --- HTML --- */
@@ -174,19 +223,26 @@ function listDirectoryElements($array) {
                     $str .= "<div class='file-name'>" . $value->fileName . "</div>";
                     /* --- HTML --- */
                 }
+                $args["{filename" . $counter . "}"] = $value->fileName;
+                $args["{filetype" . $counter . "}"] = $value->fileType["name"];
+                $args["{filesize" . $counter . "}"] = $value->fileSize;
+                $args["{filemodify" . $counter . "}"] = $value->fileModificationTime;
+                $args["{methodDel" . $counter . "}"] = "data-method='" . ADM_FILEMANAGER_AJAX_VIEW["delete"] . "'";
+
                 /* --- HTML --- */
                 $str .= "</form>"
-                        . "<div class='td file-name'>" . $value->fileType["name"] . "</div>"
-                        . "<div class='td file-name'>" . $value->fileSize . "</div>"
-                        . "<div class='td file-name'>" . $value->fileModificationTime . "</div>"
+                        . "<div class='td file-name'>{filetype" . $counter . "}</div>"
+                        . "<div class='td file-name'>{filesize" . $counter . "}</div>"
+                        . "<div class='td file-name'>{filemodify" . $counter . "}</div>"
                         . "<div class='td file-name'>"
-                        . "<form class='td ajax' id='ajaxclick' data-progressbar='#main-bar' data-comid='" . $array['config']['url_id'] . "' data-waiting='" . ADM_FILEMANAGER_AJAX_VIEW['waiting'] . "' data-method='" . ADM_FILEMANAGER_AJAX_VIEW["delete"] . "' data-url='" . ADM_FILEMANAGER_AJAX_VIEW["url"] . "'>"
-                        . "<input style='display:none' type='text' name='filename' value='" . $value->fileName . "' readOnly/>xx"
+                        . "<form class='td ajax' id='ajaxclick' data-progressbar='#main-bar' {formtag} {methodDel" . $counter . "}>"
+                        . "<input style='display:none' type='text' name='filename' value='{filename" . $counter . "}' readOnly/><i class='far fa-trash-alt'></i>"
                         . "</form>"
                         . "</div>"
                         . "</div>";
                 /* --- HTML --- */
             }
+            $counter++;
         }/* --- HTML --- */
         $str .= "</div>";
         $str .= "</div>";
@@ -200,7 +256,7 @@ function listDirectoryElements($array) {
         $str .= "</div>";
         /* --- HTML --- */
     }
-    return $str;
+    return strtr($str, $args);
 }
 
 ?>

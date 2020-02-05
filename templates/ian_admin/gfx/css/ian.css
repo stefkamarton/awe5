@@ -51,6 +51,49 @@ body{
 ::-webkit-scrollbar-thumb:hover {
     /*background: var(--light-black); */
 }
+/*Confirm*/
+.confirm{
+    width:250px;
+    background-color: var(--light-black2);
+    color: var(--white);
+    padding: 25px 30px;
+    position: fixed;
+    top:0;
+    left:0;
+    right:0;
+    margin: 0 auto;
+    border: 4px inset var(--red);
+    border-top: 0;
+}
+.confirm .question-in{
+    font-size: 1.2em;
+    text-align: center;
+    padding:0px 0px 15px 0px ;
+}
+.confirm .answers{
+    width:100%;
+    padding-bottom: 15px;
+}
+.confirm .answers .answer{
+    width:40%;
+    background:var(--red);
+    text-align: center;
+    padding:5px 0px;
+    transition: .2s all linear;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+.confirm .answers .answer:hover{
+    background: var(--black);
+}
+.confirm .answers .answer:first-child{
+    float:left;
+}
+.confirm .answers .answer:last-child{
+    float:right;
+}
+
 /*Button*/
 .btn{
     text-decoration: none;

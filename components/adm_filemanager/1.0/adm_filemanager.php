@@ -12,7 +12,7 @@ define("BYTES", array(
         "VALUE" => pow(1024, 3)),
     3 => array(
         "UNIT" => "MB",
-        "VALUE" => pow(1024, 3)),
+        "VALUE" => pow(1024, 2)),
     4 => array(
         "UNIT" => "KB",
         "VALUE" => pow(1024, 1)),
@@ -291,23 +291,27 @@ class adm_filemanager {
                         "html" => array($this->Elements['config']['url_id'] . "_directorylist" => array("mode" => "override", "html" => listDirectoryElements($this->Elements)))));
                     break;
                 case "confirmdelete":
-                    $question = Format(""
-                            . "<div id='%s_confirm' class='confirm'>"
-                            . "<div class='question-in'>Biztos?</div>"
-                            . "<div class='answers'>"
-                            . "<div class='answer'>"
-                            . "<form id='ajaxclick' data-progressbar='#main-bar' data-comid='%s' data-waiting='%s' data-method='%s' data-url='%s'>"
-                            . "<a>Igen</a>"
-                            . "<input type='text' value='%s' name='filename' style='display:none;' readOnly />"
-                            . "</form>"
-                            . "</div>"
-                            . "<div class='answer'>Nem</div></div></div>", $_POST['filename'], $this->Elements['config']['url_id'], ADM_FILEMANAGER_AJAX_VIEW['waiting'], ADM_FILEMANAGER_AJAX_VIEW["confirmdelete"], ADM_FILEMANAGER_AJAX_VIEW["url"], $_POST['filename']);
-                    echo json_encode(array("html" => array("confirm" => array("mode" => "confirm", "html" => $question))));
+                    echo json_encode(array("html" => array("confirm" => array("mode" => "confirm", "html" => confirmDeletionMessage($this->Elements)))));
                     break;
                 case "delete":
                     if (is_dir($this->Elements['path'] . "/" . $_POST['filename'])) {
                         $this->delete_directory($this->Elements['path'] . "/" . $_POST['filename']);
                     } else {
+                        $filetype = mime_content_type($this->Elements['path'] . "/" . $_POST['filename']);
+                        if ($this->AWE->stringStartsWith(array("substring" => "image", "string" => $filetype))) {
+                            $file = explode(".", $_POST['filename']);
+                            unset($file[count($file) - 1]);
+                            $file = implode(".", $file);
+                            $file .= ".webp";
+                            $thumbpath = str_replace(FILEMANAGER_ROOT_DIR, "", $this->Elements['path']);
+                            $thumbpath = explode("/", $thumbpath);
+                            $thumbname = "";
+                            foreach ($thumbpath as $value) {
+                                $thumbname .= $value . "_";
+                            }
+                            unlink($this->Elements['path'] . "/" . $file);
+                            unlink(FILEMANAGER_ROOT_DIR . "/.thumbs/" . $thumbname . $_POST['filename'] . "_thumb.jpg");
+                        }
                         unlink($this->Elements['path'] . "/" . $_POST['filename']);
                     }
                     $this->Elements['directory_elements'] = $this->directoryElements($this->Elements['path']);
@@ -323,14 +327,29 @@ class adm_filemanager {
                 case "fileupload":
                     $file = $_FILES['file']['name'];
                     move_uploaded_file($_FILES['file']['tmp_name'], $this->Elements['path'] . "/" . $file);
-                    $this->convertToWebP($this->Elements['path'], $file);
-                    try {
-                        $this->generateThumbnail($this->Elements['path'], $file, 128, 128, 90);
-                    } catch (ImagickException $e) {
-                        echo $e->getMessage();
-                    } catch (Exception $e) {
-                        echo $e->getMessage();
+                    $filetype = mime_content_type($this->Elements['path'] . "/" . $file);
+
+                    if ($this->AWE->stringStartsWith(array("substring" => "image", "string" => $filetype))) {
+                        if ($this->AWE->stringContains(array("substring" => "webp", "string" => $filetype))) {
+                            $this->convertImage($this->Elements['path'], $file);
+                            $file = explode(".", $file);
+                            unset($file[count($file) - 1]);
+                            $file = implode(".", $file);
+                            $file .= ".jpg";
+                        } else {
+                            $this->convertImage($this->Elements['path'], $file, MIME_TYPES[$filetype]["name"]);
+                        }
+                        $this->convertImage($this->Elements['path'], $file, "webp");
+
+                        try {
+                            $this->generateThumbnail($this->Elements['path'], $file, 128, 128, 90);
+                        } catch (ImagickException $e) {
+                            echo $e->getMessage();
+                        } catch (Exception $e) {
+                            echo $e->getMessage();
+                        }
                     }
+
                     //unlink($this->Elements['path'] . "/" . $file);
                     $this->Elements['directory_elements'] = $this->directoryElements($this->Elements['path']);
                     $this->getFilesCounter($this->Elements['directory_elements']);
@@ -360,6 +379,27 @@ class adm_filemanager {
         return true;
     }
 
+    function convertImage($path, $img, $format = "jpg") {
+        $imgPath = $path . "/" . $img;
+        if (is_file($imgPath)) {
+            $imagick = new Imagick(realpath($imgPath));
+            $imagick->setImageFormat($format);
+            $imagick->setImageCompression(Imagick::COMPRESSION_JPEG);
+            $imagick->setImageCompressionQuality(90);
+            $filename_no_ext = explode('.', $img);
+            unset($filename_no_ext[count($filename_no_ext) - 1]);
+            $filename_no_ext = implode(".", $filename_no_ext);
+            if (file_put_contents($path . "/" . $filename_no_ext . "." . $format, $imagick) === false) {
+                throw new Exception("Could not put contents.");
+            }
+
+            //$imagick->writeImage('webp:' . $path . "/" . $filename_no_ext . ".webp");
+            return true;
+        } else {
+            throw new Exception("No valid image provided with {$img}.");
+        }
+    }
+
     function convertToWebP($path, $img) {
         $imgPath = $path . "/" . $img;
         if (is_file($imgPath)) {
@@ -370,7 +410,7 @@ class adm_filemanager {
             $imagick->setImageCompressionQuality(90);
             $filename_no_ext = explode('.', $img);
             unset($filename_no_ext[count($filename_no_ext)]);
-            $filename_no_ext = join(".", $filename_no_ext);
+            $filename_no_ext = implode(".", $filename_no_ext);
             if (file_put_contents($path . "/" . $filename_no_ext . ".webp", $imagick) === false) {
                 throw new Exception("Could not put contents.");
             }
@@ -392,7 +432,7 @@ class adm_filemanager {
             $imagick->thumbnailImage($width, $height, true, false);
             $filename_no_ext = explode('.', $img);
             unset($filename_no_ext[count($filename_no_ext)]);
-            $filename_no_ext = join(".", $filename_no_ext);
+            $filename_no_ext = implode(".", $filename_no_ext);
             $thumbpath = str_replace(FILEMANAGER_ROOT_DIR, "", $path);
             $thumbpath = explode("/", $thumbpath);
             $thumbname = "";
@@ -443,7 +483,6 @@ class adm_filemanager {
 
     public function directoryElements($directory, $viewmode = "list") {
         $array = array();
-
         $dirs = scandir($directory);
         foreach ($dirs as $dir) {
             if ($dir != "." && ($dir != ".." && $dir != ".thumbs" || (FILEMANAGER_ROOT_DIR != $directory && FILEMANAGER_ROOT_DIR . "/" != $directory))) {
@@ -521,7 +560,7 @@ class adm_file {
         foreach (BYTES as $byte) {
             if ($size >= $byte["VALUE"]) {
                 $ret = $size / $byte["VALUE"];
-                $ret = str_replace(".", ",", strval(round($ret, 2))) . " " . $byte["UNIT"];
+                $ret = str_replace(".", ",", strval(round($ret, 1,PHP_ROUND_HALF_EVEN))) . " " . $byte["UNIT"];
                 break;
             }
         }

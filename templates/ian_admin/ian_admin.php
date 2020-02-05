@@ -268,6 +268,9 @@
                     console.log("mose1");
                     hideMessage();
                 });
+                $('.close-confirm').on("click", function () {
+                    $(this).closest(".confirm").remove();
+                });
                 $(function () {
                     $('form#ajax').attr('onsubmit', 'return false');
                 });
@@ -341,6 +344,9 @@
                 $('.message-box .message').mouseleave(function () {
                     console.log("mose1");
                     hideMessage();
+                });
+                $('.close-confirm').on("click", function () {
+                    $(this).closest(".confirm").remove();
                 });
                 $(function () {
                     $('form#ajax').attr('onsubmit', 'return false');
@@ -555,9 +561,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div id="asd">
-            2313123131
         </div>
         <div class="progress-bar">
             <div class="bar" id="main-bar"></div>
