@@ -3,12 +3,51 @@
 function display($array) {
     createWindow(array("config" => $array['config'], "file-list" => listDirectoryElements($array), "directory-tree" => directoryTree($array)));
     uploadForm($array);
+    echo createDirectory($array);
     echo "<div>" . $array["__counter__"]["files"] . "</div>";
     echo "<div>" . $array["__counter__"]["directories"] . "</div>";
 }
 
 function ajaxView($array) {
     return $str;
+}
+
+function createDirectory($array) {
+    $args = array(
+        "{comid}" => $array['config']['url_id'],
+        "{waiting}" => $array['config']['waiting'],
+        "{url}" => ADM_FILEMANAGER_AJAX_VIEW["url"],
+        "{method}" => ADM_FILEMANAGER_AJAX_VIEW["createdirconfirm"],
+        "{newdir}" => T("newdirectory")
+    );
+    $str = ""
+            . "<form class='ajax btn' data-comid='{comid}' data-waiting='{waiting}' data-method='{method}' data-url='{url}'>"
+            . "<div class='submit new-directory'>{newdir}</div>"
+            . "</form>";
+    return strtr($str, $args);
+}
+
+function createDirectoryConfirm($array) {
+    $args = array(
+        "{comid}" => $array['config']['url_id'],
+        "{waiting}" => $array['config']['waiting'],
+        "{url}" => ADM_FILEMANAGER_AJAX_VIEW["url"],
+        "{method}" => ADM_FILEMANAGER_AJAX_VIEW["createdir"],
+        "{newdir}" => T("newdirectory"),
+        "{addmegadirnevet}" => T("addmegadirnevet"),
+        "{create}" => T("letrehoz"),
+        "{cancel}" => T("cancel")
+    );
+    $str = ""
+            . "<form class='close-box confirm ajax' data-progressbar='#main-bar' data-comid='{comid}' data-waiting='{waiting}' data-method='{method}' data-url='{url}'>"
+            . "<div class='question-in'>{addmegadirnevet}</div>"
+            . "<div class='dirname'><input type='text' name='dirname' required /></div>"
+            . "<div class='answers'>"
+            . "<div class='answer'>"
+            . "<a class='submit'>{create}</a>"
+            . "</div>"
+            . "<div class='answer close'>{cancel}</div></div></form>";
+    return strtr($str, $args);
 }
 
 /* --Delete Section-- */
@@ -29,8 +68,8 @@ function confirmDeletionMessage($array) {
             . "<div class='question-in'>{areyousure}<b>{filename}</b>?</div>"
             . "<div class='answers'>"
             . "<div class='answer'>"
-            . "<form id='ajaxclick' class='close-confirm' data-progressbar='#main-bar' data-comid='{comid}' data-waiting='{waiting}' data-method='{method}' data-url='{url}'>"
-            . "<a>{yes}</a>"
+            . "<form class='ajax close-confirm' data-progressbar='#main-bar' data-comid='{comid}' data-waiting='{waiting}' data-method='{method}' data-url='{url}'>"
+            . "<a class='submit'>{yes}</a>"
             . "<input type='text' value='{filename}' name='filename' style='display:none;' readOnly />"
             . "</form>"
             . "</div>"
@@ -41,11 +80,11 @@ function confirmDeletionMessage($array) {
 /* --Delete Section-- */
 
 /* --Upload Section-- */
+
 function uploadForm($array) {
     /* --- HTML --- */
-    $str = "<form id='fileupload' method='post' enctype='multipart/form-data' data-progressbar='#main-bar' data-comid='%s' data-waiting='0' data-method='fileupload' data-url='%s'>"
-            . "<input type='text' name='text' value='22'/>"
-            . "<input class='input-file' id='fileInput' type='file' name='file'>"
+    $str = "<form class='ajaxonchange' method='post' enctype='multipart/form-data' data-progressbar='#main-bar' data-comid='%s' data-waiting='0' data-method='fileupload' data-url='%s'>"
+            . "<input class='input-file' id='fileInput' type='file' name='file[]' multiple />"
             . "</form>"
             . "<div id='upload'>"
             . "</div>"
@@ -56,8 +95,8 @@ function uploadForm($array) {
     /* --- HTML --- */
     echo Format($str, $array['config']['url_id'], ADM_FILEMANAGER_AJAX_VIEW["url"]);
 }
-/* --Upload Section-- */
 
+/* --Upload Section-- */
 
 function createWindow($array) {
     if (!empty($array)) {
@@ -107,7 +146,7 @@ function recursiveDirectoryTreeWriter($array, $path = "") {
                         . "<div class='folder-icon'>"
                         . "<i class='fas fa-folder'></i>"
                         . "</div>"
-                        . "<form {formdata} class='folder-name'>{key" . $counter . "}<input style='display:none;' name='path' type='text' value='' readOnly /></form></li>"
+                        . "<form {formdata} class='fullajax folder-name'>{key" . $counter . "}<input style='display:none;' name='path' type='text' value='' readOnly /></form></li>"
                         . "<ul class='tree-view expanded'>{rDTW" . $counter . "}</ul>";
                 /* --- HTML --- */
             } else {
@@ -117,7 +156,7 @@ function recursiveDirectoryTreeWriter($array, $path = "") {
                         . "<i class='fas fa-angle-right'></i>"
                         . "</div>"
                         . "<div class='folder-icon'>"
-                        . "<i class='fas fa-folder'></i></div><form {formdata} class='folder-name'>{key" . $counter . "}<input style='display:none;' name='path' type='text' value='{pathWithKey" . $counter . "}' readOnly /></form></li>";
+                        . "<i class='fas fa-folder'></i></div><form {formdata} class='fullajax folder-name'>{key" . $counter . "}<input style='display:none;' name='path' type='text' value='{pathWithKey" . $counter . "}' readOnly /></form></li>";
                 $str .= "<ul class='tree-view expanded'>{rDTWF" . $counter . "}</ul>";
                 /* --- HTML --- */
             }
@@ -127,7 +166,7 @@ function recursiveDirectoryTreeWriter($array, $path = "") {
                     . "<div class='folder-icon'>"
                     . "<i class='fas fa-folder'></i>"
                     . "</div>"
-                    . "<form {formdata} class='folder-name'>{key" . $counter . "}<input style='display:none;' name='path' type='text' value='{pathWithKey" . $counter . "}' readOnly />"
+                    . "<form {formdata} class='fullajax folder-name'>{key" . $counter . "}<input style='display:none;' name='path' type='text' value='{pathWithKey" . $counter . "}' readOnly />"
                     . "</form>"
                     . "</li>";
             /* --- HTML --- */
@@ -190,7 +229,7 @@ function listDirectoryElements($array) {
                     $spath = $path . "/" . $key;
                 }
                 if ($value->fileType["name"] == "folder")
-                    $args["{folder" . $counter . "}"] = "folder-name";
+                    $args["{folder" . $counter . "}"] = "folder-name fullajax";
                 else {
                     $args["{folder" . $counter . "}"] = "";
                 }
@@ -202,7 +241,6 @@ function listDirectoryElements($array) {
                     $thumbname .= $tp . "_";
                 }
                 if (strpos($value->fileType["icon"], "image") !== false) {
-
                     $args["{thumbs" . $counter . "}"] = "<img src='" . $GLOBALS['awe']->Domain . "/tmp/.thumbs/" . $thumbname . $value->fileName . "_thumb.jpg" . "'>";
                 } else {
                     $args["{thumbs" . $counter . "}"] = "<i class='" . $value->fileType['icon'] . "'></i>";
@@ -235,7 +273,7 @@ function listDirectoryElements($array) {
                         . "<div class='td file-name'>{filesize" . $counter . "}</div>"
                         . "<div class='td file-name'>{filemodify" . $counter . "}</div>"
                         . "<div class='td file-name'>"
-                        . "<form class='td ajax' id='ajaxclick' data-progressbar='#main-bar' {formtag} {methodDel" . $counter . "}>"
+                        . "<form class='td fullajax' data-progressbar='#main-bar' {formtag} {methodDel" . $counter . "}>"
                         . "<input style='display:none' type='text' name='filename' value='{filename" . $counter . "}' readOnly/><i class='far fa-trash-alt'></i>"
                         . "</form>"
                         . "</div>"

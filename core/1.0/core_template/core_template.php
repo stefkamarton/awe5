@@ -239,7 +239,7 @@ class core_template {
                     if (file_exists($file)) {
                         require_once $file;
                         $array['url_obj']["params"] = (array) $array['url_obj']["params"];
-                        $GLOBALS['awe']->Components[$array['url_obj']["name"]] = new $array['url_obj']["name"]($array);
+                        $GLOBALS['awe']->Components[$array['url_id']] = new $array['url_obj']["name"]($array);
                         return TRUE;
                     }
                 }

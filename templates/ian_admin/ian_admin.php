@@ -260,6 +260,10 @@
                 Ajax(obj);
             }
             $(document).ready(function () {
+                $("form.ajax .submit").on('click', function () {
+                    var form = $(this).closest("form");
+                    Ajax(form);
+                });
                 $('.message-box .message').mouseenter(function () {
                     clearTimeout(tId);
                     console.log("mose");
@@ -271,72 +275,92 @@
                 $('.close-confirm').on("click", function () {
                     $(this).closest(".confirm").remove();
                 });
-                $(function () {
-                    $('form#ajax').attr('onsubmit', 'return false');
-                });
-                $(function () {
-                    $('.settingsajax').attr('onsubmit', 'return false');
-                });
-                $(function () {
-                    $('form#pager').attr('onsubmit', 'return false');
-                });
-                $("#ajax :input, #ajax select").on('keyup change', function () {
+                /*$(function () {
+                 $('form#ajax').attr('onsubmit', 'return false');
+                 });
+                 $(function () {
+                 $('.settingsajax').attr('onsubmit', 'return false');
+                 });
+                 $(function () {
+                 $('form#pager').attr('onsubmit', 'return false');
+                 });
+                 $("#ajax :input, #ajax select").on('keyup change', function () {
+                 Ajax(this);
+                 });
+                 $("form#ajaxclick a").on('click', function () {
+                 Ajax(this);
+                 });
+                 $(".settingsajax").on("click", function () {
+                 Ajax(this);
+                 });
+                 $('.close').on('click', function () {
+                 Ajax("#ajax");
+                 $(this).closest("#settings").hide(300);
+                 $(this).closest("#settings").text("");
+                 });
+                 $('.btn.save').on('click', function () {
+                 Ajax(this);
+                 });
+                 $('.folder-name').on('click', function () {
+                 Ajax(this);
+                 });
+                 $('#pagenumber').on('keyup change', function () {
+                 Ajax(this);
+                 });
+                 $('#first-page').on("click", function (e) {
+                 firstPage(this);
+                 });
+                 $('#sidepanel-save').on("click", function (e) {
+                 Ajax(this);
+                 });
+                 $('#last-page').on("click", function (e) {
+                 lastPage(this);
+                 });
+                 $('#previous-page').on("click", function (e) {
+                 prevPage(this);
+                 });
+                 $('#next-page').on("click", function (e) {
+                 nextPage(this);
+                 });
+                 $(".settingsajax, #new").on("click", function () {
+                 Ajax(this);
+                 $('#settings').show(300);
+                 });
+                 $("#addnew").on("click", function () {
+                 var item = $(this).siblings(".field-in.td").last();
+                 var clone = item.last().clone();
+                 clone.find(":text").val("");
+                 item.after(clone);
+                 console.log(clone);
+                 });
+                 
+                 $('#fileupload').on("change", function () {
+                 Ajax(this);
+                 });*/
+                $("form.fullajax").on('click', function () {
                     Ajax(this);
                 });
-                $("form#ajaxclick").on('click', function () {
-                    Ajax(this);
-                });
-                $(".settingsajax").on("click", function () {
-                    Ajax(this);
-                });
-                $('.close').on('click', function () {
-                    Ajax("#ajax");
-                    $(this).closest("#settings").hide(300);
-                    $(this).closest("#settings").text("");
-                });
-                $('.btn.save').on('click', function () {
-                    Ajax(this);
-                });
-                $('.folder-name').on('click', function () {
-                    Ajax(this);
-                });
-                $('#pagenumber').on('keyup change', function () {
-                    Ajax(this);
-                });
-                $('#first-page').on("click", function (e) {
-                    firstPage(this);
-                });
-                $('#sidepanel-save').on("click", function (e) {
-                    Ajax(this);
-                });
-                $('#last-page').on("click", function (e) {
-                    lastPage(this);
-                });
-                $('#previous-page').on("click", function (e) {
-                    prevPage(this);
-                });
-                $('#next-page').on("click", function (e) {
-                    nextPage(this);
-                });
-                $(".settingsajax, #new").on("click", function () {
-                    Ajax(this);
-                    $('#settings').show(300);
-                });
-                $("#addnew").on("click", function () {
-                    var item = $(this).siblings(".field-in.td").last();
-                    var clone = item.last().clone();
-                    clone.find(":text").val("");
-                    item.after(clone);
-                    console.log(clone);
-                });
-
-                $('#fileupload').on("change", function () {
+                $("form.ajaxonchange").on('keyup change', function () {
                     Ajax(this);
                 });
 
             });
 
             $(document).ajaxComplete(function () {
+                $("form.ajaxonchange").on('keyup change', function () {
+                    Ajax(this);
+                });
+                $("form.ajax .submit").on('click', function () {
+                    var form = $(this).closest("form");
+                    Ajax(form);
+                });
+                $("form.fullajax").on('click', function () {
+                    Ajax(this);
+                });
+                $('.close-box .close').on("click", function () {
+                    $(this).closest(".close-box").remove();
+                });
+
                 $('.message-box .message').mouseenter(function () {
                     clearTimeout(tId);
                     console.log("mose");
@@ -345,71 +369,68 @@
                     console.log("mose1");
                     hideMessage();
                 });
-                $('.close-confirm').on("click", function () {
-                    $(this).closest(".confirm").remove();
-                });
-                $(function () {
-                    $('form#ajax').attr('onsubmit', 'return false');
-                });
+                /*$(function () {
+                 $('form#ajax').attr('onsubmit', 'return false');
+                 });*/
                 /*$(function () {
                  if ($('#settings').text().length > 0) {
                  $('#settings').show(300);
                  }
                  ;
-                 });*/
-                $(function () {
-                    $('form#pager').attr('onsubmit', 'return false');
-                });
-                $(function () {
-                    $('.settingsajax').attr('onsubmit', 'return false');
-                });
-                $("#ajax :input, #ajax select").on('keyup change', function () {
-                    Ajax(this);
-                });
-                $("form#ajaxclick").on('click', function () {
-                    Ajax(this);
-                });
-                $("#addnew").on("click", function () {
-                    var item = $(this).siblings(".field-in.td").last();
-                    var clone = item.last().clone();
-                    clone.find(":text").val("");
-                    item.after(clone);
-                    console.log(item);
-                });
-                $(".settingsajax, #new").on("click", function () {
-                    Ajax(this);
-                    $('#settings').show(300);
-                });
-                $('.close').on('click', function () {
-                    Ajax("#ajax");
-                    $(this).closest("#settings").hide(300);
-                    $(this).closest("#settings").text("");
-                });
-                $('.folder-name').on('click', function () {
-                    Ajax(this);
-                });
-                $('.btn.save').on('click', function () {
-                    Ajax(this);
-                });
-                $('#pagenumber').on('keyup change', function () {
-                    Ajax(this);
-                });
-
-                $('#sidepanel-save').on("click", function (e) {
-                    Ajax(this);
-                });
-                $('#first-page').on("click", function (e) {
-                    firstPage(this);
-                });
-                $('#last-page').on("click", function (e) {
-                    lastPage(this);
-                });
-                $('#previous-page').on("click", function (e) {
-                    prevPage(this);
-                });
-                $('#next-page').on("click", function (e) {
-                    nextPage(this);
-                });
+                 });*//*
+                  $(function () {
+                  $('form#pager').attr('onsubmit', 'return false');
+                  });
+                  $(function () {
+                  $('.settingsajax').attr('onsubmit', 'return false');
+                  });
+                  $("#ajax :input, #ajax select").on('keyup change', function () {
+                  Ajax(this);
+                  });
+                  $("form#ajaxclick a").on('click', function () {
+                  Ajax(this);
+                  });
+                  $("#addnew").on("click", function () {
+                  var item = $(this).siblings(".field-in.td").last();
+                  var clone = item.last().clone();
+                  clone.find(":text").val("");
+                  item.after(clone);
+                  console.log(item);
+                  });
+                  $(".settingsajax, #new").on("click", function () {
+                  Ajax(this);
+                  $('#settings').show(300);
+                  });
+                  $('.close').on('click', function () {
+                  Ajax("#ajax");
+                  $(this).closest("#settings").hide(300);
+                  $(this).closest("#settings").text("");
+                  });
+                  $('.folder-name').on('click', function () {
+                  Ajax(this);
+                  });
+                  $('.btn.save').on('click', function () {
+                  Ajax(this);
+                  });
+                  $('#pagenumber').on('keyup change', function () {
+                  Ajax(this);
+                  });
+                  
+                  $('#sidepanel-save').on("click", function (e) {
+                  Ajax(this);
+                  });
+                  $('#first-page').on("click", function (e) {
+                  firstPage(this);
+                  });
+                  $('#last-page').on("click", function (e) {
+                  lastPage(this);
+                  });
+                  $('#previous-page').on("click", function (e) {
+                  prevPage(this);
+                  });
+                  $('#next-page').on("click", function (e) {
+                  nextPage(this);
+                  });*/
             });
         </script>
 
