@@ -2,6 +2,26 @@
 
 define("fileManagerDefaultPath", getcwd() . "sites" . $GLOBALS['awe']->SiteAlias . "/tmp");
 
+abstract class Component {
+
+    protected AWE $awe;
+
+    public function __construct() {
+        $this->awe = &$GLOBALS['awe'];
+    }
+
+}
+
+abstract class adm_filemanager_child_abstract {
+
+    protected adm_filemanager $Obj;
+
+    public function __construct($obj) {
+        $this->Obj = &$obj;
+    }
+
+}
+
 class adm_filemanager_upload {
     
 }
@@ -10,27 +30,38 @@ class adm_filemanager_download {
     
 }
 
-class adm_filemanager_item_list {
-
-    public array $FileArray;
-    private adm_filemanager $Obj;
+class adm_filemanager_directory extends adm_filemanager_child_abstract {
 
     public function __construct($obj) {
-        $this->Obj = &$obj;
-        $this->createDirectoryItemList();
+        parent::__construct($obj);
     }
 
-    public function createDirectoryItemList() {
-        $array = array();
-        $dirs = scandir($this->Obj->CurrentPath);
-        foreach ($dirs as $dir) {
-            if ($dir != "." && ($dir != ".." && $dir != ".thumbs" || (DefaultFileManagerPath != $this->Obj->CurrentPath && DefaultFileManagerPath . "/" != $this->Obj->CurrentPath))) {
+}
 
-                $array[$dir] = new DirectoryIterator($this->Obj->CurrentPath . "/".$dir);
-                //$array[$dir] = new adm_file(array("file" => $directory . "/" . $dir));
+class adm_filemanager_item_list extends adm_filemanager_child_abstract {
+
+    public array $FileArray;
+
+    public function __construct($obj) {
+        parent::__construct($obj);
+        $ar = $this->createDirectoryItemList();
+        foreach ($ar as $item) {
+            if (!$item->isDot()) {
+                var_dump($item->getFilename());
             }
         }
-        return $array;
+    }
+
+    public function createDirectoryItemList(): DirectoryIterator {
+        $array = array();
+        $iterator = new DirectoryIterator($this->Obj->CurrentPath);
+        /* foreach ($iterator as $item) {
+          if (!$item->isDot()) {
+          $array[$item->getFilename()] = $item;
+          var_dump($item->is());
+          }
+          } */
+        return $iterator;
     }
 
 }
@@ -57,7 +88,7 @@ abstract class Method {
     const Verification = 160;
     const Refresh = 170;
 
-    public function getMethod(): int {
+    static public function getMethod(): int {
         if (isset($_POST['__method__']) && !empty($_POST['__method__'])) {
             return $_POST['__method__'];
         } else {
@@ -68,17 +99,16 @@ abstract class Method {
 
 }
 
-class adm_filemanager extends Method {
+class adm_filemanager extends Component {
 
-    private AWE $Awe;
     public $UrlParams;
     public $CurrentPath;
     public $ComponentId;
     public $Config;
 
     function __construct($array) {
-        $this->Awe = &$GLOBALS['awe'];
-        $this->UrlParams = $this->Awe->getUrlParams();
+        parent::__construct();
+        $this->UrlParams = $this->awe->getUrlParams();
         /* Component Id */
         $this->ComponentId = $this->getComponentId($array);
         /* get Config */
@@ -106,7 +136,7 @@ class adm_filemanager extends Method {
         }
     }
 
-    public function listDirectoryItems(): adm_filemanager_list {
+    public function listDirectoryItems(): adm_filemanager_item_list {
         return new adm_filemanager_item_list($this);
     }
 
@@ -159,7 +189,7 @@ class adm_filemanager extends Method {
     }
 
     public function getConfigurations($array): array {
-        return array_merge_recursive($this->Awe->getSettings(array("settings_id" => $this->ComponentId)), $array);
+        return array_merge_recursive($this->awe->getSettings(array("settings_id" => $this->ComponentId)), $array);
     }
 
 }
