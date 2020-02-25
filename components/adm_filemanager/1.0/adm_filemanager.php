@@ -22,12 +22,54 @@ abstract class adm_filemanager_child_abstract {
 
 }
 
-class adm_filemanager_upload {
-    
+class adm_filemanager_upload extends adm_filemanager_child_abstract {
+
+    public function __construct($obj) {
+        parent::__construct($obj);
+    }
+
+    public function Handler() {
+        
+    }
+
+    function reArrayFiles(&$file_post): array {
+        $files = array();
+        foreach ($file_post as $input_name => $input_value) {
+            $file_ary = array();
+            $file_count = count($file_post['name']);
+            $file_keys = array_keys($file_post);
+
+            for ($i = 0; $i < $file_count; $i++) {
+                foreach ($file_keys as $key) {
+                    $file_ary[$i][$key] = $file_post[$key][$i];
+                }
+            }
+            $files[$input_name] = $file_ary;
+        }
+        return $files;
+    }
+
+    public function saveFiles(): bool {
+        if (!empty($_FILES) && isset($_FILES)) {
+            $files = $this->reArrayFiles($_FILES);
+            foreach ($files as $files_key => $files_value) {
+                foreach ($files_value as $item_value) {
+                    move_uploaded_file($item_value["tmp_name"], $this->Obj->CurrentPath."/".$item_value["name"]);
+                }
+            }
+            return TRUE;
+        }
+        return FALSE;
+    }
+
 }
 
-class adm_filemanager_download {
-    
+class adm_filemanager_download extends adm_filemanager_child_abstract {
+
+    public function __construct($obj) {
+        parent::__construct($obj);
+    }
+
 }
 
 class adm_filemanager_directory extends adm_filemanager_child_abstract {
@@ -38,29 +80,17 @@ class adm_filemanager_directory extends adm_filemanager_child_abstract {
 
 }
 
-class adm_filemanager_item_list extends adm_filemanager_child_abstract {
+class adm_filemanager_items extends adm_filemanager_child_abstract {
 
-    public array $FileArray;
+    public DirectoryIterator $Items;
 
     public function __construct($obj) {
         parent::__construct($obj);
-        $ar = $this->createDirectoryItemList();
-        foreach ($ar as $item) {
-            if (!$item->isDot()) {
-                var_dump($item->getFilename());
-            }
-        }
+        $this->Items = $this->createDirectoryItemList();
     }
 
     public function createDirectoryItemList(): DirectoryIterator {
-        $array = array();
         $iterator = new DirectoryIterator($this->Obj->CurrentPath);
-        /* foreach ($iterator as $item) {
-          if (!$item->isDot()) {
-          $array[$item->getFilename()] = $item;
-          var_dump($item->is());
-          }
-          } */
         return $iterator;
     }
 
