@@ -1,0 +1,33 @@
+.adm_filemanager_default_template {
+    display: flex;
+    margin-top: 20px;
+    height: 500px;
+    max-height: 500px;
+    overflow: hidden;
+}
+.adm_filemanager_default_template .box{
+    width: 200px;
+    height: 150px;
+    max-width: 200px;
+    background-color: var(--grey);
+    margin: 10px 15px;
+    display: inline-flex;
+    word-wrap: break-word;
+    flex-wrap: wrap;
+}
+.adm_filemanager_default_template .box .box-in{
+    padding: 20px 15px;
+    flex-wrap: wrap-reverse;
+    word-wrap: break-word;
+}
+.adm_filemanager_default_template .box .box-in .file-name{
+    width: 100%;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+

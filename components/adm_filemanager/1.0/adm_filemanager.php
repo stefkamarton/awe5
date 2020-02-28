@@ -1,13 +1,30 @@
 <?php
 
 define("fileManagerDefaultPath", getcwd() . "sites" . $GLOBALS['awe']->SiteAlias . "/tmp");
-
 abstract class Component {
 
     protected AWE $awe;
 
     public function __construct() {
         $this->awe = &$GLOBALS['awe'];
+    }
+
+}
+
+abstract class adm_filemanager_template_abstract {
+
+    protected adm_filemanager $Obj;
+
+    public function __construct($obj) {
+        $this->Obj = &$obj;
+    }
+
+    public function directoryElementsWithFrame(): string {
+        return "";
+    }
+
+    public function directoryElements(): string {
+        return "";
     }
 
 }
@@ -54,7 +71,7 @@ class adm_filemanager_upload extends adm_filemanager_child_abstract {
             $files = $this->reArrayFiles($_FILES);
             foreach ($files as $files_key => $files_value) {
                 foreach ($files_value as $item_value) {
-                    move_uploaded_file($item_value["tmp_name"], $this->Obj->CurrentPath."/".$item_value["name"]);
+                    move_uploaded_file($item_value["tmp_name"], $this->Obj->CurrentPath . "/" . $item_value["name"]);
                 }
             }
             return TRUE;
@@ -135,6 +152,7 @@ class adm_filemanager extends Component {
     public $CurrentPath;
     public $ComponentId;
     public $Config;
+    public adm_filemanager_items $Directory;
 
     function __construct($array) {
         parent::__construct();
@@ -145,12 +163,16 @@ class adm_filemanager extends Component {
         $this->Config = $this->getConfigurations($array);
         /* Directory Path */
         $this->CurrentPath = $this->getCurrentPath();
+        /* Load template */
+        var_dump($this->Config);
+        var_dump($this->loadTemplate());
         var_dump($this->CurrentPath);
 
         switch (Method::getMethod()) {
             case Method::Simple:
-                $this->listDirectoryItems();
-
+                $this->Directory = $this->listDirectoryItems();
+                $asd = new adm_filemanager_default_template($this);
+                echo $asd->directoryElementsWithFrame();
                 break;
             case Method::Refresh:
 
@@ -166,8 +188,12 @@ class adm_filemanager extends Component {
         }
     }
 
-    public function listDirectoryItems(): adm_filemanager_item_list {
-        return new adm_filemanager_item_list($this);
+    public function loadTemplate() {
+        return require_once __DIR__ . "/templates/" . $this->getComponentTemplate() . "/" . $this->getComponentTemplate() . ".php";
+    }
+
+    public function listDirectoryItems(): adm_filemanager_items {
+        return new adm_filemanager_items($this);
     }
 
     /**
@@ -219,7 +245,7 @@ class adm_filemanager extends Component {
     }
 
     public function getConfigurations($array): array {
-        return array_merge_recursive($this->awe->getSettings(array("settings_id" => $this->ComponentId)), $array);
+        return array_merge($this->awe->getSettings(array("settings_id" => $this->ComponentId)), $array);
     }
 
 }
