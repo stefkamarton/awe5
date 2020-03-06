@@ -23,8 +23,8 @@ class adm_filemanager_default_template extends adm_filemanager_template_abstract
                 $ret .= "<div class='box-in'>";
                 $ret .= "<div class='file-name'>" . $item->getFilename() . "</div>";
                 $ret .= "<div class='file-last-modify'>"
-                        . "<div class='key'>" . "asda" . "</div>"
-                        . "<div class='value'>" . $item->getCTime() . "</div></div>";
+                . "<div class='key'>" . "asda" . "</div>"
+                . "<div class='value'>" . date("Y-m-d H:i:s", $item->getCTime()) . "</div></div>";
 
                 $ret .= "</div>";
                 $ret .= "</div>";
