@@ -1,5 +1,6 @@
 <?php
-$host = 'awe5.plugin.hu'; //host
+
+$host = '0.0.0.0'; //host
 $port = '9000'; //port
 $null = NULL; //null var
 
@@ -19,6 +20,8 @@ $clients = array($socket);
 
 //start endless loop, so that our script doesn't stop
 while (true) {
+
+    
 	//manage multipal connections
 	$changed = $clients;
 	//returns the socket resources in $changed array
@@ -71,6 +74,9 @@ while (true) {
 			send_message($response);
 		}
 	}
+            send_message(mask(json_encode(array("message"=>$_SERVER['X-Requested-With']))));
+            sleep(1);
+    //include 'index.php';
 }
 // close the listening socket
 socket_close($socket);

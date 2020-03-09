@@ -1,9 +1,20 @@
 <?php
 
+define(XHR, 0);
+define(WS, 1);
+define(HTTP, 2);
+
 /**
  * @source
  *  */
 class AWE {
+
+    /**
+     * Kapcsolati Protokol
+     * @var bool
+     * @global $this->AWE->Protocol
+     */
+    public bool $Protocol;
 
     /**
      * PHP & AWE hibaüzenetek ki-be kapcsolása
@@ -137,6 +148,19 @@ class AWE {
             ini_set('display_startup_errors', 0);
             error_reporting(0);
         }
+    }
+
+    /**
+     * Kapcsolati protokoll megállapítása
+     * @param array $array
+     * @return void       
+     */
+    private function getProtocol($array) {
+        if (isset($array['protocol']) && !empty($array['protocol']) && $array['protocol'] == WS) {
+            $this->Protocol = $array['protocol'];
+        }else if($_SERVER)
+
+        //$this->Permission->Get(array("username"=>"admin"));
     }
 
     /**

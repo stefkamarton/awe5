@@ -145,7 +145,7 @@ button#send-message {
 <script language="javascript" type="text/javascript">  
 	//create a new WebSocket object.
 	var msgBox = $('#message-box');
-	var wsUri = "ws://awe5.plugin.hu:9000/server.php"; 	
+	var wsUri = "ws://awe5.plugin.hu:9000"; 	
 	websocket = new WebSocket(wsUri); 
 	
 	websocket.onopen = function(ev) { // connection is open 
