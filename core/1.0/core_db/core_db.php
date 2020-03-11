@@ -1,5 +1,28 @@
 <?php
 
+class core_db_select {
+
+    private string $QueryString;
+    private PDO $PDO;
+
+    public function __construct($pdo) {
+        $this->PDO = &$pdo;
+    }
+
+}
+
+class core_db2 {
+
+    private PDO $PDO;
+    
+    public function select(?string $table) : core_db_select{
+        $select = new core_db_select($this->PDO);
+        return $select;
+        
+    }
+
+}
+
 class core_db {
 
     /**
@@ -39,7 +62,7 @@ class core_db {
     private function getConfig($array = array()) {
         $path = "./sites/" . $this->AWE->SiteAlias . "/config.ini";
         if (!$config = parse_ini_file($path, TRUE)) {
-            $this->AWE->Logger->setError(array("text" => "E0001 - Nem található az oldal adatbázis konfigja! - " . $path,"line"=>__LINE__,"file"=>__FILE__));
+            $this->AWE->Logger->setError(array("text" => "E0001 - Nem található az oldal adatbázis konfigja! - " . $path, "line" => __LINE__, "file" => __FILE__));
         }
         return $config;
     }
@@ -57,7 +80,7 @@ class core_db {
         try {
             $pdo = new PDO($connectionString, $this->Config['database']['username'], $this->Config['database']['password']);
         } catch (Exception $exc) {
-            $this->AWE->Logger->setError(array("text" => "E0004 - Hibás adatbázis csatlakozás!","line"=>__LINE__,"file"=>__FILE__));
+            $this->AWE->Logger->setError(array("text" => "E0004 - Hibás adatbázis csatlakozás!", "line" => __LINE__, "file" => __FILE__));
         }
         return $pdo;
     }
@@ -70,18 +93,18 @@ class core_db {
      */
     public function doQuery($array = array("sql" => "", "attr" => "")) {
         if (!isset($array['sql'])) {
-            $this->AWE->Logger->setWarn(array("text" => "W0001 - Nem adtál meg sql parancsot!","line"=>__LINE__,"file"=>__FILE__));
+            $this->AWE->Logger->setWarn(array("text" => "W0001 - Nem adtál meg sql parancsot!", "line" => __LINE__, "file" => __FILE__));
             return FALSE;
         }
         $query = $this->Connection->prepare($array['sql']);
         if (isset($array['attr']) && !empty($array['attr'])) {
             if ($query->execute($array['attr']) == FALSE) {
-                $this->AWE->Logger->setError(array("text" => "E0005 - Hibás SQL parancs! -> " . $query->errorInfo()[2],"line"=>__LINE__,"file"=>__FILE__));
+                $this->AWE->Logger->setError(array("text" => "E0005 - Hibás SQL parancs! -> " . $query->errorInfo()[2], "line" => __LINE__, "file" => __FILE__));
                 return FALSE;
             }
         } else {
             if ($query->execute() == FALSE) {
-                $this->AWE->Logger->setError(array("text" => "E0005 - Hibás SQL parancs! -> " . $query->errorInfo()[2],"line"=>__LINE__,"file"=>__FILE__));
+                $this->AWE->Logger->setError(array("text" => "E0005 - Hibás SQL parancs! -> " . $query->errorInfo()[2], "line" => __LINE__, "file" => __FILE__));
                 return FALSE;
             }
         }
@@ -97,7 +120,7 @@ class core_db {
      */
     private function recursiveWhereTree($array = array(), $logical = FALSE, $like = "=") {
         if (empty($array) || !is_array($array)) {
-            $GLOBALS["awe"]->Logger->setError(array("text" => "E0006 - Hibás nem megfelelő array!","line"=>__LINE__,"file"=>__FILE__));
+            $GLOBALS["awe"]->Logger->setError(array("text" => "E0006 - Hibás nem megfelelő array!", "line" => __LINE__, "file" => __FILE__));
             return FALSE;
         }
         $ret = array("string" => "", "attr" => array());
@@ -115,7 +138,7 @@ class core_db {
                 $like = $value;
             } else if ($key == "AND NOT" || $key == "AND" || $key == "OR NOT" || $key == "OR") {
                 if (!is_array($value)) {
-                    $GLOBALS["awe"]->Logger->setError(array("text" => "E0006 - Hibás nem megfelelő array!","line"=>__LINE__,"file"=>__FILE__));
+                    $GLOBALS["awe"]->Logger->setError(array("text" => "E0006 - Hibás nem megfelelő array!", "line" => __LINE__, "file" => __FILE__));
                     return FALSE;
                 }
                 $reqursive = $this->recursiveWhereTree($value, $key, $like);
@@ -141,7 +164,7 @@ class core_db {
      */
     private function projection($array = array("oszlop" => "neve", "oszlop2" => "neve")) {
         if (!is_array($array)) {
-            $GLOBALS["awe"]->Logger->setError(array("text" => "E0006 - Hibás nem megfelelő array!","line"=>__LINE__,"file"=>__FILE__));
+            $GLOBALS["awe"]->Logger->setError(array("text" => "E0006 - Hibás nem megfelelő array!", "line" => __LINE__, "file" => __FILE__));
             return FALSE;
         }
         $str = "";
@@ -165,7 +188,7 @@ class core_db {
      */
     private function joins($array = array("0" => array("type" => "INNER", "table" => "tábla", "ON" => ""))) {
         if (!is_array($array)) {
-            $GLOBALS["awe"]->Logger->setError(array("text" => "E0006 - Hibás nem megfelelő array!","line"=>__LINE__,"file"=>__FILE__));
+            $GLOBALS["awe"]->Logger->setError(array("text" => "E0006 - Hibás nem megfelelő array!", "line" => __LINE__, "file" => __FILE__));
             return false;
         }
         $str = " ";
@@ -226,7 +249,7 @@ class core_db {
     function simpleSelect($array = array("orderby" => array("column" => "ASC", "column2" => "DESC"), "groupby" => array("column1", "column2"), "having" => array("column1 > 2"), "distinct" => FALSE, "projection" => array(), "where" => array("oszlop" => "érték", "AND" => array("oszlop" => "érték")), "joins" => array("0" => array("type" => "INNER", "table" => "tábla", "ON" => "")))) {
         $projection = !empty($array['projection']) ? $this->projection($array['projection']) : "*";
         if (empty($array["table"])) {
-            $this->AWE->Logger->setError(array("text" => "E0007 - Nem adtál meg táblát az SQL lekérdezésnél","line"=>__LINE__,"file"=>__FILE__));
+            $this->AWE->Logger->setError(array("text" => "E0007 - Nem adtál meg táblát az SQL lekérdezésnél", "line" => __LINE__, "file" => __FILE__));
             return false;
         }
         $distinct = (!empty($array["distinct"]) && $array['distinct'] == true) ? "DISTINCT " : "";
@@ -247,7 +270,7 @@ class core_db {
         }
         $attr = array_merge($having["attr"], $where["attr"]);
         $str = "SELECT " . $distinct . $projection . " FROM " . $array["table"] . $joins . $wherestr . $groupby . $havingstr . $orderby . $limit . $offset;
-        return $this->fetchAll(array("sql" => $str, "attr" => $attr),PDO::FETCH_ASSOC);
+        return $this->fetchAll(array("sql" => $str, "attr" => $attr), PDO::FETCH_ASSOC);
     }
 
     /**
@@ -256,12 +279,12 @@ class core_db {
      * @global $this->AWE->DB->fetchWithCount($array=array("sql"=>"","attr"=>""), $sets = NULL)
      * @return array|FALSE       
      */
-    public function fetchWithCount($array=array("sql"=>"","attr"=>""), $sets = NULL) {
+    public function fetchWithCount($array = array("sql" => "", "attr" => ""), $sets = NULL) {
         if (!empty($array)) {
             $q = $this->doQuery($array);
             return array("result" => $q->fetch($sets), "count" => $q->rowCount());
         }
-        $this->AWE->Logger->setWarn(array("text" => "W0001 - Nem adtál meg sql parancsot!","line"=>__LINE__,"file"=>__FILE__));
+        $this->AWE->Logger->setWarn(array("text" => "W0001 - Nem adtál meg sql parancsot!", "line" => __LINE__, "file" => __FILE__));
         return FALSE;
     }
 
@@ -271,11 +294,11 @@ class core_db {
      * @global $this->AWE->DB->fetchWithCount($array=array("sql"=>"","attr"=>""), $sets = NULL)
      * @return array|FALSE       
      */
-    public function fetch($array=array("sql"=>"","attr"=>""), $sets = NULL) {
+    public function fetch($array = array("sql" => "", "attr" => ""), $sets = NULL) {
         if (!empty($array)) {
             return $this->doQuery($array)->fetch($sets);
         }
-        $this->AWE->Logger->setWarn(array("text" => "W0001 - Nem adtál meg sql parancsot!","line"=>__LINE__,"file"=>__FILE__));
+        $this->AWE->Logger->setWarn(array("text" => "W0001 - Nem adtál meg sql parancsot!", "line" => __LINE__, "file" => __FILE__));
         return FALSE;
     }
 
@@ -285,11 +308,11 @@ class core_db {
      * @global $this->AWE->DB->fetchWithCount($array=array("sql"=>"","attr"=>""), $sets = NULL)
      * @return array|FALSE       
      */
-    public function fetchAll($array=array("sql"=>"","attr"=>""), $sets = NULL) {
+    public function fetchAll($array = array("sql" => "", "attr" => ""), $sets = NULL) {
         if (!empty($array)) {
             return $this->doQuery($array)->fetchAll($sets);
         }
-        $this->AWE->Logger->setWarn(array("text" => "W0001 - Nem adtál meg sql parancsot!","line"=>__LINE__,"file"=>__FILE__));
+        $this->AWE->Logger->setWarn(array("text" => "W0001 - Nem adtál meg sql parancsot!", "line" => __LINE__, "file" => __FILE__));
         return FALSE;
     }
 

@@ -26,7 +26,7 @@ while (true) {
 	$changed = $clients;
 	//returns the socket resources in $changed array
 	socket_select($changed, $null, $null, 0, 10);
-	
+	var_dump($clients);
 	//check for new socket
 	if (in_array($socket, $changed)) {
 		$socket_new = socket_accept($socket); //accpet new socket
