@@ -4,24 +4,121 @@ class core_db_select {
 
     private string $QueryString;
     private PDO $PDO;
+    private array $Columns;
+    private array $WhereStatements;
+    private array $WhereStatementsValues;
+    private array $Joins;
+    private string $LastSeparator;
 
-    public function __construct($pdo) {
-        $this->PDO = &$pdo;
+    public function __construct(core_db2 $obj) {
+        $this->PDO = &$obj->PDO;
+    }
+
+    public function column(...$columnName): core_db_select {
+        foreach ($columnName as $value) {
+            $this->Columns[] = array($value => $value);
+        }
+        return $this;
+    }
+
+    public function columnWithAs(...$columnName): core_db_select {
+        foreach ($columnName as $value) {
+            $this->Columns[] = $value;
+        }
+        return $this;
+    }
+
+    public function innerJoin(string $table, string $condition) {
+        $this->Joins[] = "INNER JOIN " . $table . " ON $condition";
+        return $this;
+    }
+
+    public function outerJoin(string $table, string $condition) {
+        $this->Joins[] = "OUTER JOIN " . $table . " ON $condition";
+        return $this;
+    }
+
+    public function leftJoin(string $table, string $condition) {
+        $this->Joins[] = "LEFT JOIN " . $table . " ON $condition";
+        return $this;
+    }
+
+    public function rightJoin(string $table, string $condition) {
+        $this->Joins[] = "RIGHT JOIN " . $table . " ON $condition";
+        return $this;
+    }
+
+    public function where(?string $conditions, array $parameters = [], string $separator = 'AND'): core_db_select {
+
+        // Ha null akkor kinullázza a where-t
+        if ($conditions === null) {
+            $this->WhereStatements = array();
+            $this->LastSeparator = null;
+            $this->WhereStatementsValues = array();
+            return $this;
+        } else if (is_array($conditions)) {         // Ha array akkor rekurzívan meghívja magát
+            foreach ($conditions as $key => $value) {
+                $this->where($key, $value);
+            }
+        } else {
+            $this->addWhereStatements($conditions, $parameters, $separator);
+        }
+
+        return $this;
+    }
+
+    private function addWhereStatements($conditions, $parameters, $separator): void {
+        /* Adding separator */
+        if (!empty($this->LastSeparator)) {
+            $this->WhereStatements[] = $this->LastSeparator;
+        }
+
+        $this->LastSeparator = $separator;
+
+        $this->WhereStatements[] = $conditions;
+
+        /* Values */
+        foreach ($parameters as $key => $value) {
+            if (is_array($value)) {
+                $this->WhereStatementsValues[$key] = "(" . implode(", ", $value) . ")";
+            } else {
+                $this->WhereStatementsValues[$key] = $value;
+            }
+        }
     }
 
 }
+
+/*
+
+  $condition -> name >= :name
+  $parameters -> [":name"=>"Matyi"];
+
+
+ */
 
 class core_db2 {
 
-    private PDO $PDO;
-    
-    public function select(?string $table) : core_db_select{
-        $select = new core_db_select($this->PDO);
+    protected PDO $PDO;
+    protected AWE $AWE;
+
+    /* Supported SQL Drivers */
+
+    const MYSQL_DRIVER = "mysql";
+    const PGSQL_DRIVER = "pgsql";
+
+    public function __construct() {
+        $this->AWE = &$GLOBALS['awe'];
+    }
+
+    public function select(?string $table): core_db_select {
+        $select = new core_db_select($this);
         return $select;
-        
     }
 
 }
+
+$asd = new core_db2();
 
 class core_db {
 
