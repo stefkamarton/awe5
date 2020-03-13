@@ -1,0 +1,17 @@
+{
+    "DomainToAlias": 
+            {
+                "awe5.plugin.hu": "awe5.plugin.hu"
+            },
+    "AliasConfigs":
+            {
+                "awe5.plugin.hu": 
+                        {
+                            "coreVersion": "0.2",
+                            "otherConfiguration": 
+                                    {
+
+                                    }
+                        }
+            }
+}
