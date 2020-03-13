@@ -1,6 +1,6 @@
-SetEnv PHP_VALUE "upload_max_filesize = 30M"
 SetEnv PHP_VALUE "display_errors = on"
 SetEnv PHP_VALUE "display_startup_errors = on"
+
 Options -Indexes
 
 IndexIgnore *
@@ -12,12 +12,12 @@ RewriteBase /
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_URI} .*\.(css|webp|jpg|png)
-RewriteRule ^tmp/(.*)$ sites/%{HTTP_HOST}/tmp/$1 [NC,L]
+RewriteRule ^__images__/(.*)$ sites/%{HTTP_HOST}/images/$1 [NC,L]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_URI} !=/index.php
-#RewriteCond %{REQUEST_URI}  (sites|log)
+    RewriteCond %{REQUEST_URI}  (sites|log)
 RewriteCond %{REQUEST_URI} !.*\.(ico|gif|xml|jpg|jpeg|png|js|css|pdf|docx|doc|xls|xlsx|mp3|wav|mp4|rar|zip|ppt|pptx|txt|rtf|woff|woff2|eot|otf|ttf|svg)
 RewriteRule .* /index.php [NC,L]
 

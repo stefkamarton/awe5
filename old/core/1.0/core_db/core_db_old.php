@@ -120,7 +120,7 @@ class core_db2 {
 
 $asd = new core_db2();
 
-class core_db {
+class core_db_old {
 
     /**
      * Kapcsolat változó

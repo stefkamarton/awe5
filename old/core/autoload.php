@@ -1,9 +1,9 @@
 <?php
-
+/*
 define(XHR, 0);
 define(WS, 1);
 define(HTTP, 2);
-
+*/
 /**
  * @source
  *  */
@@ -158,7 +158,9 @@ class AWE {
     private function getProtocol($array) {
         if (isset($array['protocol']) && !empty($array['protocol']) && $array['protocol'] == WS) {
             $this->Protocol = $array['protocol'];
-        }else if($_SERVER)
+        } else if ($_SERVER) {
+            
+        };
 
         //$this->Permission->Get(array("username"=>"admin"));
     }
